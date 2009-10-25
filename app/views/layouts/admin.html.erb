@@ -16,7 +16,9 @@
       %>
       <% controller_names.each_with_index do |c_name, i| %>
         <%= "|" unless i == 0 %>
-        <%= link_to_unless_current(c_name, :controller => "admin/#{c_name}") %>
+        <%= link_to_unless_current(
+          c_name.gsub(/_/, ' ').capitalize, :controller => "admin/#{c_name}"
+        ) %>
       <% end %>
     </p>
     <%= @content_for_layout %>
