@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  prize_category_id: 1
+  giveaway_round_id: 1
+  count: 1
+  position: 1
+  active: false
+
+two:
+  prize_category_id: 1
+  giveaway_round_id: 1
+  count: 1
+  position: 1
+  active: false
