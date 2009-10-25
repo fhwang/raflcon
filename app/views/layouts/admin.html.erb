@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <%= javascript_include_tag("prototype", "effects", "controls") %>
+    <%= admin_assistant_includes %>
+  </head>
+  <body>
+    <p>
+      <%
+      admin_controllers_dir = "#{RAILS_ROOT}/app/controllers/admin/"
+      controller_names = Dir.entries(admin_controllers_dir).select { |entry|
+        entry =~ /_controller.rb$/
+      }.map { |entry|
+        entry =~ /(.*)_controller.rb$/
+        $1
+      }.sort
+      %>
+      <% controller_names.each_with_index do |c_name, i| %>
+        <%= "|" unless i == 0 %>
+        <%= link_to_unless_current(c_name, :controller => "admin/#{c_name}") %>
+      <% end %>
+    </p>
+    <%= @content_for_layout %>
+  </body>
+</html>
+
