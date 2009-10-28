@@ -1,27 +1,41 @@
 <html>
   <head>
     <%= javascript_include_tag("prototype", "effects", "controls") %>
-    <%= admin_assistant_includes %>
+    <%= if self.respond_to?(:admin_assistant_includes) 
+      admin_assistant_includes
+    end %>
+    <%= stylesheet_link_tag 'admin' %>
   </head>
   <body>
-    <p>
-      <%
-      admin_controllers_dir = "#{RAILS_ROOT}/app/controllers/admin/"
-      controller_names = Dir.entries(admin_controllers_dir).select { |entry|
-        entry =~ /_controller.rb$/
-      }.map { |entry|
-        entry =~ /(.*)_controller.rb$/
-        $1
-      }.sort
-      %>
-      <% controller_names.each_with_index do |c_name, i| %>
-        <%= "|" unless i == 0 %>
+  <h1>raflcon!</h1>
+    <div id="nav">
+      <% if conference = Conference.first %>
+        <%
+        admin_controllers_dir = "#{RAILS_ROOT}/app/controllers/admin/"
+        controller_names = Dir.entries(admin_controllers_dir).select { |entry|
+          entry =~ /_controller.rb$/ && entry !~ /dashboard/ &&
+          entry !~ /conferences/
+        }.map { |entry|
+          entry =~ /(.*)_controller.rb$/
+          $1
+        }.sort
+        %>
+        <% controller_names.each_with_index do |c_name, i| %>
+          <%= link_to_unless_current(
+            c_name.gsub(/_/, ' ').capitalize, :controller => "admin/#{c_name}"
+          ) %>
+        <br />
+        <% end %>
         <%= link_to_unless_current(
-          c_name.gsub(/_/, ' ').capitalize, :controller => "admin/#{c_name}"
+          'Conference details',
+          :controller => 'admin/conferences', :action => 'edit',
+          :id => Conference.first.id
         ) %>
       <% end %>
-    </p>
+    </div>
+    <div id="content">
     <%= @content_for_layout %>
+    </div>
   </body>
 </html>
 

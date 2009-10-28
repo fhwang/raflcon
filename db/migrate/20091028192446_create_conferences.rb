@@ -3,8 +3,6 @@ class CreateConferences < ActiveRecord::Migration
     create_table :conferences do |t|
       t.date :start_date
       t.date :end_date
-      t.string :time_zone
-
       t.timestamps
     end
   end
