@@ -6,5 +6,8 @@ class Conference < ActiveRecord::Base
     if id.nil? && Conference.first
       errors.add_to_base "One conference per Raflcon install, please"
     end
+    if end_date < start_date
+      errors.add :end_date, "can't be before the end date"
+    end
   end
 end
