@@ -7,4 +7,20 @@ class ApplicationController < ActionController::Base
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
+  
+  before_filter :login_required
+  
+  protected
+  
+  def login_required
+    password_file = "#{RAILS_ROOT}/config/http_basic_auth/#{RAILS_ENV}"
+    if File.exist?(password_file)
+      lines = File.read(password_file).split
+      u = lines.first.chomp
+      p = lines[1].chomp
+      authenticate_or_request_with_http_basic do |username, password|
+        username == u && password == p
+      end
+    end
+  end
 end
