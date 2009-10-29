@@ -21,6 +21,8 @@ class ApplicationController < ActionController::Base
       authenticate_or_request_with_http_basic do |username, password|
         username == u && password == p
       end
+    elsif RAILS_ENV != 'test'
+      raise "set username and password in http_basic_auth"
     end
   end
 end
