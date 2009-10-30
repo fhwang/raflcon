@@ -1,12 +1,22 @@
 body {
   font-family: Verdana, Arial, sans-serif
 }
+fieldset {
+  border: none; padding: 0; margin: 0 0 10px 0;
+}
 h1 { padding-bottom: 0; margin-bottom: 0 }
 
 #content {
   float:left;
 }
-
 #nav {
   width: 150px; float:left; font-size: small; padding-top: 25px
 }
+#new_configuration fieldset legend {
+  font-size: medium;
+}
+#new_configuration .fieldWithErrors input { border: 1px solid red }
+#new_configuration input, #new_configuration option, #new_configuration select {
+  font-size: large;
+}
+

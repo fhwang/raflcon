@@ -1,4 +1,3 @@
-config/http_basic_auth/*
 db/schema.rb
 log/*.log
 tmp/*

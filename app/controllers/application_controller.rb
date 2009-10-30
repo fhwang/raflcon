@@ -13,16 +13,17 @@ class ApplicationController < ActionController::Base
   protected
   
   def login_required
-    password_file = "#{RAILS_ROOT}/config/http_basic_auth/#{RAILS_ENV}"
-    if File.exist?(password_file)
-      lines = File.read(password_file).split
-      u = lines.first.chomp
-      p = lines[1].chomp
-      authenticate_or_request_with_http_basic do |username, password|
-        username == u && password == p
+    unless controller_name == 'configuration' &&
+           %w(new create).include?(action_name)
+      username = ApplicationSetting.value('username')
+      password = ApplicationSetting.value('password')
+      if username and password
+        authenticate_or_request_with_http_basic do |u, p|
+          username == u && password == p
+        end
+      else
+        redirect_to :controller => 'admin/configuration', :action => 'new'
       end
-    elsif RAILS_ENV != 'test'
-      raise "set username and password in http_basic_auth"
     end
   end
 end

@@ -1,0 +1,32 @@
+<% form_for @configuration, :url => {:action => action, :id => params[:id]} do |f| %>
+  <% unless @configuration.errors.empty? %>
+    <%= error_messages_for :configuration %>
+  <% end %>
+
+  <fieldset>
+  <legend>Username</legend>
+  <%= f.text_field 'username' %>
+  </fieldset>
+
+  <fieldset>
+  <legend>Password</legend>
+  <%= f.password_field 'password' %>
+  </fieldset>
+
+  <fieldset>
+  <legend>Confirm password</legend>
+  <%= f.password_field 'password_confirmation' %>
+  </fieldset>
+  
+  <fieldset>
+  <legend>Start date</legend>
+  <%= f.date_select 'start_date' %>
+  </fieldset>
+  
+  <fieldset>
+  <legend>End date</legend>
+  <%= f.date_select 'end_date' %>
+  </fieldset>
+  
+  <%= submit_tag %>
+<% end %>

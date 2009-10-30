@@ -27,9 +27,8 @@
         <br />
         <% end %>
         <%= link_to_unless_current(
-          'Conference details',
-          :controller => 'admin/conferences', :action => 'edit',
-          :id => Conference.first.id
+          'Configuration',
+          :controller => 'admin/configuration', :action => 'edit'
         ) %>
       <% end %>
     </div>

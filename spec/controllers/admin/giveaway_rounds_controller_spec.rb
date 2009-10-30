@@ -9,6 +9,7 @@ describe 'Admin::GiveawayRoundsController#create' do
   end
   
   before :each do
+    setup_configuration_and_login
     @orig_count = GiveawayRound.count
     post(
       :create,
@@ -37,6 +38,7 @@ describe 'Admin::GiveawayRoundsController#edit' do
   end
   
   before :each do
+    setup_configuration_and_login
     get :edit, :id => @giveaway_round.id
   end
   
@@ -73,6 +75,7 @@ describe 'Admin::GiveawayRoundsController#new' do
   end
   
   before :each do
+    setup_configuration_and_login
     get :new
   end
   
