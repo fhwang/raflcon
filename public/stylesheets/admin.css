@@ -7,7 +7,7 @@ fieldset {
 h1 { padding-bottom: 0; margin-bottom: 0 }
 
 #content {
-  float:left;
+  float:left; position: relative; width: 900px
 }
 #nav {
   width: 150px; float:left; font-size: small; padding-top: 25px

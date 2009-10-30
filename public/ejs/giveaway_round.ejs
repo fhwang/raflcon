@@ -1,0 +1,7 @@
+<%= giveaway_round.time %>
+<% for (i = 0; i < giveaway_round.giveaways.length; i++) { %>
+  <% giveaway = giveaway_round.giveaways[i] %>
+  <li>
+    <%= giveaway.prize_category.name %>
+  </li>
+<% } %>

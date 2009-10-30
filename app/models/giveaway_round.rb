@@ -4,6 +4,10 @@ class GiveawayRound < ActiveRecord::Base
   validates_uniqueness_of :time
   
   def name_for_admin_assistant
-    self.time.strftime("%a %b %d %I:%M %p")
+    pretty_time
+  end
+  
+  def pretty_time
+    time.strftime "%a %b %d %Y %I:%M %p"
   end
 end

@@ -14,7 +14,7 @@
         admin_controllers_dir = "#{RAILS_ROOT}/app/controllers/admin/"
         controller_names = Dir.entries(admin_controllers_dir).select { |entry|
           entry =~ /_controller.rb$/ && entry !~ /dashboard/ &&
-          entry !~ /conferences/
+          entry !~ /configuration/
         }.map { |entry|
           entry =~ /(.*)_controller.rb$/
           $1
