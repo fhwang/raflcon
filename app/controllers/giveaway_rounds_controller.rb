@@ -1,4 +1,8 @@
 class GiveawayRoundsController < ApplicationController
+  def index
+    render :json => GiveawayRound.find(:all)
+  end
+  
   def show
     giveaway_round = GiveawayRound.find params[:id]
     render(
