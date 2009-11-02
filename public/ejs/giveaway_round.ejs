@@ -2,9 +2,9 @@
 <% for (i = 0; i < giveaway_round.giveaways.length; i++) { %>
   <% giveaway = giveaway_round.giveaways[i] %>
   <li>
-    <%= giveaway.prize_category.name %>
+    <%= giveaway.prize_category.name %> (<%= giveaway.count %>)
     <a href="#" onclick="choose_giveaway(<%= giveaway.id %>)">V</a>
     <a href="#" onclick="close_giveaway(<%= giveaway.id %>)">X</a>
-    <div id="giveaway_<%= giveaway.id %>" style="display:none">
+    <div class="giveaway" id="giveaway_<%= giveaway.id %>" style="display:none">
   </li>
 <% } %>

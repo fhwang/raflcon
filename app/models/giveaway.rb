@@ -11,6 +11,11 @@ class Giveaway < ActiveRecord::Base
   validates_presence_of   :prize_category_id
   validates_uniqueness_of :prize_category_id, :scope => :giveaway_round_id
   
+  def suggested_attempt_size
+    setting = ApplicationSetting.value('max_giveaway_attempt_size').to_i
+    count < setting ? count : setting
+  end
+  
   def validate
     conditions = ["prize_category_id = ?", self.prize_category_id]
     if self.id

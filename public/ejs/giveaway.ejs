@@ -1,1 +1,11 @@
-GIVEAWAY
+<form action="/giveaway_attempts/create" method="post" onsubmit="new Ajax.Request('/giveaway_attempts/create',{asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;" class="giveaway_attempt">
+  <input type="hidden" name="giveaway_attempt[giveaway_id]" value="<%=
+    giveaway.id
+  %>">
+  <input name="giveaway_attempt[size]" value="<%= giveaway.suggested_attempt_size %>">
+  <input type="submit">
+</form>
+
+<div id="giveaway_attempted" style="display:none">
+Announce your winners!111
+</div>

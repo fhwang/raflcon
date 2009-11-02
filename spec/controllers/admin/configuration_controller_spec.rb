@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Admin::ConfigurationController when there are no ApplicationSettings' do
+describe '/admin/configuration/new when there are no ApplicationSettings' do
   integrate_views
   controller_name 'admin/configuration'
   

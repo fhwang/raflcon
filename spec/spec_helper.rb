@@ -75,3 +75,11 @@ Spec::Runner.configure do |config|
   config.include SpecMatchers
   include SpecUtilityMethods
 end
+
+SampleModels.configure Attendee do |attendee|
+  attendee.default.giveaway_attempt nil
+end
+
+SampleModels.configure PrizeCategory do |prize_category|
+  prize_category.default.count 10
+end

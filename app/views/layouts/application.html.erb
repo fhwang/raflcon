@@ -3,6 +3,7 @@
     <%= javascript_include_tag :defaults %>
     <%= javascript_include_tag 'ejs_1.0/ejs' %>
     <%= javascript_include_tag('ejs_1.0/ejs_fulljslint') if RAILS_ENV == 'development' %>
+    <%= stylesheet_link_tag 'application' %>
   </head>
   <body>
     <%= @content_for_layout %>

@@ -1,5 +1,7 @@
 class ApplicationSetting < ActiveRecord::Base
-  validates_inclusion_of :name, :in => %w(username password)
+  validates_uniqueness_of :name
+  validates_inclusion_of :name,
+                         :in => %w(username password max_giveaway_attempt_size)
   
   serialize :value
   

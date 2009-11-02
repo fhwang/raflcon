@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-describe 'Admin::GiveawayRoundsController#create' do
+describe '/admin/giveaway_rounds/create' do
   integrate_views
   controller_name 'admin/giveaway_rounds'
   
@@ -25,7 +25,7 @@ describe 'Admin::GiveawayRoundsController#create' do
   end
 end
 
-describe 'Admin::GiveawayRoundsController#edit' do
+describe '/admin/giveaway_rounds/edit' do
   integrate_views
   controller_name 'admin/giveaway_rounds'
   
@@ -63,7 +63,7 @@ describe 'Admin::GiveawayRoundsController#edit' do
   end
 end
 
-describe 'Admin::GiveawayRoundsController#new' do
+describe '/admin/giveaway_rounds/new' do
   integrate_views
   controller_name 'admin/giveaway_rounds'
   

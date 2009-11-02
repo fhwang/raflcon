@@ -9,14 +9,16 @@ describe 'Configuration creation' do
   before :each do
     Configuration.create!(
       :username => 'bill', :password => 'bob',
-      :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
+      :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1),
+      :max_giveaway_attempt_size => 10
     )
   end
   
-  it 'should save two ApplicationSettings' do
-    ApplicationSetting.count.should == 2
+  it 'should save three ApplicationSettings' do
+    ApplicationSetting.count.should == 3
     ApplicationSetting.value('username').should == 'bill'
     ApplicationSetting.value('password').should == 'bob'
+    ApplicationSetting.value('max_giveaway_attempt_size').should == '10'
   end
   
   it 'should save one Conference' do
@@ -53,6 +55,9 @@ describe 'Configuration find' do
     ApplicationSetting.destroy_all
     ApplicationSetting.create! :name => 'username', :value => 'bill'
     ApplicationSetting.create! :name => 'password', :value => 'bob'
+    ApplicationSetting.create!(
+      :name => 'max_giveaway_attempt_size', :value => 10
+    )
     Conference.destroy_all
     Conference.create!(
       :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
@@ -73,6 +78,9 @@ describe 'Configuration updating' do
     ApplicationSetting.destroy_all
     ApplicationSetting.create! :name => 'username', :value => 'bill'
     ApplicationSetting.create! :name => 'password', :value => 'bob'
+    ApplicationSetting.create!(
+      :name => 'max_giveaway_attempt_size', :value => 10
+    )
     Conference.destroy_all
     Conference.create!(
       :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
@@ -83,14 +91,16 @@ describe 'Configuration updating' do
     configuration = Configuration.first
     configuration.update_attributes(
       :username => 'billbill', :password => 'bobbob',
-      :start_date => Date.new(2010,5,30), :end_date => Date.new(2010,6,1)
+      :start_date => Date.new(2010,5,30), :end_date => Date.new(2010,6,1),
+      :max_giveaway_attempt_size => 12
     )
   end
   
   it 'should update the existing ApplicationSettings' do
-    ApplicationSetting.count.should == 2
+    ApplicationSetting.count.should == 3
     ApplicationSetting.value('username').should == 'billbill'
     ApplicationSetting.value('password').should == 'bobbob'
+    ApplicationSetting.value('max_giveaway_attempt_size').should == '12'
   end
   
   it 'should update the Conference' do
@@ -105,6 +115,9 @@ describe 'Configuration updating when the username is missing' do
     ApplicationSetting.destroy_all
     ApplicationSetting.create! :name => 'username', :value => 'bill'
     ApplicationSetting.create! :name => 'password', :value => 'bob'
+    ApplicationSetting.create!(
+      :name => 'max_giveaway_attempt_size', :value => 10
+    )
     Conference.destroy_all
     Conference.create!(
       :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
@@ -115,14 +128,16 @@ describe 'Configuration updating when the username is missing' do
     configuration = Configuration.first
     configuration.update_attributes(
       :username => nil, :password => 'bobbob',
-      :start_date => Date.new(2010,5,30), :end_date => Date.new(2010,6,1)
+      :start_date => Date.new(2010,5,30), :end_date => Date.new(2010,6,1),
+      :max_giveaway_attempt_size => 12
     )
   end
 
   it 'should not update the existing ApplicationSettings' do
-    ApplicationSetting.count.should == 2
+    ApplicationSetting.count.should == 3
     ApplicationSetting.value('username').should == 'bill'
     ApplicationSetting.value('password').should == 'bob'
+    ApplicationSetting.value('max_giveaway_attempt_size').should == '10'
   end
   
   it 'should not update the Conference' do

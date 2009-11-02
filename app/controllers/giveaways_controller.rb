@@ -3,7 +3,8 @@ class GiveawaysController < ApplicationController
     giveaway = Giveaway.find params[:id]
     render(
       :json => giveaway.to_json(
-        :include => {:giveaway_attempts => {:methods => :size}}
+        :methods => :suggested_attempt_size,
+        :include => {:giveaway_attempts => {:include => :attendees}}
       )
     )
   end

@@ -53,3 +53,31 @@ describe 'Giveaway update when the totals for all giveaways on a prize category 
   end
 end
 
+describe 'Giveaway#suggested_attempt_size when the giveaway size is smaller' do
+  before :all do
+    ApplicationSetting.sample(
+      :name => 'max_giveaway_attempt_size', :value => 20
+    )
+    Giveaway.destroy_all
+    @giveaway = Giveaway.sample :count => 10
+  end
+  
+  it 'should be the giveaway size' do
+    @giveaway.suggested_attempt_size.should == 10
+  end
+end
+
+describe 'Giveaway#next_attempt_size when the application setting is smaller' do
+  before :all do
+    ApplicationSetting.sample(
+      :name => 'max_giveaway_attempt_size', :value => 5
+    )
+    Giveaway.destroy_all
+    @giveaway = Giveaway.sample :count => 10
+  end
+  
+  it 'should be the value set in the application setting' do
+    @giveaway.suggested_attempt_size.should == 5
+  end
+end
+
