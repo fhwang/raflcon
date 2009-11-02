@@ -8,6 +8,6 @@ class GiveawayRound < ActiveRecord::Base
   end
   
   def pretty_time
-    time.strftime "%a %b %d %Y %I:%M %p"
+    time.strftime "%a %b %d %I:%M %p"
   end
 end

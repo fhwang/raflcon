@@ -1,0 +1,2 @@
+module GiveawaysHelper
+end

@@ -1,4 +1,5 @@
 class Giveaway < ActiveRecord::Base
+  has_many     :giveaway_attempts
   belongs_to   :giveaway_round
   acts_as_list :scope => :giveaway_round
   belongs_to   :prize_category

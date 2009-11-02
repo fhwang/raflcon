@@ -1,6 +1,6 @@
 RAFLCON!!!
 
-<select onChange="giveaway_round_changed()" id="giveaway_round_select">
+<select onChange="choose_giveaway_round()" id="giveaway_round_select">
   <option></option>
 <% GiveawayRound.all.sort_by(&:time).reverse.each do |giveaway_round| %>
   <option value="<%= giveaway_round.id %>"><%= giveaway_round.pretty_time %></option>
@@ -8,3 +8,5 @@ RAFLCON!!!
 </select>
 
 <div id="giveaway_round"></div>
+
+<div id="giveaway"></div>
