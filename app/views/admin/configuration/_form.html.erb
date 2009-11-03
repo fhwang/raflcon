@@ -33,5 +33,19 @@
   <%= f.text_field 'max_giveaway_attempt_size' %>
   </fieldset>
   
+  <fieldset>
+  <legend>Time zone</legend>
+  <%= text_field_tag 'configuration[time_zone]', (@configuration.time_zone.friendly_identifier if @configuration.time_zone) %>
+  </fieldset>
+  
+  <div id="time_zone_palette" style="display:none" class="autocomplete_palette"></div>
+  
   <%= submit_tag %>
 <% end %>
+
+<script type="text/javascript">
+new Ajax.Autocompleter(
+  'configuration_time_zone', 'time_zone_palette', "/admin/time_zones"
+);
+</script>
+

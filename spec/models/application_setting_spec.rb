@@ -1,16 +1,28 @@
 require 'spec_helper'
 
-=begin
-describe ApplicationSetting do
-  before(:each) do
-    @valid_attributes = {
-      :name => "value for name",
-      :value => "value for value"
-    }
+describe 'ApplicationSetting#value_class TZInfo::Timezone' do
+  before :all do
+    ApplicationSetting.destroy_all
+    @as = ApplicationSetting.new(
+      :name => 'time_zone', :value => TZInfo::Timezone.get('America/New_York'),
+      :value_class => 'TZInfo::Timezone'
+    )
+    @as.save!
   end
-
-  it "should create a new instance given valid attributes" do
-    ApplicationSetting.create!(@valid_attributes)
+  
+  it 'should leave the value the same on the instance' do
+    @as.value.identifier.should == 'America/New_York'
+  end
+  
+  it 'should save as the identifier' do
+    ApplicationSetting.count(
+      :conditions => {:value => 'America/New_York'}
+    ).should == 1
+  end
+  
+  it 'should retrieve from the DB as the TZInfo::Timezone instance' do
+    as_prime = ApplicationSetting.find @as.id
+    as_prime.value.identifier.should == 'America/New_York'
   end
 end
-=end
+

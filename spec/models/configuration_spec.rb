@@ -10,15 +10,18 @@ describe 'Configuration creation' do
     Configuration.create!(
       :username => 'bill', :password => 'bob',
       :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1),
-      :max_giveaway_attempt_size => 10
+      :max_giveaway_attempt_size => 10,
+      :time_zone => TZInfo::Timezone.get('America/New_York')
     )
   end
   
-  it 'should save three ApplicationSettings' do
-    ApplicationSetting.count.should == 3
+  it 'should save four ApplicationSettings' do
+    ApplicationSetting.count.should == 4
     ApplicationSetting.value('username').should == 'bill'
     ApplicationSetting.value('password').should == 'bob'
     ApplicationSetting.value('max_giveaway_attempt_size').should == '10'
+    ApplicationSetting.value('time_zone').identifier.should ==
+        'America/New_York'
   end
   
   it 'should save one Conference' do
@@ -37,7 +40,8 @@ describe 'Configuration creation when the username is missing' do
   before :each do
     Configuration.create(
       :username => nil, :password => 'bob',
-      :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
+      :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1),
+      :max_giveaway_attempt_size => 10, :time_zone => 'America - New York'
     )
   end
 
@@ -58,6 +62,11 @@ describe 'Configuration find' do
     ApplicationSetting.create!(
       :name => 'max_giveaway_attempt_size', :value => 10
     )
+    ApplicationSetting.create!(
+      :name => 'time_zone',
+      :value => TZInfo::Timezone.get('America/New_York'),
+      :value_class => 'TZInfo::Timezone'
+    )
     Conference.destroy_all
     Conference.create!(
       :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
@@ -70,6 +79,7 @@ describe 'Configuration find' do
       :username => 'bill', :password => 'bob',
       :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
     )
+    configuration.time_zone.identifier.should == 'America/New_York'
   end
 end
 
@@ -80,6 +90,9 @@ describe 'Configuration updating' do
     ApplicationSetting.create! :name => 'password', :value => 'bob'
     ApplicationSetting.create!(
       :name => 'max_giveaway_attempt_size', :value => 10
+    )
+    ApplicationSetting.create!(
+      :name => 'time_zone', :value => 'America - New York'
     )
     Conference.destroy_all
     Conference.create!(
@@ -92,15 +105,18 @@ describe 'Configuration updating' do
     configuration.update_attributes(
       :username => 'billbill', :password => 'bobbob',
       :start_date => Date.new(2010,5,30), :end_date => Date.new(2010,6,1),
-      :max_giveaway_attempt_size => 12
+      :max_giveaway_attempt_size => 12,
+      :time_zone => TZInfo::Timezone.get('America/Denver')
     )
   end
   
   it 'should update the existing ApplicationSettings' do
-    ApplicationSetting.count.should == 3
+    ApplicationSetting.count.should == 4
     ApplicationSetting.value('username').should == 'billbill'
     ApplicationSetting.value('password').should == 'bobbob'
     ApplicationSetting.value('max_giveaway_attempt_size').should == '12'
+    ApplicationSetting.value('time_zone').identifier.should ==
+        'America/Denver'
   end
   
   it 'should update the Conference' do

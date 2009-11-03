@@ -47,6 +47,11 @@ module SpecMatchers
 end
 
 module SpecUtilityMethods
+  def date_form_fields( field, date )
+    { "#{ field }(1i)" => date.year.to_s, "#{ field }(2i)" => date.month.to_s,
+      "#{ field }(3i)" => date.day.to_s }
+  end
+  
   def setup_configuration_and_login
     username = ApplicationSetting.value 'username'
     unless username

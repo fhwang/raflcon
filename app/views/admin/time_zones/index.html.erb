@@ -1,0 +1,5 @@
+<ul>
+<% @time_zones.each do |time_zone| %>
+  <li><%= h(time_zone.friendly_identifier) %></li>
+<% end %>
+</ul>

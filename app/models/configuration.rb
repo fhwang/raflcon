@@ -1,36 +1,41 @@
 class Configuration < ActiveRecord::BaseWithoutTable
-  column :username, :string
-  column :password, :string
+  ASBackedColumns = {
+    :username => :string, :password => :string, :time_zone => :time_zone,
+    :max_giveaway_attempt_size => :integer
+  }
+  
   column :start_date, :date
   column :end_date, :date
-  column :max_giveaway_attempt_size, :integer
+  ASBackedColumns.each do |name, column_type|
+    column name, column_type
+  end
   
-  validates_presence_of :username, :password, :start_date, :end_date,
-                        :max_giveaway_attempt_size
+  validates_presence_of :start_date, :end_date
+  validates_presence_of *ASBackedColumns.keys
   validates_confirmation_of :password
   
   def self.first
     atts = {}
-    %w(username password max_giveaway_attempt_size).each do |as_field|
-      as = ApplicationSetting.find_by_name as_field
-      atts[as_field] = as.value if as
+    ASBackedColumns.each do |name, column_type|
+      as = ApplicationSetting.find_by_name name.to_s
+      atts[name] = as.value if as
     end
     if conference = Conference.first
       atts[:start_date] = conference.start_date
       atts[:end_date] = conference.end_date
     end
-    if atts.size == 5
-      new atts
-    end
+    new atts
   end
   
   def create_or_update
     if super
-      %w(username password max_giveaway_attempt_size).each do |as_field|
-        as = ApplicationSetting.find_by_name as_field
-        as ||= ApplicationSetting.new :name => as_field
-        as.value = self.send as_field
-        as.value = as.value.to_i if as_field == 'max_giveaway_attempt_size'
+      ASBackedColumns.each do |name, column_type|
+        name = name.to_s
+        as = ApplicationSetting.find_by_name name
+        as ||= ApplicationSetting.new :name => name
+        as.value = self.send name
+        as.value = as.value.to_i if column_type == :integer
+        as.value_class = 'TZInfo::Timezone' if column_type == :time_zone
         as.save!
       end
       conference = Conference.first || Conference.new

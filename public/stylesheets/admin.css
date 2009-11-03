@@ -20,3 +20,24 @@ h1 { padding-bottom: 0; margin-bottom: 0 }
   font-size: large;
 }
 
+.autocomplete_palette {
+  background: white;
+  border: 1px solid #2B303D;
+}
+
+.autocomplete_palette ul {
+  margin-top: 0;
+  margin-bottom: 0
+}
+
+.autocomplete_palette ul li {
+  list-style: none;
+	padding: 1px 5px;
+  margin-left: -40px
+}
+
+.autocomplete_palette ul li:hover,.autocomplete_palette ul li.selected {	 
+  background: #66aaff;
+}
+
+
