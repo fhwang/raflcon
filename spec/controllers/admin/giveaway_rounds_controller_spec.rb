@@ -72,6 +72,28 @@ describe '/admin/giveaway_rounds/edit' do
   end
 end
 
+describe '/admin/giveaway_rounds' do
+  integrate_views
+  controller_name 'admin/giveaway_rounds'
+  
+  before :all do
+    ApplicationSetting.sample(
+      :name => 'time_zone', :value_class => 'TZInfo::Timezone',
+      :value => TZInfo::Timezone.get('America/New_York')
+    )
+  end
+  
+  before :each do
+    setup_configuration_and_login
+    GiveawayRound.sample :time => Time.utc(2009,9,30,19,45)
+    get :index
+  end
+  
+  it 'should display times in the local time zone' do
+    response.should have_tag('td', :text => /Wed Sep 30 03:45 PM/)
+  end
+end
+
 describe '/admin/giveaway_rounds/new' do
   integrate_views
   controller_name 'admin/giveaway_rounds'

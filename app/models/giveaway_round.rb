@@ -16,6 +16,7 @@ class GiveawayRound < ActiveRecord::Base
   end
   
   def pretty_time
-    time.strftime "%a %b %d %I:%M %p"
+    tz = ApplicationSetting.value 'time_zone'
+    tz.utc_to_local(time).strftime("%a %b %d %I:%M %p")
   end
 end
