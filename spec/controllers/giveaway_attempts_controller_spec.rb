@@ -97,6 +97,10 @@ describe "/giveaway_attempt/create when the size parameter is blank" do
   controller_name 'giveaway_attempts'
   
   before :all do
+    ApplicationSetting.sample(
+      :name => 'time_zone', :value_class => 'TZInfo::Timezone',
+      :value => TZInfo::Timezone.get('America/New_York')
+    )
     @giveaway = Giveaway.sample
     Attendee.sample
   end

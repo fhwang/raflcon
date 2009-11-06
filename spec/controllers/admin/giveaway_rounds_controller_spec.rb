@@ -5,12 +5,15 @@ describe '/admin/giveaway_rounds/create' do
   controller_name 'admin/giveaway_rounds'
   
   before :all do
-    GiveawayRound.destroy_all "time = '2009-09-30 15:45:00'"
+    ApplicationSetting.sample(
+      :name => 'time_zone', :value_class => 'TZInfo::Timezone',
+      :value => TZInfo::Timezone.get('America/New_York')
+    )
   end
   
   before :each do
     setup_configuration_and_login
-    @orig_count = GiveawayRound.count
+    GiveawayRound.destroy_all
     post(
       :create,
       :giveaway_round => {
@@ -20,8 +23,14 @@ describe '/admin/giveaway_rounds/create' do
   end
   
   it 'should parse customized date select params' do
-    GiveawayRound.count.should == @orig_count + 1
-    GiveawayRound.last.time.should == Time.utc(2009,9,30,15,45)
+    GiveawayRound.count.should == 1
+    GiveawayRound.last.time.should_not be_nil
+  end
+  
+  it 'should save data in the DB as UTC' do
+    GiveawayRound.count(
+      :conditions => "time = '2009-09-30 19:45:00'"
+    ).should == 1
   end
 end
 

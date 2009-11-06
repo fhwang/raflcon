@@ -34,7 +34,7 @@ function parse_w3cdtf(time_str) {
     /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z/(time_str);
   return new Date(
     Date.UTC(
-      matches[1], matches[2], matches[3], matches[4], matches[5], matches[6]
+      matches[1], matches[2]-1, matches[3], matches[4], matches[5], matches[6]
     )
   );
 }

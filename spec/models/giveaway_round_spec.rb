@@ -1,13 +1,22 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe GiveawayRound do
-  before(:each) do
-    @valid_attributes = {
-      :time => Time.now
-    }
+describe 'GiveawayRound creation when time is set to UTC' do
+  before :all do
+    ApplicationSetting.sample(
+      :name => 'time_zone', :value_class => 'TZInfo::Timezone',
+      :value => TZInfo::Timezone.get('America/New_York')
+    )
   end
 
-  it "should create a new instance given valid attributes" do
-    GiveawayRound.create!(@valid_attributes)
+  before :each do
+    GiveawayRound.destroy_all
+    @giveaway_round = GiveawayRound.create! :time => Time.utc(2009,9,30,19,45)
+  end
+  
+  it 'should save the UTC values in the DB' do
+    GiveawayRound.count(
+      :conditions => "time = '2009-09-30 19:45:00'"
+    ).should == 1
   end
 end
+

@@ -13,8 +13,11 @@ class ApplicationController < ActionController::Base
   protected
   
   def login_required
-    unless controller_name == 'configuration' &&
-           %w(new create).include?(action_name)
+    config_setup_paths = %w(
+      /admin/configuration/new /admin/configuration/create 
+      /admin/time_zones
+    )
+    unless config_setup_paths.include?(request.path)
       username = ApplicationSetting.value('username')
       password = ApplicationSetting.value('password')
       if username and password
