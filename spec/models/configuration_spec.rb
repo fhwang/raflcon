@@ -1,5 +1,45 @@
 require 'spec_helper'
 
+describe 'Configuration creationg when the password is missing' do
+  before :all do
+    ApplicationSetting.destroy_all
+    Conference.destroy_all
+  end
+  
+  before :each do
+    @configuration = Configuration.new(
+      :username => 'bill', :password => '', :password_confirmation => '',
+      :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1),
+      :max_giveaway_attempt_size => 10, :time_zone => 'America - New York'
+    )
+  end
+  
+  it 'should not be valid' do
+    @configuration.should_not be_valid
+    @configuration.errors[:password].should == "can't be blank"
+  end
+end
+
+describe 'Configuration when the password_confirmation is missing' do
+  before :all do
+    ApplicationSetting.destroy_all
+    Conference.destroy_all
+  end
+  
+  before :each do
+    @configuration = Configuration.new(
+      :username => 'bill', :password => 'bill', :password_confirmation => '',
+      :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1),
+      :max_giveaway_attempt_size => 10, :time_zone => 'America - New York'
+    )
+  end
+  
+  it 'should not be valid' do
+    @configuration.should_not be_valid
+    @configuration.errors[:password].should == "doesn't match confirmation"
+  end
+end
+
 describe 'Configuration creation' do
   before :all do
     ApplicationSetting.destroy_all
@@ -162,4 +202,66 @@ describe 'Configuration updating when the username is missing' do
     Conference.first.end_date.should == Date.new(2009,6,1)
   end
 end
+
+describe 'Configuration updating when changing the max_giveaway_attempt_size, and not the password' do
+  before :all do
+    ApplicationSetting.destroy_all
+    ApplicationSetting.create! :name => 'username', :value => 'bill'
+    ApplicationSetting.create! :name => 'password', :value => 'bob'
+    ApplicationSetting.create!(
+      :name => 'max_giveaway_attempt_size', :value => 10
+    )
+    Conference.destroy_all
+    Conference.create!(
+      :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
+    )
+  end
+  
+  before :each do
+    configuration = Configuration.first
+    configuration.update_attributes(
+      :username => 'bill', :password => '', :password_confirmation => '',
+      :start_date => Date.new(2010,5,30), :end_date => Date.new(2010,6,1),
+      :max_giveaway_attempt_size => 12,
+      :time_zone => TZInfo::Timezone.get('America/New_York')
+    )
+  end
+
+  it 'should update max_giveaway_attempt_size' do
+    ApplicationSetting.value('max_giveaway_attempt_size').should == '12'
+  end
+  
+  it 'should not update password' do
+    ApplicationSetting.value('password').should == 'bob'
+  end
+end
+
+describe 'Configuration updating when the password is being changed but the confirmation is bad' do
+  before :all do
+    ApplicationSetting.destroy_all
+    ApplicationSetting.create! :name => 'username', :value => 'bill'
+    ApplicationSetting.create! :name => 'password', :value => 'bob'
+    ApplicationSetting.create!(
+      :name => 'max_giveaway_attempt_size', :value => 10
+    )
+    Conference.destroy_all
+    Conference.create!(
+      :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
+    )
+  end
+  
+  before :each do
+    configuration = Configuration.first
+    configuration.update_attributes(
+      :username => 'bill', :password => 'bizzle', :password_confirmation => 'bizle',
+      :start_date => Date.new(2010,5,30), :end_date => Date.new(2010,6,1),
+      :max_giveaway_attempt_size => 12
+    )
+  end
+
+  it 'should not update the password' do
+    ApplicationSetting.value('password').should == 'bob'
+  end
+end
+
 

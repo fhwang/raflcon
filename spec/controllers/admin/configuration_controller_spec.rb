@@ -49,6 +49,12 @@ describe '/admin/configuration/edit' do
       'America - New York'
     )
   end
+  
+  it 'should not prefill the password' do
+    response.should have_tag(
+      'input:not([value])[name=?]', 'configuration[password]'
+    )
+  end
 end
 
 describe '/admin/configuration/new when there are no ApplicationSettings' do
@@ -65,5 +71,44 @@ describe '/admin/configuration/new when there are no ApplicationSettings' do
   
   it 'should not get in an endless redirect loop' do
     response.should be_success
+  end
+end
+
+describe '/admin/configuration/update when not updating the password' do
+  integrate_views
+  controller_name 'admin/configuration'
+  
+  before :all do
+    ApplicationSetting.sample(
+      :name => 'time_zone', :value => TZInfo::Timezone.get('America/New_York'),
+      :value_class => 'TZInfo::Timezone'
+    )
+  end
+  
+  before :each do
+    setup_configuration_and_login
+    post(
+      :create,
+      :configuration => {
+        :username => 'bill', :password => '',
+        :password_confirmation => '',
+        :max_giveaway_attempt_size => 10, :time_zone => 'America - Los Angeles'
+      }.merge(date_form_fields('start_date', Date.new(2009,5,30))).merge(
+        date_form_fields('end_date', Date.new(2009,6,1))
+      )
+    )
+  end
+  
+  it 'should redirect to you to /admin' do
+    response.should redirect_to('/admin')
+  end
+  
+  it 'should update the time zone' do
+    ApplicationSetting.value('time_zone').identifier.should ==
+        'America/Los_Angeles'
+  end
+  
+  it 'should not update the password' do
+    ApplicationSetting.value('password').should == 'bob'
   end
 end

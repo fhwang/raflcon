@@ -11,7 +11,8 @@ class Configuration < ActiveRecord::BaseWithoutTable
   end
   
   validates_presence_of :start_date, :end_date
-  validates_presence_of *ASBackedColumns.keys
+  validates_presence_of *(ASBackedColumns.keys-[:password])
+  validates_presence_of :password, :if => :new?
   validates_confirmation_of :password
   
   def self.first
@@ -30,18 +31,24 @@ class Configuration < ActiveRecord::BaseWithoutTable
   def create_or_update
     if super
       ASBackedColumns.each do |name, column_type|
-        name = name.to_s
-        as = ApplicationSetting.find_by_name name
-        as ||= ApplicationSetting.new :name => name
-        as.value = self.send name
-        as.value = as.value.to_i if column_type == :integer
-        as.value_class = 'TZInfo::Timezone' if column_type == :time_zone
-        as.save!
+        unless name == :password && self.password.blank?
+          name = name.to_s
+          as = ApplicationSetting.find_by_name name
+          as ||= ApplicationSetting.new :name => name
+          as.value = self.send name
+          as.value = as.value.to_i if column_type == :integer
+          as.value_class = 'TZInfo::Timezone' if column_type == :time_zone
+          as.save!
+        end
       end
       conference = Conference.first || Conference.new
       conference.update_attributes(
         :start_date => start_date, :end_date => end_date
       )
     end
+  end
+  
+  def new?
+    ApplicationSetting.count == 0 and Conference.count == 0
   end
 end

@@ -16,6 +16,7 @@ class Admin::ConfigurationController < ApplicationController
   
   def edit
     @configuration = Configuration.first
+    @configuration.password = nil
   end
   
   def update
