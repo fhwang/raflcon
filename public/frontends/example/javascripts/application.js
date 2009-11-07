@@ -27,6 +27,17 @@ function init_control_panel() {
   );
 }
 
+function new_giveaway_attempt(giveaway_attempt) {
+  $('giveaway_form').hide();
+  winners = "<ul>";
+  for (i = 0; i < giveaway_attempt.attendees.length; i++) {
+    attendee = giveaway_attempt.attendees[i];
+    winners = winners +  "<li>"+ attendee.name + "</li>";
+  }
+  winners = winners + "</ul>";
+  $('newest_giveaway_attempt').innerHTML = winners;
+}
+
 // Only works for UTC, which is fine because that's what we're returning by
 // default
 function parse_w3cdtf(time_str) {
