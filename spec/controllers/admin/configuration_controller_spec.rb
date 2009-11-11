@@ -31,13 +31,6 @@ describe '/admin/configuration/edit' do
   integrate_views
   controller_name 'admin/configuration'
   
-  before :all do
-    ApplicationSetting.sample(
-      :name => 'time_zone', :value => TZInfo::Timezone.get('America/New_York'),
-      :value_class => 'TZInfo::Timezone'
-    )
-  end
-  
   before :each do
     setup_configuration_and_login
     get :edit
@@ -77,13 +70,6 @@ end
 describe '/admin/configuration/update when not updating the password' do
   integrate_views
   controller_name 'admin/configuration'
-  
-  before :all do
-    ApplicationSetting.sample(
-      :name => 'time_zone', :value => TZInfo::Timezone.get('America/New_York'),
-      :value_class => 'TZInfo::Timezone'
-    )
-  end
   
   before :each do
     setup_configuration_and_login

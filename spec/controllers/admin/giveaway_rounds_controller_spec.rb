@@ -4,13 +4,6 @@ describe '/admin/giveaway_rounds/create' do
   integrate_views
   controller_name 'admin/giveaway_rounds'
   
-  before :all do
-    ApplicationSetting.sample(
-      :name => 'time_zone', :value_class => 'TZInfo::Timezone',
-      :value => TZInfo::Timezone.get('America/New_York')
-    )
-  end
-  
   before :each do
     setup_configuration_and_login
     GiveawayRound.destroy_all
@@ -75,13 +68,6 @@ end
 describe '/admin/giveaway_rounds' do
   integrate_views
   controller_name 'admin/giveaway_rounds'
-  
-  before :all do
-    ApplicationSetting.sample(
-      :name => 'time_zone', :value_class => 'TZInfo::Timezone',
-      :value => TZInfo::Timezone.get('America/New_York')
-    )
-  end
   
   before :each do
     setup_configuration_and_login
