@@ -12,7 +12,7 @@ class ApplicationSetting < ActiveRecord::Base
   end
   
   def after_find
-    if value_class == 'TZInfo::Timezone'
+    if attributes['value_class'] && value_class == 'TZInfo::Timezone'
       begin
         self.value = TZInfo::Timezone.get self.value
       rescue TZInfo::InvalidTimezoneIdentifier
