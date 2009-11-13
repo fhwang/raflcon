@@ -1,6 +1,8 @@
 <html>
   <head>
-    <%= javascript_include_tag("prototype", "effects", "controls") %>
+    <%= javascript_include_tag(
+      "prototype", "effects", "controls", 'dragdrop'
+    ) %>
     <%= if self.respond_to?(:admin_assistant_includes) 
       admin_assistant_includes
     end %>
@@ -25,6 +27,24 @@
             c_name.gsub(/_/, ' ').capitalize, :controller => "admin/#{c_name}"
           ) %>
         <br />
+          <% if c_name == 'giveaways' && ApplicationSetting.value('time_zone') %>
+            <%
+            giveaway_rounds_with_giveaways = GiveawayRound.all.reject { |gr|
+              gr.giveaways.empty?
+            }.sort_by &:time
+            %>
+            <% unless giveaway_rounds_with_giveaways.empty? %>
+              <ul>
+                <% giveaway_rounds_with_giveaways.each do |gr| %>
+                <li><%= link_to_unless_current(
+                  gr.pretty_time,
+                  :controller => 'admin/giveaways', :action => 'index',
+                  :search => {:giveaway_round_id => gr.id}
+                ) %></li>
+                <% end %>
+              </ul>
+            <% end %>
+          <% end %>
         <% end %>
         <%= link_to_unless_current(
           'Configuration',

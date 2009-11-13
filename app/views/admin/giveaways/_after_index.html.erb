@@ -1,0 +1,22 @@
+<% if params[:search] and params[:search][:giveaway_round_id] %>
+<%= content_tag :div, content_tag(:div, nil, :id => "status"), :id => "status-container" %>
+
+<% javascript_tag do %>
+  function clear_sr() {
+    $('status').update();
+    $('status').show();
+  }
+<% end %>
+
+<%= sortable_element(
+  "giveaways_index_tbody", 
+  :update => 'status',  
+  :tag => 'tr',
+  :format => "/^giveaway_([0-9]+)$/",
+  :complete => [
+    visual_effect(:highlight, "giveaways_index_tbody"), 
+    visual_effect(:fade, "status", {:delay => 1.0, :afterFinish => "clear_sr"})
+  ], 
+  :url => {:action => 'order'}
+) %>
+<% end %>

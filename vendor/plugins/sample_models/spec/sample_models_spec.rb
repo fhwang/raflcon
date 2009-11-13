@@ -67,6 +67,14 @@ silence_stream(STDOUT) do
     create_table 'videos', :force => true do |video|
       video.integer 'show_id', 'episode_id', 'network_id'
     end
+    
+    create_table 'video_favorites', :force => true do |video_favorite|
+      video_favorite.integer 'user_id', 'video_id'
+    end
+    
+    create_table 'video_takedown_events', :force => true do |vte|
+      vte.integer 'video_id'
+    end
   end
 end
 
@@ -151,6 +159,21 @@ class Video < ActiveRecord::Base
   end
 end
 
+class VideoFavorite < ActiveRecord::Base
+  belongs_to :video
+  belongs_to :user
+  
+  validates_presence_of :user_id, :video_id
+  validates_uniqueness_of :video_id, :scope => :user_id
+end
+
+class VideoTakedownEvent < ActiveRecord::Base
+  belongs_to :video
+  
+  validates_presence_of   :video_id
+  validates_uniqueness_of :video_id
+end
+
 # SampleModel configuration
 SampleModels.configure BadSample do |b|
   b.default.title ''
@@ -191,7 +214,7 @@ SampleModels.configure User do |u|
 end
 
 SampleModels.configure Video do |video|
-  video.before_save { |v| v.show ||= v.episode.show if v.episode }
+  video.before_save { |v| v.show = v.episode.show if v.episode }
 end
 
 # Actual specs start here ...
@@ -295,6 +318,10 @@ describe 'Model with a belongs_to association of the same class' do
   it 'should be nil by default' do
     @blog_post.merged_into.should be_nil
   end
+  
+  it 'should not be itself by default' do
+    @blog_post.merged_into.should_not == @blog_post
+  end
 end
 
 describe 'Model with a triangular belongs-to association' do
@@ -381,9 +408,39 @@ describe 'Model with a unique value' do
     user.homepage.should == 'http://www.test.com/'
   end
   
+  it 'should be able to modify other fields on the previously saved record if you specify the unique field' do
+    user = User.sample
+    user_prime = User.sample :login => user.login, :irc_nick => 'test_irc_nick'
+    user_prime.id.should == user.id
+    user_prime.irc_nick.should == 'test_irc_nick'
+    user.reload
+    user.irc_nick.should == 'test_irc_nick'
+  end
+  
   it 'should know to create a new sample if any other fields are passed in' do
     user = User.sample :password => 'password'
     user.login.should_not == 'Test login'
+  end
+end
+
+describe 'Model with a unique associated attribute' do
+  it 'should create a random unique associated record each time you call create_sample' do
+    video_ids = {}
+    10.times do
+      created = VideoTakedownEvent.create_sample
+      video_ids[created.video_id].should be_nil
+      video_ids[created.video_id] = true
+    end
+  end
+end
+
+describe 'Model with a unique scoped associated attribute' do
+  it 'should create a new instance when you create_sample with the same scope variable as before' do
+    video_fav1 = VideoFavorite.sample
+    video_fav2 = VideoFavorite.create_sample :user => video_fav1.user
+    video_fav1.should_not == video_fav2
+    video_fav1.user.should == video_fav2.user
+    video_fav1.video.should_not == video_fav2.video
   end
 end
 

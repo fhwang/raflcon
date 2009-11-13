@@ -5,25 +5,23 @@ module SampleModels
     end
     
     def create!
-      @instance = begin
-        instance = model_class.new
-        @attributes.set_instance_attributes instance
-        if @sampler.before_save
-          @sampler.before_save.call instance
-        end
-        instance.save!
-        instance
-      rescue ActiveRecord::RecordInvalid
-        $!.to_s =~ /Validation failed: (.*)/
-        raise "#{model_class.name} validation failed: #{$1}"
+      @instance = model_class.new
+      @attributes.set_instance_attributes @instance
+      if @sampler.before_save
+        @sampler.before_save.call @instance
       end
+      save_with_better_validation_errors! @instance
       update_associations
       @instance
     end
     
     def find_or_create
       @attributes = Attributes.new model_class, @force_create, @custom_attrs
-      Finder.new(@sampler, @attributes).find || create!
+      if @force_create
+        create!
+      else
+        Finder.new(@sampler, @attributes).find || create!
+      end
     end
     
     def instance
@@ -35,13 +33,28 @@ module SampleModels
       @sampler.model_class
     end
     
+    def save_with_better_validation_errors!(instance)
+      begin
+        instance.save!
+        instance
+      rescue ActiveRecord::RecordInvalid
+        $!.to_s =~ /Validation failed: (.*)/
+        raise "#{instance.class.name} validation failed: #{$1}"
+      end
+    end
+    
     def update_associations
       needs_save = false
       each_updateable_association do |name, proxied_association|
         needs_save = true
         @instance.send("#{name}=", proxied_association.instance.id)
       end
-      @instance.save! if needs_save
+      if needs_save
+        if @sampler.before_save
+          @sampler.before_save.call instance
+        end
+        save_with_better_validation_errors! @instance
+      end
     end
     
     class Finder
@@ -102,7 +115,9 @@ module SampleModels
   class DefaultCreation < Creation
     def each_updateable_association
       @attributes.proxied_associations.each do |name, proxied_association|
-        yield name, proxied_association
+        unless proxied_association.assoc_class == model_class
+          yield name, proxied_association
+        end
       end
     end
     
@@ -126,7 +141,7 @@ module SampleModels
         @sampler.belongs_to_associations.each do |assoc|
           check_assoc_on_default_instance(ds, assoc)
         end
-        ds.save! if @recreated_associations
+        save_with_better_validation_errors!(ds) if @recreated_associations
       else
         set_default
       end
