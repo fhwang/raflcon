@@ -9,6 +9,12 @@ class Giveaway < ActiveRecord::Base
   validates_presence_of   :prize_category_id
   validates_uniqueness_of :prize_category_id, :scope => :giveaway_round_id
   
+  def after_save
+    if giveaway_round_id_changed? or active_changed?
+      GiveawayRound.update_active_giveaways
+    end
+  end
+  
   def suggested_attempt_size
     setting = ApplicationSetting.value('max_giveaway_attempt_size').to_i
     count < setting ? count : setting

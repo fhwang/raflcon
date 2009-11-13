@@ -19,6 +19,18 @@ function choose_giveaway(giveaway_id) {
   $('giveaway_' + giveaway_id).show();
 };
 
+function close_giveaway(giveaway_id) {
+  new Ajax.Request(
+    '/giveaways/update/' + giveaway_id,
+    {
+      asynchronous:true,
+      evalScripts:true,
+      parameters:{"giveaway[active]":0}
+    }
+  );
+  $('giveaway_' + giveaway_id).hide();
+};
+
 function init_control_panel() {
   new EJS(
     {url: "/frontends/example/ejs/control_panel.ejs"}

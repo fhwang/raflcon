@@ -79,7 +79,7 @@ describe 'Giveaway#suggested_attempt_size when the giveaway size is smaller' do
   end
 end
 
-describe 'Giveaway#next_attempt_size when the application setting is smaller' do
+describe 'Giveaway#suggested_attempt_size when the application setting is smaller' do
   before :all do
     ApplicationSetting.sample(
       :name => 'time_zone', :value_class => 'TZInfo::Timezone',
@@ -97,3 +97,85 @@ describe 'Giveaway#next_attempt_size when the application setting is smaller' do
   end
 end
 
+describe 'Giveaway creation when active' do
+  before :all do
+    setup_configuration
+    @giveaway_round = GiveawayRound.sample
+    @orig_active_giveaways = @giveaway_round.active_giveaways
+  end
+  
+  before :each do
+    Giveaway.create_sample :active => true, :giveaway_round => @giveaway_round
+  end
+  
+  it 'should increment GiveawayRound#active_giveaways' do
+    @giveaway_round.reload
+    @giveaway_round.active_giveaways.should == @orig_active_giveaways + 1
+  end
+end
+
+describe 'Giveaway updating from active to inactive' do
+  before :all do
+    setup_configuration
+    @giveaway = Giveaway.sample :active => true
+    @giveaway_round = @giveaway.giveaway_round
+    @orig_active_giveaways = @giveaway_round.active_giveaways
+  end
+  
+  before :each do
+    @giveaway.active = false
+    @giveaway.save!
+  end
+  
+  it 'should decrement GiveawayRound#active_giveaways' do
+    @giveaway_round.reload
+    @giveaway_round.active_giveaways.should == @orig_active_giveaways - 1
+  end
+end
+
+describe 'Giveaway updating from inactive to active' do
+  before :all do
+    setup_configuration
+    @giveaway = Giveaway.sample :active => false
+    @giveaway_round = @giveaway.giveaway_round
+    @orig_active_giveaways = @giveaway_round.active_giveaways
+  end
+  
+  before :each do
+    @giveaway.active = true
+    @giveaway.save!
+  end
+  
+  it 'should increment GiveawayRound#active_giveaways' do
+    @giveaway_round.reload
+    @giveaway_round.active_giveaways.should == @orig_active_giveaways + 1
+  end
+end
+
+describe 'Giveaway updating from one GiveawayRound to another' do
+  before :all do
+    setup_configuration
+    @giveaway = Giveaway.sample :active => true
+    @old_giveaway_round = @giveaway.giveaway_round.target
+    @orig_old_active_giveaways = @old_giveaway_round.active_giveaways
+    @new_giveaway_round = GiveawayRound.create_sample
+    @orig_new_active_giveaways = @new_giveaway_round.active_giveaways
+  end
+  
+  before :each do
+    @giveaway.giveaway_round = @new_giveaway_round
+    @giveaway.save!
+  end
+  
+  it 'should increment GiveawayRound#active_giveaways on the one that gained the Giveaway' do
+    @new_giveaway_round.reload
+    @new_giveaway_round.active_giveaways.should ==
+        @orig_new_active_giveaways + 1
+  end
+  
+  it 'should decrement GiveawayRound#active_giveaways on the one that lost the Giveaway' do
+    @old_giveaway_round.reload
+    @old_giveaway_round.active_giveaways.should ==
+        @orig_old_active_giveaways - 1
+  end
+end

@@ -52,7 +52,14 @@ module SpecUtilityMethods
       "#{ field }(3i)" => date.day.to_s }
   end
   
-  def setup_configuration_and_login
+  def login
+    username = ApplicationSetting.value 'username'
+    password = ApplicationSetting.value 'password'
+    @request.env['HTTP_AUTHORIZATION'] =
+      'Basic ' + Base64::encode64("#{username}:#{password}")
+  end
+  
+  def setup_configuration
     ApplicationSetting.sample(
       :name => 'time_zone', :value_class => 'TZInfo::Timezone',
       :value => TZInfo::Timezone.get('America/New_York')
@@ -72,8 +79,11 @@ module SpecUtilityMethods
         :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
       )
     end
-    @request.env['HTTP_AUTHORIZATION'] =
-      'Basic ' + Base64::encode64("#{username}:#{password}")
+  end
+  
+  def setup_configuration_and_login
+    setup_configuration
+    login
   end
 end
 

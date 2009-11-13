@@ -8,4 +8,11 @@ class GiveawaysController < ApplicationController
       )
     )
   end
+  
+  def update
+    giveaway = Giveaway.find params[:id]
+    giveaway.attributes = params[:giveaway]
+    giveaway.save
+    render :text => ''
+  end
 end

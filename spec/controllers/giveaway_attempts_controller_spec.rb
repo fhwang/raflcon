@@ -97,6 +97,7 @@ describe "/giveaway_attempt/create when the size parameter is blank" do
   controller_name 'giveaway_attempts'
   
   before :all do
+    setup_configuration
     @giveaway = Giveaway.sample
     Attendee.sample
   end
