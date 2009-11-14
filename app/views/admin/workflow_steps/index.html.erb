@@ -1,0 +1,16 @@
+<% @workflow_steps.each do |workflow_step| %>
+  <div class="workflow_step <%= workflow_step.open? ? 'open' : 'closed' %>" id="workflow_step_<%= workflow_step.position %>">
+    <p class="name"><%= workflow_step.position %>. <%= h(workflow_step.name) %></p>
+    <p class="description"><%= h(workflow_step.description) %></p>
+    <%= link_to(">>", workflow_step.link) %>
+    <% if workflow_step.open? %>
+    <%= link_to_remote(
+      "I'm done",
+      :url => {
+        :action => 'update', :id => workflow_step.position,
+        :workflow_step => {:open => false}
+      }
+    ) %>
+    <% end %>
+  </div>
+<% end %>

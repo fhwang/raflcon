@@ -52,4 +52,28 @@ form p.description {
   background: #66aaff;
 }
 
+.workflow_step {
+  border: 2px solid #666;
+  margin-bottom: 10px;
+  padding: 10px;
+}
 
+.workflow_step.closed {
+  background-color: #999
+}
+
+.workflow_step.open {
+  background-color: #9f9
+}
+
+.workflow_step .description {
+  margin: 0;
+  padding: 0
+}
+
+.workflow_step .name {
+  font-size: large;
+  font-weight: bold;
+  margin: 0;
+  padding: 0
+}

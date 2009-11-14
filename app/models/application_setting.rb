@@ -1,7 +1,5 @@
 class ApplicationSetting < ActiveRecord::Base
   validates_uniqueness_of :name
-  validates_inclusion_of :name,
-                         :in => Configuration::ASBackedColumns.keys.map(&:to_s)
   
   serialize :value
   
