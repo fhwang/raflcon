@@ -4,7 +4,7 @@ class GiveawayRound < ActiveRecord::Base
   validates_uniqueness_of :time
   
   def self.update_active_giveaways
-    connection.execute "update giveaway_rounds set active_giveaways = (select count(*) from giveaways where giveaways.giveaway_round_id = giveaway_rounds.id and giveaways.active = true)"
+    connection.execute "update giveaway_rounds set active_giveaways = (select count(*) from giveaways where giveaways.giveaway_round_id = giveaway_rounds.id and giveaways.active = 't')"
   end
   
   def after_save

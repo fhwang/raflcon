@@ -8,7 +8,7 @@ class GiveawayAttemptsController < ApplicationController
       @giveaway_attempt.save
       @giveaway_attempt.attendees = Attendee.find(
         :all,
-        :limit => size, :order => 'rand()',
+        :limit => size, :order => 'random()',
         :conditions => "giveaway_attempt_id is null"
       )
       render :json => @giveaway_attempt.to_json(:include => :attendees)
