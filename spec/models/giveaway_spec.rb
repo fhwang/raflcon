@@ -167,13 +167,10 @@ describe 'Giveaway updating from one GiveawayRound to another' do
     @giveaway.save!
   end
   
-  it 'should increment GiveawayRound#active_giveaways on the one that gained the Giveaway' do
+  it 'should increment and decrement GiveawayRound#active_giveaways on the correct rounds' do
     @new_giveaway_round.reload
     @new_giveaway_round.active_giveaways.should ==
         @orig_new_active_giveaways + 1
-  end
-  
-  it 'should decrement GiveawayRound#active_giveaways on the one that lost the Giveaway' do
     @old_giveaway_round.reload
     @old_giveaway_round.active_giveaways.should ==
         @orig_old_active_giveaways - 1

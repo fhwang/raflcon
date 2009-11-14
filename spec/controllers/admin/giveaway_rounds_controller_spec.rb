@@ -32,6 +32,7 @@ describe '/admin/giveaway_rounds/edit' do
   controller_name 'admin/giveaway_rounds'
   
   before :all do
+    setup_configuration
     conference = Conference.first || Conference.new
     conference.update_attributes!(
       :start_date => Date.new(2009,9,29), :end_date => Date.new(2009,10,1)
@@ -40,7 +41,7 @@ describe '/admin/giveaway_rounds/edit' do
   end
   
   before :each do
-    setup_configuration_and_login
+    login
     get :edit, :id => @giveaway_round.id
   end
   
