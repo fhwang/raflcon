@@ -6,6 +6,12 @@ fieldset {
 }
 h1 { padding-bottom: 0; margin-bottom: 0 }
 
+form p.description {
+  font-size: small;
+  padding: 0 0 3px 0;
+  margin: 0;
+}
+
 #content {
   float:left; position: relative; width: 900px
 }

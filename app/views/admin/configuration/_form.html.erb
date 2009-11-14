@@ -5,11 +5,13 @@
 
   <fieldset>
   <legend>Username</legend>
+  <p class="description">This is used for the site's HTTP Basic authentication.</p>
   <%= f.text_field 'username' %>
   </fieldset>
 
   <fieldset>
   <legend>Password</legend>
+  <p class="description">This is also used for the site's HTTP Basic authentication.</p>
   <%= f.password_field 'password' %>
   </fieldset>
 
@@ -20,21 +22,25 @@
   
   <fieldset>
   <legend>Start date</legend>
+  <p class="description">What day does your conference start?</p>
   <%= f.date_select 'start_date' %>
   </fieldset>
   
   <fieldset>
   <legend>End date</legend>
+  <p class="description">What day does your conference end?</p>
   <%= f.date_select 'end_date' %>
   </fieldset>
   
   <fieldset>
   <legend>Maximum giveaway attempt size</legend>
+  <p class="description">What's the maximum number of people you're going to give prizes to in one batch? This is usually constrained somewhat by your UI; 10 is a good size to start with.</p>
   <%= f.text_field 'max_giveaway_attempt_size' %>
   </fieldset>
   
   <fieldset>
   <legend>Time zone</legend>
+  <p class="description">What time zone is your conference in? raflcon needs this to line up your giveaway times with the database and with your browser.</p>
   <%= text_field_tag 'configuration[time_zone]', (@configuration.time_zone.friendly_identifier if @configuration.time_zone) %>
   </fieldset>
   
