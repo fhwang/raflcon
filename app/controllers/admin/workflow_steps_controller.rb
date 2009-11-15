@@ -7,6 +7,13 @@ class Admin::WorkflowStepsController < ApplicationController
     @workflow_steps = WorkflowStep.all.sort_by &:position
   end
   
+  def update
+    @workflow_step = WorkflowStep.find_by_position params[:id]
+    @workflow_step.attributes = params[:workflow_step]
+    @workflow_step.save
+    render :partial => 'show', :locals => {:workflow_step => @workflow_step}
+  end
+  
   protected
   def first_create_conference
     redirect_to "/admin/conferences/new" unless Conference.first

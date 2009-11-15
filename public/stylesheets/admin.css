@@ -53,9 +53,10 @@ form p.description {
 }
 
 .workflow_step {
+  position: relative;
   border: 2px solid #666;
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 7px;
 }
 
 .workflow_step.closed {
@@ -66,14 +67,20 @@ form p.description {
   background-color: #9f9
 }
 
-.workflow_step .description {
-  margin: 0;
-  padding: 0
+.workflow_step .open_or_close {
+  position: absolute; 
+  font-size: small;
+  top: 7px;
+  right: 10px;
 }
 
-.workflow_step .name {
-  font-size: large;
-  font-weight: bold;
+.workflow_step h2 {
   margin: 0;
-  padding: 0
+  padding: 0;
+}
+
+.workflow_step.closed h2 {
+  font-size: medium;
+  margin: 0;
+  padding: 0;
 }

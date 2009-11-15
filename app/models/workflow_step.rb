@@ -18,13 +18,6 @@ class WorkflowStep < ActiveRecord::BaseWithoutTable
   ]
   
   def self.all
-    closed_steps = ApplicationSetting.value 'closed_workflow_steps'
-    unless closed_steps
-      ApplicationSetting.create!(
-        :name => 'closed_workflow_steps', :value => [1]
-      )
-      closed_steps = [1]
-    end
     steps = []
     StepAttrs.each_with_index { |step_attr, i|
       attrs = step_attr.clone
@@ -33,5 +26,37 @@ class WorkflowStep < ActiveRecord::BaseWithoutTable
       steps << new(attrs)
     }
     steps
+  end
+  
+  def self.closed_steps
+    closed_steps = ApplicationSetting.value 'closed_workflow_steps'
+    unless closed_steps
+      closed_steps = [1]
+      ApplicationSetting.create!(
+        :name => 'closed_workflow_steps', :value => closed_steps
+      )
+    end
+    closed_steps.clone
+  end
+  
+  def self.closed_steps=(cs)
+    as = ApplicationSetting.find_by_name 'closed_workflow_steps'
+    as ||= ApplicationSetting.new :name => 'closed_workflow_steps'
+    as.value = cs
+    as.save!
+  end
+  
+  def self.find_by_position(position)
+    all.detect { |workflow_step| workflow_step.position == position.to_i }
+  end
+  
+  def save
+    closed = self.class.closed_steps
+    if open? && closed.include?(position)
+      closed.delete position
+    elsif !open? && !closed.include?(position)
+      closed << position
+    end
+    self.class.closed_steps = closed
   end
 end
