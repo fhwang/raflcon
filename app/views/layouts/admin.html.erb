@@ -12,6 +12,10 @@
   <h1>raflcon!</h1>
     <div id="nav">
       <% if conference = Conference.first %>
+        <%= link_to_unless_current(
+          'Dashboard', :controller => 'admin/workflow_steps'
+        ) %>
+        <br />
         <%
         admin_controllers_dir = "#{RAILS_ROOT}/app/controllers/admin/"
         controller_names = Dir.entries(admin_controllers_dir).select { |entry|
