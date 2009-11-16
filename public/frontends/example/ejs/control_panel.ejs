@@ -6,7 +6,7 @@
     if (giveaway_round.active_giveaways > 0) {
       var gr_time = parse_w3cdtf(giveaway_round.time);
     %>
-    <option value="<%= giveaway_round.id %>"><%=
+    <option value="<%= giveaway_round.id %>" id="giveaway_round_option_<%= giveaway_round.id %>"><%=
       gr_time.strftime("%a %b %d %I:%M %p")
     %></option>
     <% } %>

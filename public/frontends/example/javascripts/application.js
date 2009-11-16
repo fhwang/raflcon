@@ -25,7 +25,15 @@ function close_giveaway(giveaway_id) {
     {
       asynchronous:true,
       evalScripts:true,
-      parameters:{"giveaway[active]":0}
+      parameters:{"giveaway[active]":0},
+      onSuccess: function(transport) {
+        var giveaway = transport.responseText.evalJSON().giveaway;
+        var giveaway_round = giveaway.giveaway_round;
+        if (giveaway_round.active_giveaways == 0) {
+          $("giveaway_round_option_" + giveaway_round.id).hide();
+          $('giveaway_round_select').options[0].selected = true;
+        }
+      }
     }
   );
   $('giveaway_' + giveaway_id).hide();

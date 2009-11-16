@@ -13,6 +13,6 @@ class GiveawaysController < ApplicationController
     giveaway = Giveaway.find params[:id]
     giveaway.attributes = params[:giveaway]
     giveaway.save
-    render :text => ''
+    render :json => giveaway.to_json(:include => :giveaway_round)
   end
 end
