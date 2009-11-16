@@ -19,8 +19,10 @@
         <%
         admin_controllers_dir = "#{RAILS_ROOT}/app/controllers/admin/"
         controller_names = Dir.entries(admin_controllers_dir).select { |entry|
-          entry =~ /_controller.rb$/ && entry !~ /dashboard/ &&
-          entry !~ /configuration/ && entry !~ /time_zones/
+          entry =~ /_controller.rb$/ &&
+          %w(dashboard configuration time_zones workflow_steps).all? { |skip|
+            entry !~ /#{skip}/
+          }
         }.map { |entry|
           entry =~ /(.*)_controller.rb$/
           $1
@@ -59,7 +61,7 @@
     <div id="content">
     <% logger.info controller_name %>
     <% unless controller_name == 'workflow_steps' %>
-      <p>
+      <p id="back_to_dashboard">
       <%= link_to(
         '&laquo; Back to dashboard', :controller => 'admin/workflow_steps'
       ) %>

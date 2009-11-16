@@ -13,11 +13,14 @@ form p.description {
   margin: 0;
 }
 
+#back_to_dashboard {
+  margin: 0 0 10px 0
+}
 #content {
   float:left; position: relative; width: 900px
 }
 #nav {
-  width: 200px; float:left; font-size: small; padding-top: 25px
+  width: 200px; float:left; font-size: small; padding-top: 5px
 }
 #nav ul {
   margin: 0px
