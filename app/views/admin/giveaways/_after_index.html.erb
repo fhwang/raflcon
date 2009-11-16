@@ -19,4 +19,31 @@
   ], 
   :url => {:action => 'order'}
 ) %>
+<% else %>
+  <div class="admin_assistant index" id="unfilled_prize_categories">
+  <% unfilled_prize_categories = PrizeCategory.unfilled.sort_by &:name %>
+  <% if unfilled_prize_categories.empty? %>
+    <h3>All prize categories have been fully allocated.</h3>
+  <% else %>
+    <h3>Prize categories that need more giveaways</h3>
+    <table cellspacing="0" cellpadding="0">
+      <thead>
+        <tr><th>Name</th><th>Unallocated count</th><th></th></tr>
+      </thead>
+      <tbody>
+    <% unfilled_prize_categories.each do |prize_category| %>
+      <tr class="<%= cycle('odd', 'even') %>">
+        <td><%= h(prize_category.name) %></td>
+        <td><%= prize_category.unfilled_count %></td>
+        <td><%= link_to(
+          'Add giveaway',
+          :action => 'new',
+          :giveaway => {:prize_category_id => prize_category.id}
+        ) %></td>
+      </tr>
+    <% end %>
+      </tbody>
+    </table>
+  <% end %>
+  </div>
 <% end %>

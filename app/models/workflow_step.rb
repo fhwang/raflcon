@@ -16,9 +16,14 @@ class WorkflowStep < ActiveRecord::BaseWithoutTable
       :link => "/admin/prize_categories"
     },
     {
-      :name => 'Entry giveaway rounds',
+      :name => 'Enter giveaway rounds',
       :description => "A giveaway round is a specific date and time when you'll be giving away one or more prizes, usually scheduled between talks. For example, 'Thursday at 10:55 a.m.' might be a giveaway round.",
       :link => '/admin/giveaway_rounds'
+    },
+    {
+      :name => 'Enter giveaways',
+      :description => "A giveaway is a grouping of one prize category in one giveaway round, for a set amount. For example: '25 books on Thursday at 10:55 a.m.' would be a giveaway. The total of all your giveaways should equal all the amounts on your prize categories.",
+      :link => '/admin/giveaways'
     }
   ]
   

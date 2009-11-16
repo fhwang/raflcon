@@ -5,6 +5,7 @@ fieldset {
   border: none; padding: 0; margin: 0 0 10px 0;
 }
 h1 { padding-bottom: 0; margin-bottom: 0 }
+h3 { font-size: medium }
 
 form p.description {
   font-size: small;
@@ -30,6 +31,10 @@ form p.description {
 #new_configuration .fieldWithErrors input { border: 1px solid red }
 #new_configuration input, #new_configuration option, #new_configuration select {
   font-size: large;
+}
+#unfilled_prize_categories { margin-top: 40px }
+#unfilled_prize_categories h3 {
+  margin-bottom: 5px
 }
 
 .autocomplete_palette {
