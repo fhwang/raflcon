@@ -52,6 +52,30 @@ form p.description {
   background: #66aaff;
 }
 
+.admin_assistant.index .aa_header {
+  border: 2px solid #666;
+  background-color: #9f9;
+  margin-bottom: 10px;
+  padding: 7px;
+}
+
+.admin_assistant.form .aa_header {
+  border: 2px solid #666;
+  background-color: #9f9;
+  margin-bottom: 10px;
+  padding: 7px;
+}
+
+.admin_assistant .aa_header h2 {
+  padding: 0;
+  margin: 0;
+}
+
+.admin_assistant .aa_header .actions {
+  top: 7px;
+  right: 10px;
+}
+
 .workflow_step {
   position: relative;
   border: 2px solid #666;

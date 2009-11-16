@@ -1,7 +1,10 @@
 class Admin::GiveawayRoundsController < ApplicationController
   layout 'admin'
 
-  admin_assistant_for GiveawayRound
+  admin_assistant_for GiveawayRound do |a|
+    a.index.columns :time
+    a.form.columns :time
+  end
   
   protected
   

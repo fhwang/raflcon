@@ -57,6 +57,14 @@
       <% end %>
     </div>
     <div id="content">
+    <% logger.info controller_name %>
+    <% unless controller_name == 'workflow_steps' %>
+      <p>
+      <%= link_to(
+        '&laquo; Back to dashboard', :controller => 'admin/workflow_steps'
+      ) %>
+      </p>
+    <% end %>
     <%= @content_for_layout %>
     </div>
   </body>
