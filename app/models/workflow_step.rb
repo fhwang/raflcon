@@ -24,6 +24,11 @@ class WorkflowStep < ActiveRecord::BaseWithoutTable
       :name => 'Enter giveaways',
       :description => "A giveaway is a grouping of one prize category in one giveaway round, for a set amount. For example: '25 books on Thursday at 10:55 a.m.' would be a giveaway. The total of all your giveaways should equal all the amounts on your prize categories.",
       :link => '/admin/giveaways'
+    },
+    {
+      :name => 'Import your attendee list',
+      :description => "You can import your final attendee list all at once.",
+      :link => '/admin/attendees'
     }
   ]
   

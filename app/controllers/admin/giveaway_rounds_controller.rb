@@ -1,9 +1,12 @@
 class Admin::GiveawayRoundsController < ApplicationController
   layout 'admin'
 
-  admin_assistant_for GiveawayRound do |a|
-    a.index.columns :time
-    a.form.columns :time
+  admin_assistant_for GiveawayRound do |aa|
+    aa.actions << :destroy
+    
+    aa.index.columns :time
+    
+    aa.form.columns :time
   end
   
   protected

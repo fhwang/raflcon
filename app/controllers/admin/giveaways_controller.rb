@@ -2,6 +2,8 @@ class Admin::GiveawaysController < ApplicationController
   layout 'admin'
 
   admin_assistant_for Giveaway do |aa|
+    aa.actions << :destroy
+    
     aa.index do |index|
       index.columns :prize_category, :giveaway_round, :count, :active
       index.sort_by 'giveaway_round_id, position'
