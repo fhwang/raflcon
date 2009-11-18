@@ -2,7 +2,8 @@
   <h3>Import attendees</h3>
   <% form_tag(:action => 'import') do %>
     Paste your list of attendee names below, one person per line.
-    <br /><%= text_area_tag 'import', nil, :rows => 20, :cols => 40 %>
+    <br /><%= text_area_tag 'import[names]', nil, :rows => 20, :cols => 40 %>
+    <br /><%= check_box_tag 'import[clear_others]' %> Delete any attendees not in this list
     <br /><%= submit_tag %>
   <% end %>
 </div>

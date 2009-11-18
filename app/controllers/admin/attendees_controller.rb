@@ -3,12 +3,15 @@ class Admin::AttendeesController < ApplicationController
 
   admin_assistant_for Attendee do |aa|
     aa.actions << :destroy
+    
+    aa.form.columns :name
   end
   
   def import
-    params[:import].each_line do |line|
+    Attendee.destroy_all if params[:import][:clear_others] == '1'
+    params[:import][:names].each_line do |line|
       name = line.chomp.strip
-      Attendee.create! :name => name
+      Attendee.find_or_create_by_name name
     end
     redirect_to :action => 'index'
   end
