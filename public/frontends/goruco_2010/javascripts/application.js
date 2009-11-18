@@ -3,7 +3,7 @@ function choose_giveaway_round() {
   if (giveaway_round_id) {
     var url = '/giveaway_rounds/show/' + giveaway_round_id + '.json';
     new EJS(
-      {url: "/frontends/example/ejs/giveaway_round.ejs"}
+      {url: "/frontends/goruco_2010/ejs/giveaway_round.ejs"}
     ).update('giveaway_round', url);
   }
 };
@@ -14,7 +14,7 @@ function choose_giveaway(giveaway_id) {
     elt.hide();
   });
   new EJS(
-    {url: "/frontends/example/ejs/giveaway.ejs"}
+    {url: "/frontends/goruco_2010/ejs/giveaway.ejs"}
   ).update('giveaway_' + giveaway_id, url);
   $('giveaway_' + giveaway_id).show();
 };
@@ -41,7 +41,7 @@ function close_giveaway(giveaway_id) {
 
 function init_control_panel() {
   new EJS(
-    {url: "/frontends/example/ejs/control_panel.ejs"}
+    {url: "/frontends/goruco_2010/ejs/control_panel.ejs"}
   ).update(
     'control_panel', "/giveaway_rounds"
   );

@@ -27,8 +27,18 @@ class WorkflowStep < ActiveRecord::BaseWithoutTable
     },
     {
       :name => 'Import your attendee list',
-      :description => "You can import your final attendee list all at once.",
+      :description => "You can import your final attendee list all at once. If your attendee list isn't finalized yet, you can also import a temporary list just to work with, and then re-import at the last minute when you have the final list.",
       :link => '/admin/attendees'
+    },
+    {
+      :name => "Write your front-end",
+      :description => "For the live giveaway experience, raflcon exposes a RESTful API suitable for a custom Ajax front-end. Check out the example provided, and try writing your own. You'll likely find yourself doing lots of test giveaways; that's okay. There's a reset function you can use to roll back test changes before you start using your front-end for real.",
+      :link => "/"
+    },
+    {
+      :name => 'Before the conference starts, reset your raflcon instance',
+      :description => "This undoes any changes you may have made while testing your front-end.",
+      :link => "/admin/reset"
     }
   ]
   
