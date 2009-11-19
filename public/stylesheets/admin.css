@@ -84,6 +84,12 @@ form p.description {
   right: 10px;
 }
 
+form.reset input {
+  font-size: x-large;
+  background-color: red;
+  color: white;
+}
+
 .workflow_step {
   position: relative;
   border: 2px solid #666;

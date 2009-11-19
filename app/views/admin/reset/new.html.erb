@@ -1,0 +1,22 @@
+<p>If you've been writing your own front-end, you've probably been testing it by creating many giveaway attempts, and then closing giveaways as well. You can undo these changes to the database by hitting the "Reset" button below.</p>
+
+<p>
+These are the exact steps involved in resetting:
+<ul>
+<li>Deletes all giveaway attempts</li>
+<li>Updates all giveaways to be active</li>
+</ul>
+</p>
+
+<p>
+Resetting does not affect:
+<ul>
+  <li>Your attendees, giveaway rounds, or prize categories</li>
+  <li>Your giveaways (except for making them active).</li>
+  <li>Configuration info such as start date, end date, time zone, etc.</li>
+</ul>
+</p>
+
+<% form_tag({:action => 'create'}, {:class => 'reset'}) do %>
+  <%= submit_tag 'Reset' %>
+<% end %>

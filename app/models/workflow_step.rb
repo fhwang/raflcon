@@ -38,7 +38,7 @@ class WorkflowStep < ActiveRecord::BaseWithoutTable
     {
       :name => 'Before the conference starts, reset your raflcon instance',
       :description => "This undoes any changes you may have made while testing your front-end.",
-      :link => "/admin/reset"
+      :link => "/admin/reset/new"
     }
   ]
   
