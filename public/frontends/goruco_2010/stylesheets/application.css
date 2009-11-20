@@ -1,6 +1,33 @@
-#newest_giveaway_attempt {
+body {
+  font-family: "Courier New", "Monaco", sans-serif
 }
 
 #control_panel {
-  float: right
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 250px;
+  background: #white;
+  border: 2px solid #ddf;
+  padding: 5px;
+}
+
+#control_panel #giveaway_round_select {
+  font-size: large;
+  width: 250px;
+}
+
+#control_panel #giveaway_round {
+  margin-top: 10px;
+}
+
+#control_panel #giveaway_round li {
+  list-style: none;
+}
+
+#control_panel #giveaway_round li a img {
+  border-style: none;
+}
+
+#newest_giveaway_attempt {
 }

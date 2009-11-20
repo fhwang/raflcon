@@ -1,5 +1,4 @@
-<select onChange="choose_giveaway_round()" id="giveaway_round_select">
-  <option></option>
+<select onChange="load_giveaway_round()" id="giveaway_round_select">
   <% for (i = 0; i < this.length; i++) { %>
     <%
     giveaway_round = this[i].giveaway_round;
