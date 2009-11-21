@@ -2,7 +2,8 @@
   <input type="hidden" name="giveaway_attempt[giveaway_id]" value="<%=
     giveaway.id
   %>">
-  <input name="giveaway_attempt[size]" value="<%= giveaway.suggested_attempt_size %>">
-  <input type="submit">
+  <input name="giveaway_attempt[size]" value="<%= giveaway.suggested_attempt_size %>" class="text">
+  <input type="submit" class="submit" value="RAFL">
+  <img src="/frontends/goruco_2010/images/close.png" onclick="close_giveaway(<%= giveaway.id %>)" class="close"/>
 </form>
 

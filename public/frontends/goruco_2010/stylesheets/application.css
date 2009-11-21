@@ -7,9 +7,9 @@ body {
   top: 10px;
   right: 10px;
   width: 250px;
-  background: #white;
-  border: 2px solid #ddf;
-  padding: 5px;
+  background: #ddf;
+  border: 2px solid #bbf;
+  padding: 5px 5px 0 5px;
 }
 
 #control_panel #giveaway_round_select {
@@ -23,10 +23,34 @@ body {
 
 #control_panel #giveaway_round li {
   list-style: none;
+  position: relative;
+  margin-bottom: 10px;
+  border-bottom: 2px dotted #bbf;
 }
 
 #control_panel #giveaway_round li a img {
   border-style: none;
+}
+
+#control_panel #giveaway_round #giveaway_form {
+  margin: 3px 0px;
+  position: relative;
+}
+
+#control_panel #giveaway_round #giveaway_form input.text {
+  width: 25px
+}
+
+#control_panel #giveaway_round #giveaway_form .close {
+  position: absolute;
+  top: 3px;
+  right: 0px;
+}
+
+#control_panel #giveaway_round li .actions {
+  position: absolute;
+  top: 3px;
+  right: 0px;
 }
 
 #newest_giveaway_attempt {
