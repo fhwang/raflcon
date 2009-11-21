@@ -24,14 +24,42 @@ function close_all_giveaway_forms(giveaway_id) {
   $$('.arrow_down').each(function(elt) { elt.hide(); });
 };
 
+function init_control_panel() {
+  new EJS(
+    {url: "/frontends/goruco_2010/ejs/control_panel.ejs"}
+  ).update(
+    'control_panel', "/giveaway_rounds"
+  );
+  setTimeout("try_load_giveaway_round()", 25);
+}
+
+function load_giveaway_round() {
+  var giveaway_round_id = $('giveaway_round_select').value;
+  if (giveaway_round_id) {
+    var url = '/giveaway_rounds/show/' + giveaway_round_id + '.json';
+    new EJS(
+      {url: "/frontends/goruco_2010/ejs/giveaway_round.ejs"}
+    ).update('giveaway_round', url);
+  }
+};
+
+function new_giveaway_attempt(giveaway_attempt) {
+  $$('.giveaway_form').each(function(elt) { elt.disable();});
+  setTimeout(
+    "$$('.giveaway_form').each(function(elt) { elt.enable();});", 2000
+  );
+  winners = "<ul>";
+  for (i = 0; i < giveaway_attempt.attendees.length; i++) {
+    attendee = giveaway_attempt.attendees[i];
+    winners = winners +  "<li>"+ attendee.name + "</li>";
+  }
+  winners = winners + "</ul>";
+  $('newest_giveaway_attempt').innerHTML = winners;
+}
+
 function open_giveaway_form(giveaway_id) {
   close_all_giveaway_forms();
   var url = '/giveaways/show/' + giveaway_id + '.json';
-  /*
-  $$('.giveaway').each(function(elt) {
-    elt.hide();
-  });
-  */
   new EJS(
     {url: "/frontends/goruco_2010/ejs/giveaway.ejs"}
   ).update('giveaway_form_' + giveaway_id, url);
@@ -43,38 +71,6 @@ function open_giveaway_form(giveaway_id) {
     elt.show();
   });
 };
-
-function init_control_panel() {
-  new EJS(
-    {url: "/frontends/goruco_2010/ejs/control_panel.ejs"}
-  ).update(
-    'control_panel', "/giveaway_rounds"
-  );
-  setTimeout("try_load_giveaway_round()", 25);
-}
-
-function load_giveaway_round() {
-//alert('choose_giveaway_round 0');
-  var giveaway_round_id = $('giveaway_round_select').value;
-//alert(giveaway_round_id);
-  if (giveaway_round_id) {
-    var url = '/giveaway_rounds/show/' + giveaway_round_id + '.json';
-    new EJS(
-      {url: "/frontends/goruco_2010/ejs/giveaway_round.ejs"}
-    ).update('giveaway_round', url);
-  }
-};
-
-function new_giveaway_attempt(giveaway_attempt) {
-  $('giveaway_form').hide();
-  winners = "<ul>";
-  for (i = 0; i < giveaway_attempt.attendees.length; i++) {
-    attendee = giveaway_attempt.attendees[i];
-    winners = winners +  "<li>"+ attendee.name + "</li>";
-  }
-  winners = winners + "</ul>";
-  $('newest_giveaway_attempt').innerHTML = winners;
-}
 
 // Only works for UTC, which is fine because that's what we're returning by
 // default

@@ -16,42 +16,49 @@
           'Dashboard', :controller => 'admin/workflow_steps'
         ) %>
         <br />
-        <%
-        admin_controllers_dir = "#{RAILS_ROOT}/app/controllers/admin/"
-        controller_names = Dir.entries(admin_controllers_dir).select { |entry|
-          entry =~ /_controller.rb$/ &&
-          %w(dashboard configuration time_zones workflow_steps).all? { |skip|
-            entry !~ /#{skip}/
-          }
-        }.map { |entry|
-          entry =~ /(.*)_controller.rb$/
-          $1
-        }.sort
-        %>
-        <% controller_names.each_with_index do |c_name, i| %>
-          <%= link_to_unless_current(
-            c_name.gsub(/_/, ' ').capitalize, :controller => "admin/#{c_name}"
-          ) %>
+        
+        <%= link_to_unless_current(
+          'Prize categories', :controller => 'admin/prize_categories'
+        ) %>
         <br />
-          <% if c_name == 'giveaways' && ApplicationSetting.value('time_zone') %>
-            <%
-            giveaway_rounds_with_giveaways = GiveawayRound.all.reject { |gr|
-              gr.giveaways.empty?
-            }.sort_by &:time
-            %>
-            <% unless giveaway_rounds_with_giveaways.empty? %>
-              <ul>
-                <% giveaway_rounds_with_giveaways.each do |gr| %>
-                <li><%= link_to_unless_current(
-                  gr.pretty_time,
-                  :controller => 'admin/giveaways', :action => 'index',
-                  :search => {:giveaway_round_id => gr.id}
-                ) %></li>
-                <% end %>
-              </ul>
-            <% end %>
+        
+        <%= link_to_unless_current(
+          'Giveaway rounds', :controller => 'admin/giveaway_rounds'
+        ) %>
+        <br />
+        
+        <%= link_to_unless_current(
+          'Giveaways', :controller => 'admin/giveaways'
+        ) %>
+        <% if ApplicationSetting.value('time_zone') %>
+          <%
+          giveaway_rounds_with_giveaways = GiveawayRound.all.reject { |gr|
+            gr.giveaways.empty?
+          }.sort_by &:time
+          %>
+          <% unless giveaway_rounds_with_giveaways.empty? %>
+            <ul>
+              <% giveaway_rounds_with_giveaways.each do |gr| %>
+              <li><%= link_to_unless_current(
+                gr.pretty_time,
+                :controller => 'admin/giveaways', :action => 'index',
+                :search => {:giveaway_round_id => gr.id}
+              ) %></li>
+              <% end %>
+            </ul>
           <% end %>
         <% end %>
+        
+        <%= link_to_unless_current(
+          'Attendees', :controller => 'admin/attendees'
+        ) %>
+        <br />
+
+        <%= link_to_unless_current(
+          'Reset', :controller => 'admin/reset/new'
+        ) %>
+        <br />
+
         <%= link_to_unless_current(
           'Configuration',
           :controller => 'admin/configuration', :action => 'edit'

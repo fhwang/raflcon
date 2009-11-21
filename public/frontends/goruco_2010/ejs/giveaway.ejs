@@ -1,4 +1,4 @@
-<form action="/giveaway_attempts/create" method="post" onsubmit="new Ajax.Request('/giveaway_attempts/create',{asynchronous:true, evalScripts:true, parameters:Form.serialize(this), onComplete:function(request) {new_giveaway_attempt(request.responseText.evalJSON().giveaway_attempt);} }); return false;" class="giveaway_attempt" id="giveaway_form">
+<form action="/giveaway_attempts/create" method="post" onsubmit="new Ajax.Request('/giveaway_attempts/create',{asynchronous:true, evalScripts:true, parameters:Form.serialize(this), onComplete:function(request) {new_giveaway_attempt(request.responseText.evalJSON().giveaway_attempt);} }); return false;" class="giveaway_form">
   <input type="hidden" name="giveaway_attempt[giveaway_id]" value="<%=
     giveaway.id
   %>">

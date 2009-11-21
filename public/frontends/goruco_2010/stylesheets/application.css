@@ -32,16 +32,16 @@ body {
   border-style: none;
 }
 
-#control_panel #giveaway_round #giveaway_form {
+#control_panel #giveaway_round .giveaway_form {
   margin: 3px 0px;
   position: relative;
 }
 
-#control_panel #giveaway_round #giveaway_form input.text {
+#control_panel #giveaway_round .giveaway_form input.text {
   width: 25px
 }
 
-#control_panel #giveaway_round #giveaway_form .close {
+#control_panel #giveaway_round .giveaway_form .close {
   position: absolute;
   top: 3px;
   right: 0px;
