@@ -1,11 +1,11 @@
 <% for (i = 0; i < giveaway_round.giveaways.length; i++) { %>
   <% giveaway = giveaway_round.giveaways[i] %>
   <% if (giveaway.active) { %>
-  <li id="giveaway_<%= giveaway.id %>">
+  <li id="giveaway_<%= giveaway.id %>" onclick="toggle_giveaway_form(<%= giveaway.id %>)">
     <%= giveaway.prize_category.name %> (<%= giveaway.count %>)
     <span class="actions">
-    <img src="/frontends/goruco_2010/images/arrow-right.png" onclick="open_giveaway_form(<%= giveaway.id %>)" class="arrow_right">
-    <img src="/frontends/goruco_2010/images/arrow-down.png" onclick="close_all_giveaway_forms()"  class="arrow_down" style="display:none">
+    <img src="/frontends/goruco_2010/images/arrow-right.png" class="arrow_right">
+    <img src="/frontends/goruco_2010/images/arrow-down.png" class="arrow_down" style="display:none">
     </span>
     <div class="giveaway" id="giveaway_form_<%= giveaway.id %>" style="display:none">
   </li>

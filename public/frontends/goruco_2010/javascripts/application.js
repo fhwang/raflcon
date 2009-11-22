@@ -84,6 +84,16 @@ function parse_w3cdtf(time_str) {
   );
 }
 
+function toggle_giveaway_form(giveaway_id) {
+  if ($$('#giveaway_' + giveaway_id + " .arrow_down").any(function(elt) {
+    return elt.visible()
+  })) {
+    close_all_giveaway_forms();
+  } else {
+    open_giveaway_form(giveaway_id);
+  }
+}
+
 function try_load_giveaway_round() {
   if ($('giveaway_round_select')) {
     load_giveaway_round();
