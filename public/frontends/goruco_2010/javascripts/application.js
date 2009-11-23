@@ -8,41 +8,50 @@ function close_giveaway(giveaway_id) {
       onSuccess: function(transport) {
         var giveaway = transport.responseText.evalJSON().giveaway;
         var giveaway_round = giveaway.giveaway_round;
-        if (giveaway_round.active_giveaways == 0) {
-          $("giveaway_round_option_" + giveaway_round.id).hide();
+        if (giveaway_round.active_giveaways > 0) {
+          $('giveaway_option_' + giveaway.id).remove();
+          $('giveaway_select').options[0].selected = true;
+          load_giveaway_form();
+        } else {
+          $("giveaway_round_option_" + giveaway_round.id).remove();
           $('giveaway_round_select').options[0].selected = true;
+          load_giveaway_round();
         }
       }
     }
   );
-  $('giveaway_' + giveaway_id).hide();
 };
 
-function close_all_giveaway_forms(giveaway_id) {
-  $$('.giveaway').each(function(elt) { elt.hide(); });
-  $$('.arrow_right').each(function(elt) { elt.show(); });
-  $$('.arrow_down').each(function(elt) { elt.hide(); });
-};
-
-function init_control_panel() {
+function init() {
   new EJS(
-    {url: "/frontends/goruco_2010/ejs/control_panel.ejs"}
+    {url: "/frontends/goruco_2010/ejs/giveaway_rounds.ejs"}
   ).update(
-    'control_panel', "/giveaway_rounds"
+    'giveaway_rounds', "/giveaway_rounds"
   );
   setTimeout("try_load_giveaway_round()", 25);
+}
+
+function load_giveaway_form() {
+  var giveaway_id = $('giveaway_select').value;
+  new EJS(
+    {url: "/frontends/goruco_2010/ejs/giveaway.ejs"}
+  ).update('giveaway_form', '/giveaways/show/' + giveaway_id + '.json');
 }
 
 function load_giveaway_round() {
   var giveaway_round_id = $('giveaway_round_select').value;
   if (giveaway_round_id) {
+    $('giveaway_round').innerHTML = '';
+    $('giveaway_form').innerHTML = '';
     var url = '/giveaway_rounds/show/' + giveaway_round_id + '.json';
     new EJS(
       {url: "/frontends/goruco_2010/ejs/giveaway_round.ejs"}
     ).update('giveaway_round', url);
   }
+  setTimeout("try_load_giveaway_form()", 25);
 };
 
+/*
 function new_giveaway_attempt(giveaway_attempt) {
   $$('.giveaway_form').each(function(elt) { elt.disable();});
   setTimeout(
@@ -56,21 +65,7 @@ function new_giveaway_attempt(giveaway_attempt) {
   winners = winners + "</ul>";
   $('newest_giveaway_attempt').innerHTML = winners;
 }
-
-function open_giveaway_form(giveaway_id) {
-  close_all_giveaway_forms();
-  var url = '/giveaways/show/' + giveaway_id + '.json';
-  new EJS(
-    {url: "/frontends/goruco_2010/ejs/giveaway.ejs"}
-  ).update('giveaway_form_' + giveaway_id, url);
-  $('giveaway_form_' + giveaway_id).show();
-  $$('#giveaway_' + giveaway_id + " .arrow_right").each(function(elt) {
-    elt.hide();
-  });
-  $$('#giveaway_' + giveaway_id + " .arrow_down").each(function(elt) {
-    elt.show();
-  });
-};
+*/
 
 // Only works for UTC, which is fine because that's what we're returning by
 // default
@@ -84,13 +79,12 @@ function parse_w3cdtf(time_str) {
   );
 }
 
-function toggle_giveaway_form(giveaway_id) {
-  if ($$('#giveaway_' + giveaway_id + " .arrow_down").any(function(elt) {
-    return elt.visible()
-  })) {
-    close_all_giveaway_forms();
+
+function try_load_giveaway_form() {
+  if ($('giveaway_select')) {
+    load_giveaway_form();
   } else {
-    open_giveaway_form(giveaway_id);
+    setTimeout("try_load_giveaway_form()", 25);
   }
 }
 

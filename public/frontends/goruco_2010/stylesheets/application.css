@@ -3,6 +3,66 @@ body {
 }
 
 #control_panel {
+  background: #ddf;
+  border: 2px solid #bbf;
+  padding: 5px;
+  float: left;
+  margin: 40px 0 0 175px;
+  height: 25px;
+}
+
+#giveaway_form {
+  float: left;
+  margin-left: 25px;
+  font-size: large;
+}
+
+#giveaway_form input.submit {
+  font-size: large;
+}
+
+#giveaway_form input.text {
+  width: 25px;
+}
+
+#giveaway_round {
+  float: left;
+  height: 99px;
+  margin-left: 25px
+}
+
+#giveaway_round #giveaway_select {
+  font-size: large;
+  padding-right: 25px;
+}
+
+#giveaway_rounds {
+  float: left;
+}
+
+#giveaway_rounds #giveaway_round_select {
+  font-size: large;
+  padding-right: 25px;
+}
+
+.logo {
+  float: left;
+}
+
+#newest_giveaway_attempt {
+}
+
+
+
+
+
+
+
+
+
+/*
+#giveaway_rounds {
+  /*
   position: absolute;
   top: 10px;
   right: 10px;
@@ -10,48 +70,47 @@ body {
   background: #ddf;
   border: 2px solid #bbf;
   padding: 5px 5px 0 5px;
+  * /
+  float: left;
+  margin-left: 25px;
+  height: 99px;
+  padding-top: 50px;
 }
-
-#control_panel #giveaway_round_select {
-  font-size: large;
-  width: 250px;
-}
-
-#control_panel #giveaway_round {
+*/
+/*
+#giveaway_rounds #giveaway_round {
   margin-top: 10px;
 }
 
-#control_panel #giveaway_round li {
+#giveaway_rounds #giveaway_round li {
   list-style: none;
   position: relative;
   margin-bottom: 10px;
   border-bottom: 2px dotted #bbf;
 }
 
-#control_panel #giveaway_round li a img {
+#giveaway_rounds #giveaway_round li a img {
   border-style: none;
 }
 
-#control_panel #giveaway_round .giveaway_form {
+#giveaway_rounds #giveaway_round .giveaway_form {
   margin: 3px 0px;
   position: relative;
 }
 
-#control_panel #giveaway_round .giveaway_form input.text {
+#giveaway_rounds #giveaway_round .giveaway_form input.text {
   width: 25px
 }
 
-#control_panel #giveaway_round .giveaway_form .close {
+#giveaway_rounds #giveaway_round .giveaway_form .close {
   position: absolute;
   top: 3px;
   right: 0px;
 }
 
-#control_panel #giveaway_round li .actions {
+#giveaway_rounds #giveaway_round li .actions {
   position: absolute;
   top: 3px;
   right: 0px;
 }
-
-#newest_giveaway_attempt {
-}
+*/
