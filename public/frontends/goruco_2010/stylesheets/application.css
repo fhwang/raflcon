@@ -1,5 +1,5 @@
 body {
-  font-family: "Courier New", "Monaco", sans-serif
+  font-family: "Courier New", "Monaco", sans-serif;
 }
 
 #control_panel {
@@ -50,6 +50,24 @@ body {
 }
 
 #newest_giveaway_attempt {
+  position: absolute;
+  left: 10px;
+  top: 125px;
+  width: 98%;
+}
+
+#newest_giveaway_attempt .slot {
+  width: 48%;
+  float: left;
+  /*
+  background: #ddd;
+  border: 1px solid #ccc;
+  */
+  font-size: xx-large;
+  font-weight: bold;
+  padding: 25px 5px;
+  margin: 5px 5px;
+  text-align: center;
 }
 
 
@@ -114,3 +132,5 @@ body {
   right: 0px;
 }
 */
+
+
