@@ -109,7 +109,7 @@ GiveawayAttemptView.Slot.Frame.prototype = {
     if (this.winner) {
       new Effect.Highlight(
         "slot_" + this.slot_index,
-        {startcolor: '#ffffdd', restorecolor: 'true'}
+        {startcolor: '#ffff99', restorecolor: 'true'}
       )
     }
   },
