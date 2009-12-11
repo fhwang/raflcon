@@ -1,34 +1,10 @@
 class ApplicationSetting < ActiveRecord::Base
-  validates_uniqueness_of :name
-  
-  serialize :value
-  
-  def self.value(name)
-    if as = find_by_name(name)
-      as.value
+  acts_as_durable_hash do |dh|
+    dh.serialize(TZInfo::Timezone) do |value|
+      value.identifier
     end
-  end
-  
-  def after_find
-    if attributes['value_class'] && value_class == 'TZInfo::Timezone'
-      begin
-        self.value = TZInfo::Timezone.get self.value
-      rescue TZInfo::InvalidTimezoneIdentifier
-        self.value = nil
-      end
-    end
-  end
-  
-  def after_save
-    if value_class == 'TZInfo::Timezone'
-      self.value = @orig_value
-    end
-  end
-  
-  def before_save
-    if value_class == 'TZInfo::Timezone'
-      @orig_value = self.value
-      self.value = self.value.identifier
+    dh.deserialize(TZInfo::Timezone) do |data|
+      TZInfo::Timezone.get data
     end
   end
 end

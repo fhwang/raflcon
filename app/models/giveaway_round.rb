@@ -11,7 +11,7 @@ class GiveawayRound < ActiveRecord::Base
     date_time = DateTime.new(
       time.year, time.month, time.day, time.hour, time.min
     )
-    time_zone = ApplicationSetting.value 'time_zone'
+    time_zone = ApplicationSetting['time_zone']
     self.time = time_zone.period_for_utc(date_time).to_local(date_time)
   end
   
@@ -20,7 +20,7 @@ class GiveawayRound < ActiveRecord::Base
   end
   
   def pretty_time
-    tz = ApplicationSetting.value 'time_zone'
+    tz = ApplicationSetting['time_zone']
     tz.utc_to_local(time).strftime("%a %b %d %I:%M %p")
   end
 end

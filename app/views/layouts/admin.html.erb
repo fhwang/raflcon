@@ -30,7 +30,7 @@
         <%= link_to_unless_current(
           'Giveaways', :controller => 'admin/giveaways'
         ) %>
-        <% if ApplicationSetting.value('time_zone') %>
+        <% if ApplicationSetting[:time_zone] %>
           <%
           giveaway_rounds_with_giveaways = GiveawayRound.all.reject { |gr|
             gr.giveaways.empty?

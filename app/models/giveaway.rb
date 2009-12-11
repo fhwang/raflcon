@@ -16,7 +16,7 @@ class Giveaway < ActiveRecord::Base
   end
   
   def suggested_attempt_size
-    setting = ApplicationSetting.value('max_giveaway_attempt_size').to_i
+    setting = ApplicationSetting['max_giveaway_attempt_size']
     count < setting ? count : setting
   end
   

@@ -53,27 +53,16 @@ module SpecUtilityMethods
   end
   
   def login
-    username = ApplicationSetting.value 'username'
-    password = ApplicationSetting.value 'password'
+    username = ApplicationSetting['username']
+    password = ApplicationSetting['password']
     @request.env['HTTP_AUTHORIZATION'] =
       'Basic ' + Base64::encode64("#{username}:#{password}")
   end
   
   def setup_configuration
-    ApplicationSetting.sample(
-      :name => 'time_zone', :value_class => 'TZInfo::Timezone',
-      :value => TZInfo::Timezone.get('America/New_York')
-    )
-    username = ApplicationSetting.value 'username'
-    unless username
-      username = 'bill'
-      ApplicationSetting.create! :name => 'username', :value => username
-    end
-    password = ApplicationSetting.value 'password'
-    unless password
-      password = 'bob'
-      ApplicationSetting.create! :name => 'password', :value => password
-    end
+    ApplicationSetting['time_zone'] = TZInfo::Timezone.get('America/New_York')
+    ApplicationSetting['username'] ||= 'bill'
+    ApplicationSetting['password'] ||= 'bob'
     unless Conference.first
       Conference.create!(
         :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)

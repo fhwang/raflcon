@@ -22,8 +22,7 @@ describe '/admin/configuration/create' do
   end
   
   it 'should be able to map time zones from friendly identifier to identifier' do
-    ApplicationSetting.value('time_zone').identifier.should ==
-        'America/New_York'
+    ApplicationSetting[:time_zone].identifier.should == 'America/New_York'
   end
 end
 
@@ -90,11 +89,10 @@ describe '/admin/configuration/update when not updating the password' do
   end
   
   it 'should update the time zone' do
-    ApplicationSetting.value('time_zone').identifier.should ==
-        'America/Los_Angeles'
+    ApplicationSetting[:time_zone].identifier.should == 'America/Los_Angeles'
   end
   
   it 'should not update the password' do
-    ApplicationSetting.value('password').should == 'bob'
+    ApplicationSetting[:password].should == 'bob'
   end
 end

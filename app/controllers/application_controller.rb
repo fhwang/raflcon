@@ -14,8 +14,8 @@ class ApplicationController < ActionController::Base
       /admin/time_zones
     )
     unless config_setup_paths.include?(request.path)
-      username = ApplicationSetting.value('username')
-      password = ApplicationSetting.value('password')
+      username = ApplicationSetting['username']
+      password = ApplicationSetting['password']
       if username and password
         authenticate_or_request_with_http_basic do |u, p|
           username == u && password == p

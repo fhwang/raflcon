@@ -2,10 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe 'GiveawayRound creation when time is set to UTC' do
   before :all do
-    ApplicationSetting.sample(
-      :name => 'time_zone', :value_class => 'TZInfo::Timezone',
-      :value => TZInfo::Timezone.get('America/New_York')
-    )
+    ApplicationSetting[:time_zone] = TZInfo::Timezone.get('America/New_York')
   end
 
   before :each do

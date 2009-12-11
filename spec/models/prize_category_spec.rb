@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe 'PrizeCategory.unfilled when there are no giveaways' do
   before :all do
+    setup_configuration
     Giveaway.destroy_all
     @books = PrizeCategory.sample :name => 'Books', :count => 150
     @messenger_bags = PrizeCategory.sample(
@@ -22,6 +23,7 @@ end
 
 describe 'PrizeCategory.unfilled when there are some giveaways' do
   before :all do
+    setup_configuration
     Giveaway.destroy_all
     @books = PrizeCategory.sample :name => 'Books', :count => 150
     @messenger_bags = PrizeCategory.sample(
@@ -44,6 +46,7 @@ end
 
 describe 'PrizeCategory.unfilled when there everything has been filled' do
   before :all do
+    setup_configuration
     Giveaway.destroy_all
     @books = PrizeCategory.sample :name => 'Books', :count => 150
     @messenger_bags = PrizeCategory.sample(

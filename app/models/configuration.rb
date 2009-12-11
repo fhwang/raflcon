@@ -18,8 +18,7 @@ class Configuration < ActiveRecord::BaseWithoutTable
   def self.first
     atts = {}
     ASBackedColumns.each do |name, column_type|
-      as = ApplicationSetting.find_by_name name.to_s
-      atts[name] = as.value if as
+      atts[name] = ApplicationSetting[name]
     end
     if conference = Conference.first
       atts[:start_date] = conference.start_date
@@ -32,13 +31,7 @@ class Configuration < ActiveRecord::BaseWithoutTable
     if super
       ASBackedColumns.each do |name, column_type|
         unless name == :password && self.password.blank?
-          name = name.to_s
-          as = ApplicationSetting.find_by_name name
-          as ||= ApplicationSetting.new :name => name
-          as.value = self.send name
-          as.value = as.value.to_i if column_type == :integer
-          as.value_class = 'TZInfo::Timezone' if column_type == :time_zone
-          as.save!
+          ApplicationSetting[name] = self.send name
         end
       end
       conference = Conference.first || Conference.new

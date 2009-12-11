@@ -57,10 +57,10 @@ describe 'Configuration creation' do
   
   it 'should save four ApplicationSettings' do
     ApplicationSetting.count.should == 4
-    ApplicationSetting.value('username').should == 'bill'
-    ApplicationSetting.value('password').should == 'bob'
-    ApplicationSetting.value('max_giveaway_attempt_size').should == '10'
-    ApplicationSetting.value('time_zone').identifier.should ==
+    ApplicationSetting['username'].should == 'bill'
+    ApplicationSetting['password'].should == 'bob'
+    ApplicationSetting['max_giveaway_attempt_size'].should == 10
+    ApplicationSetting['time_zone'].identifier.should ==
         'America/New_York'
   end
   
@@ -97,16 +97,10 @@ end
 describe 'Configuration find' do
   before :all do
     ApplicationSetting.destroy_all
-    ApplicationSetting.create! :name => 'username', :value => 'bill'
-    ApplicationSetting.create! :name => 'password', :value => 'bob'
-    ApplicationSetting.create!(
-      :name => 'max_giveaway_attempt_size', :value => 10
-    )
-    ApplicationSetting.create!(
-      :name => 'time_zone',
-      :value => TZInfo::Timezone.get('America/New_York'),
-      :value_class => 'TZInfo::Timezone'
-    )
+    ApplicationSetting['username'] = 'bill'
+    ApplicationSetting['password'] = 'bob'
+    ApplicationSetting['max_giveaway_attempt_size'] = 10
+    ApplicationSetting['time_zone'] = TZInfo::Timezone.get('America/New_York')
     Conference.destroy_all
     Conference.create!(
       :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
@@ -126,14 +120,10 @@ end
 describe 'Configuration updating' do
   before :all do
     ApplicationSetting.destroy_all
-    ApplicationSetting.create! :name => 'username', :value => 'bill'
-    ApplicationSetting.create! :name => 'password', :value => 'bob'
-    ApplicationSetting.create!(
-      :name => 'max_giveaway_attempt_size', :value => 10
-    )
-    ApplicationSetting.create!(
-      :name => 'time_zone', :value => 'America - New York'
-    )
+    ApplicationSetting['username'] = 'bill'
+    ApplicationSetting['password'] = 'bob'
+    ApplicationSetting['max_giveaway_attempt_size'] = 10
+    ApplicationSetting['time_zone'] = TZInfo::Timezone.get('America/New_York')
     Conference.destroy_all
     Conference.create!(
       :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
@@ -152,10 +142,10 @@ describe 'Configuration updating' do
   
   it 'should update the existing ApplicationSettings' do
     ApplicationSetting.count.should == 4
-    ApplicationSetting.value('username').should == 'billbill'
-    ApplicationSetting.value('password').should == 'bobbob'
-    ApplicationSetting.value('max_giveaway_attempt_size').should == '12'
-    ApplicationSetting.value('time_zone').identifier.should ==
+    ApplicationSetting['username'].should == 'billbill'
+    ApplicationSetting['password'].should == 'bobbob'
+    ApplicationSetting['max_giveaway_attempt_size'].should == 12
+    ApplicationSetting['time_zone'].identifier.should ==
         'America/Denver'
   end
   
@@ -169,11 +159,9 @@ end
 describe 'Configuration updating when the username is missing' do
   before :all do
     ApplicationSetting.destroy_all
-    ApplicationSetting.create! :name => 'username', :value => 'bill'
-    ApplicationSetting.create! :name => 'password', :value => 'bob'
-    ApplicationSetting.create!(
-      :name => 'max_giveaway_attempt_size', :value => 10
-    )
+    ApplicationSetting['username'] = 'bill'
+    ApplicationSetting['password'] = 'bob'
+    ApplicationSetting['max_giveaway_attempt_size'] = 10
     Conference.destroy_all
     Conference.create!(
       :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
@@ -191,9 +179,9 @@ describe 'Configuration updating when the username is missing' do
 
   it 'should not update the existing ApplicationSettings' do
     ApplicationSetting.count.should == 3
-    ApplicationSetting.value('username').should == 'bill'
-    ApplicationSetting.value('password').should == 'bob'
-    ApplicationSetting.value('max_giveaway_attempt_size').should == '10'
+    ApplicationSetting['username'].should == 'bill'
+    ApplicationSetting['password'].should == 'bob'
+    ApplicationSetting['max_giveaway_attempt_size'].should == 10
   end
   
   it 'should not update the Conference' do
@@ -206,11 +194,9 @@ end
 describe 'Configuration updating when changing the max_giveaway_attempt_size, and not the password' do
   before :all do
     ApplicationSetting.destroy_all
-    ApplicationSetting.create! :name => 'username', :value => 'bill'
-    ApplicationSetting.create! :name => 'password', :value => 'bob'
-    ApplicationSetting.create!(
-      :name => 'max_giveaway_attempt_size', :value => 10
-    )
+    ApplicationSetting['username'] = 'bill'
+    ApplicationSetting['password'] = 'bob'
+    ApplicationSetting['max_giveaway_attempt_size'] = 10    
     Conference.destroy_all
     Conference.create!(
       :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
@@ -228,22 +214,20 @@ describe 'Configuration updating when changing the max_giveaway_attempt_size, an
   end
 
   it 'should update max_giveaway_attempt_size' do
-    ApplicationSetting.value('max_giveaway_attempt_size').should == '12'
+    ApplicationSetting['max_giveaway_attempt_size'].should == 12
   end
   
   it 'should not update password' do
-    ApplicationSetting.value('password').should == 'bob'
+    ApplicationSetting['password'].should == 'bob'
   end
 end
 
 describe 'Configuration updating when the password is being changed but the confirmation is bad' do
   before :all do
     ApplicationSetting.destroy_all
-    ApplicationSetting.create! :name => 'username', :value => 'bill'
-    ApplicationSetting.create! :name => 'password', :value => 'bob'
-    ApplicationSetting.create!(
-      :name => 'max_giveaway_attempt_size', :value => 10
-    )
+    ApplicationSetting['username'] = 'bill'
+    ApplicationSetting['password'] = 'bob'
+    ApplicationSetting['max_giveaway_attempt_size'] = 10    
     Conference.destroy_all
     Conference.create!(
       :start_date => Date.new(2009,5,30), :end_date => Date.new(2009,6,1)
@@ -260,7 +244,7 @@ describe 'Configuration updating when the password is being changed but the conf
   end
 
   it 'should not update the password' do
-    ApplicationSetting.value('password').should == 'bob'
+    ApplicationSetting[:password].should == 'bob'
   end
 end
 

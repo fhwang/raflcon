@@ -2,10 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe 'Giveaway creation when the totals for all giveaways on a prize category are too high' do
   before :all do
-    ApplicationSetting.sample(
-      :name => 'time_zone', :value_class => 'TZInfo::Timezone',
-      :value => TZInfo::Timezone.get('America/New_York')
-    )
+    ApplicationSetting[:time_zone] = TZInfo::Timezone.get('America/New_York')
     @books = PrizeCategory.sample :name => 'books', :count => 25
     Giveaway.destroy_all
     Giveaway.sample(
@@ -32,10 +29,7 @@ end
 
 describe 'Giveaway update when the totals for all giveaways on a prize category are too high' do
   before :all do
-    ApplicationSetting.sample(
-      :name => 'time_zone', :value_class => 'TZInfo::Timezone',
-      :value => TZInfo::Timezone.get('America/New_York')
-    )
+    ApplicationSetting[:time_zone] = TZInfo::Timezone.get('America/New_York')
     @books = PrizeCategory.sample :name => 'books', :count => 25
     Giveaway.destroy_all
     Giveaway.sample(
@@ -63,13 +57,8 @@ end
 
 describe 'Giveaway#suggested_attempt_size when the giveaway size is smaller' do
   before :all do
-    ApplicationSetting.sample(
-      :name => 'time_zone', :value_class => 'TZInfo::Timezone',
-      :value => TZInfo::Timezone.get('America/New_York')
-    )
-    ApplicationSetting.sample(
-      :name => 'max_giveaway_attempt_size', :value => 20
-    )
+    ApplicationSetting[:time_zone] = TZInfo::Timezone.get('America/New_York')
+    ApplicationSetting[:max_giveaway_attempt_size] = 20
     Giveaway.destroy_all
     @giveaway = Giveaway.sample :count => 10
   end
@@ -81,13 +70,8 @@ end
 
 describe 'Giveaway#suggested_attempt_size when the application setting is smaller' do
   before :all do
-    ApplicationSetting.sample(
-      :name => 'time_zone', :value_class => 'TZInfo::Timezone',
-      :value => TZInfo::Timezone.get('America/New_York')
-    )
-    ApplicationSetting.sample(
-      :name => 'max_giveaway_attempt_size', :value => 5
-    )
+    ApplicationSetting[:time_zone] = TZInfo::Timezone.get('America/New_York')
+    ApplicationSetting[:max_giveaway_attempt_size] = 5
     Giveaway.destroy_all
     @giveaway = Giveaway.sample :count => 10
   end

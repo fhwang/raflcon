@@ -54,21 +54,16 @@ class WorkflowStep < ActiveRecord::BaseWithoutTable
   end
   
   def self.closed_steps
-    closed_steps = ApplicationSetting.value 'closed_workflow_steps'
+    closed_steps = ApplicationSetting['closed_workflow_steps']
     unless closed_steps
       closed_steps = [1]
-      ApplicationSetting.create!(
-        :name => 'closed_workflow_steps', :value => closed_steps
-      )
+      ApplicationSetting['closed_workflow_steps'] = closed_steps
     end
     closed_steps.clone
   end
   
   def self.closed_steps=(cs)
-    as = ApplicationSetting.find_by_name 'closed_workflow_steps'
-    as ||= ApplicationSetting.new :name => 'closed_workflow_steps'
-    as.value = cs
-    as.save!
+    ApplicationSetting['closed_workflow_steps'] = cs
   end
   
   def self.find_by_position(position)
