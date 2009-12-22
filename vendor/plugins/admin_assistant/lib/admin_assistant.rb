@@ -24,7 +24,7 @@ class AdminAssistant
 
   attr_reader   :base_settings, :controller_class, :form_settings, 
                 :index_settings, :model_class, :show_settings
-  attr_accessor :actions, :custom_destroy
+  attr_accessor :actions, :custom_destroy, :default_search_matches_on
   attr_writer   :model_class_name
   
   def initialize(controller_class, model_class)
@@ -35,6 +35,7 @@ class AdminAssistant
     @index_settings = IndexSettings.new self
     @show_settings = ShowSettings.new self
     @base_settings = BaseSettings.new self
+    @default_search_matches_on = @model.searchable_columns.map &:name
   end
   
   def [](name)
@@ -129,13 +130,6 @@ class AdminAssistant
     @model.default_column_names
   end
   
-  def dispatch_to_request_method(request_class, controller)
-    controller.instance_variable_set :@admin_assistant, self
-    @request = request_class.new(self, controller)
-    @request.call
-    @request = nil
-  end
-  
   def file_columns
     @model.file_columns
   end
@@ -143,10 +137,9 @@ class AdminAssistant
   def method_missing(meth, *args)
     if crudful_request_methods.include?(meth) and args.size == 1
       self.class.request_start_time = Time.now if ENV['PROFILE_LOGGING']
-      request_class = Request.const_get meth.to_s.capitalize
-      dispatch_to_request_method request_class, args.first
+      Request.dispatch meth, self, args.first
     elsif autocomplete_actions && autocomplete_actions.include?(meth)
-      dispatch_to_request_method Request::Autocomplete, args.first
+      Request.dispatch :autocomplete, self, args.first
     elsif meth.to_s =~ /(.*)\?/ && crudful_request_methods.include?($1.to_sym)
       supports_action? $1
     else
@@ -189,16 +182,20 @@ class AdminAssistant
   
   module ControllerClassMethods
     def admin_assistant_for(model_class, &block)
-      self.admin_assistant = AdminAssistant.new(self, model_class)
-      builder = Builder.new self.admin_assistant
-      if block
-        block.call builder
-      end
-      self.helper AdminAssistant::Helper
-      self.admin_assistant.controller_actions.each do |action|
-        self.send(:define_method, action) do
-          self.class.admin_assistant.send(action, self)
+      begin
+        self.admin_assistant = AdminAssistant.new(self, model_class)
+        builder = Builder.new self.admin_assistant
+        if block
+          block.call builder
         end
+        self.helper AdminAssistant::Helper
+        self.admin_assistant.controller_actions.each do |action|
+          self.send(:define_method, action) do
+            self.class.admin_assistant.send(action, self)
+          end
+        end
+      rescue ActiveRecord::StatementInvalid
+        Rails.logger.info "Skipping admin_assistant_for for #{self.name} because the table doesn't exist in the DB. Hopefully that's because you're deploying with a migration."
       end
     end
   end

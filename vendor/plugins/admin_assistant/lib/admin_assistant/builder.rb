@@ -153,11 +153,13 @@ class AdminAssistant
   end
   
   class FormSettings < AbstractSettings
+    attr_writer :multi
     attr_reader :submit_buttons
     
     def initialize(admin_assistant)
       super
       @submit_buttons = []
+      @multi = false
     end
     
     def column_config_fields
@@ -199,6 +201,10 @@ class AdminAssistant
     
     def column_names
       @column_names || @admin_assistant.default_column_names
+    end
+    
+    def multi?
+      @multi
     end
   end
   
@@ -295,11 +301,11 @@ class AdminAssistant
         @column_names = c
       end
     
-      def default_search_includes(*includes)
+      def default_search_matches_on(*includes)
         if includes.empty?
-          @default_search_includes
+          @admin_assistant.default_search_matches_on
         else
-          @default_search_includes = includes
+          @admin_assistant.default_search_matches_on = includes
         end
       end
     end

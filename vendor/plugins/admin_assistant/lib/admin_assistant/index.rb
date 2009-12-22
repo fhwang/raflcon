@@ -178,6 +178,19 @@ class AdminAssistant
             index, action_view, admin_assistant
       end
       
+      def render_after_index_header
+        slug = "_after_index_header.html.erb"
+        abs_template_file = File.join( Rails.root, 'app/views', @admin_assistant.controller_class.controller_path, slug )
+        if File.exist?(abs_template_file)
+          template = if RAILS_GEM_VERSION == '2.1.0'
+            File.join(@admin_assistant.controller_class.controller_path, slug)
+          else
+            abs_template_file
+          end
+          @action_view.render :file => template
+        end
+      end
+      
       def ajax_toggle_allowed?
         @admin_assistant.update?
       end
@@ -225,6 +238,19 @@ class AdminAssistant
           @admin_assistant.model_class_name.pluralize.capitalize
         end
       end
+      
+      def multi_form?
+        @admin_assistant.form_settings.multi?
+      end
+      
+      def new_link
+        new_link_name = if multi_form?
+          "New #{@admin_assistant.model_class_name.pluralize}"
+        else
+          "New #{@admin_assistant.model_class_name}"
+        end
+        @action_view.link_to new_link_name, @admin_assistant.url_params(:new)
+      end
 
       def right_column?
         edit? or destroy? or show? or !right_column_lambdas.empty? or @action_view.respond_to?(:extra_right_column_links_for_index)
@@ -247,7 +273,7 @@ class AdminAssistant
         if @action_view.respond_to?(:extra_right_column_links_for_index)
           links << @action_view.extra_right_column_links_for_index(
             record
-          ) || ''
+          ).to_s
         end
         links
       end

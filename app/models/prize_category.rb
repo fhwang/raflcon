@@ -1,6 +1,7 @@
 class PrizeCategory < ActiveRecord::Base
   has_many :giveaways
   
+  validates_presence_of :name, :count
   validates_uniqueness_of :name
   
   def self.unfilled

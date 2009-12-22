@@ -95,6 +95,18 @@ Don't edit this file: It gets re-copied every time the server starts.
   font-size: large
 }
 
+.admin_assistant.form th {
+  font-weight: normal;
+  text-align: left;
+}
+
+.admin_assistant.multi.form .errorExplanation {
+  font-size: small;
+}
+
+.admin_assistant.form .fieldWithErrors {
+  background: red;
+}
 
 .admin_assistant .autocomplete_palette {
   background: white;
