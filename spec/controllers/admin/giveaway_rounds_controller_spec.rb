@@ -10,7 +10,18 @@ describe '/admin/giveaway_rounds/create' do
     post(
       :create,
       :giveaway_round => {
-        :time => {'1-3i' => '2009-09-30', '4i' => '15', '5i' => '45'}
+        'a' => {
+          'time(1-3i)' => '2009-09-30', 'time(4i)' => '15', 'time(5i)' => '45'
+        },
+        'b' => {'time(1-3i)' => '', 'time(4i)' => '', 'time(5i)' => ''},
+        'c' => {'time(1-3i)' => '', 'time(4i)' => '', 'time(5i)' => ''},
+        'd' => {'time(1-3i)' => '', 'time(4i)' => '', 'time(5i)' => ''},
+        'e' => {'time(1-3i)' => '', 'time(4i)' => '', 'time(5i)' => ''},
+        'f' => {'time(1-3i)' => '', 'time(4i)' => '', 'time(5i)' => ''},
+        'g' => {'time(1-3i)' => '', 'time(4i)' => '', 'time(5i)' => ''},
+        'h' => {'time(1-3i)' => '', 'time(4i)' => '', 'time(5i)' => ''},
+        'i' => {'time(1-3i)' => '', 'time(4i)' => '', 'time(5i)' => ''},
+        'j' => {'time(1-3i)' => '', 'time(4i)' => '', 'time(5i)' => ''}
       }
     )
   end
@@ -46,19 +57,19 @@ describe '/admin/giveaway_rounds/edit' do
   end
   
   it 'should show a customized date select with restricted day ranges' do
-    response.should have_tag('select[name=?]', 'giveaway_round[time][1-3i]') do
+    response.should have_tag('select[name=?]', 'giveaway_round[time(1-3i)]') do
       with_tag    "option[value=?]", "2009-09-29", :text => 'Tue Sep 29 2009'
       with_tag    "option[value=?][selected=selected]", "2009-09-30",
                   :text => 'Wed Sep 30 2009'
       with_tag    "option[value=?]", "2009-10-01", :text => 'Thu Oct 01 2009'
       without_tag "option[value=?]", "2009-10-02", :text => 'Fri Oct 02 2009'
     end
-    response.should have_tag('select[name=?]', 'giveaway_round[time][4i]') do
+    response.should have_tag('select[name=?]', 'giveaway_round[time(4i)]') do
       with_tag "option[value=00]"
       with_tag "option[value=13][selected=selected]"
       with_tag "option[value=23]"
     end
-    response.should have_tag('select[name=?]', 'giveaway_round[time][5i]') do
+    response.should have_tag('select[name=?]', 'giveaway_round[time(5i)]') do
       with_tag "option[value=00]"
       with_tag "option[value=45][selected=selected]"
       with_tag "option[value=59]"
@@ -98,17 +109,23 @@ describe '/admin/giveaway_rounds/new' do
   end
   
   it 'should show a customized date select with restricted day ranges' do
-    response.should have_tag('select[name=?]', 'giveaway_round[time][1-3i]') do
+    response.should have_tag(
+      'select[name=?]', 'giveaway_round[a][time(1-3i)]'
+    ) do
       with_tag    "option[value=?]", "2009-09-29", :text => 'Tue Sep 29 2009'
       with_tag    "option[value=?]", "2009-09-30", :text => 'Wed Sep 30 2009'
       with_tag    "option[value=?]", "2009-10-01", :text => 'Thu Oct 01 2009'
       without_tag "option[value=?]", "2009-10-02", :text => 'Fri Oct 02 2009'
     end
-    response.should have_tag('select[name=?]', 'giveaway_round[time][4i]') do
+    response.should have_tag(
+      'select[name=?]', 'giveaway_round[a][time(4i)]'
+    ) do
       with_tag "option[value=00]"
       with_tag "option[value=23]"
     end
-    response.should have_tag('select[name=?]', 'giveaway_round[time][5i]') do
+    response.should have_tag(
+      'select[name=?]', 'giveaway_round[a][time(5i)]'
+    ) do
       with_tag "option[value=00]"
       with_tag "option[value=59]"
     end

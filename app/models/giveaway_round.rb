@@ -1,6 +1,7 @@
 class GiveawayRound < ActiveRecord::Base
   has_many :giveaways, :order => 'position'
   
+  validates_presence_of :time
   validates_uniqueness_of :time
   
   def self.update_active_giveaways

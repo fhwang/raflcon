@@ -1,5 +1,5 @@
 <%
-date_tuples = []
+date_tuples = [[]]
 conference = Conference.first
 conference.start_date.upto(conference.end_date) do |date|
   date_tuples << [date.strftime("%a %b %d %Y"), date.strftime("%Y-%m-%d")]
@@ -8,22 +8,24 @@ options = options_for_select(
   date_tuples,
   (@giveaway_round.time.strftime("%Y-%m-%d") if @giveaway_round.time)
 )
+name = 'giveaway_round'
+name << "[#{@prefix}]" if @prefix
 %>
-<%= select_tag "giveaway_round[time][1-3i]", options %>
+<%= select_tag "#{name}[time(1-3i)]", options %>
 
 &mdash;
 <%= select_tag(
-  "giveaway_round[time][4i]",
+  "#{name}[time(4i)]",
   options_for_select(
-    ("00".."23").to_a,
+    [nil] + ("00".."23").to_a,
     (@giveaway_round.time.strftime("%H") if @giveaway_round.time)
   )
 ) %>
  :
 <%= select_tag(
-  "giveaway_round[time][5i]",
+  "#{name}[time(5i)]",
   options_for_select(
-    ("00".."59").to_a,
+    [nil] + ("00".."59").to_a,
     (@giveaway_round.time.strftime("%M") if @giveaway_round.time)
   )
 ) %>
