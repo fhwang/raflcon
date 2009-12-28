@@ -160,3 +160,13 @@ describe 'Giveaway updating from one GiveawayRound to another' do
         @orig_old_active_giveaways - 1
   end
 end
+
+describe 'Giveaway creation attempt with a missing count' do
+  before :all do
+    @giveaway = Giveaway.new
+  end
+  
+  it 'should not be valid' do
+    @giveaway.valid?.should be_false
+  end
+end
