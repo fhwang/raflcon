@@ -26,6 +26,17 @@ class AdminAssistant
     def columns
       @admin_assistant.accumulate_columns column_names
     end
+
+    def hidden_fields_for_search_form
+      if @admin_assistant.search_settings.include_params_in_form
+        @url_params.reject do |name,value| 
+          name=="commit" or name=="search" or name=="action" or
+          name=="controller"
+        end
+      else
+        []
+      end
+    end
     
     def model_class
       @admin_assistant.model_class
@@ -262,10 +273,14 @@ class AdminAssistant
       end
       
       def right_column_links(record)
-        links = ""
-        links << edit_link(record) << ' ' if render_edit_link?(record)
-        links << delete_link(record) << ' ' if render_delete_link?(record)
-        links << show_link(record) << ' ' if render_show_link?(record)
+        links = []
+        links << edit_link(record) if render_edit_link?(record)
+        links << delete_link(record) if render_delete_link?(record)
+        if render_show_link?(record)
+          links << @action_view.link_to(
+            'Show', :action => 'show', :id => record.id
+          )
+        end
         right_column_lambdas.each do |lambda|
           link_args = lambda.call record
           links << @action_view.link_to(*link_args)
@@ -273,14 +288,27 @@ class AdminAssistant
         if @action_view.respond_to?(:extra_right_column_links_for_index)
           links << @action_view.extra_right_column_links_for_index(
             record
-          ).to_s
+          )
         end
-        links
+        links.join(" &bull; ")
+      end
+      
+      def tr_css_classes(record)
+        css_classes = [@action_view.cycle('odd', 'even')]
+        if @action_view.respond_to?(:css_class_for_index_tr)
+          css_classes << @action_view.css_class_for_index_tr(record)
+        end
+        css_classes.join(' ')
       end
       
       def render_new_link?
         return false if @action_view.respond_to?(:link_to_new_in_index?) && !@action_view.link_to_new_in_index?
         new?
+      end
+      
+      def render_search_link?
+        return false if @action_view.respond_to?(:link_to_search_in_index?) && !@action_view.link_to_search_in_index?
+        true
       end
       
       def render_edit_link?(record)

@@ -1,5 +1,30 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
+describe '/admin/giveaways/new' do
+  integrate_views
+  controller_name 'admin/giveaways'
+  
+  before :all do
+    GiveawayRound.destroy_all
+  end
+  
+  before :each do
+    setup_configuration_and_login
+    @round2 = GiveawayRound.sample :time => Time.local(2010, 5, 22, 16, 0, 0)
+    @round1 = GiveawayRound.sample :time => Time.local(2010, 5, 22, 9, 0, 0)
+    get :new
+    response.should be_success
+  end
+  
+  it 'should order giveaway rounds by time' do
+    response.should have_tag('select[name=?]', 'giveaway[a][giveaway_round_id]') do
+      with_tag 'option:first-child[value=""]'
+      with_tag 'option:nth-child(2)[value=?]', @round1.id
+      with_tag 'option:nth-child(3)[value=?]', @round2.id
+    end
+  end
+end
+
 describe '/admin/giveaways/order' do
   integrate_views
   controller_name 'admin/giveaways'
