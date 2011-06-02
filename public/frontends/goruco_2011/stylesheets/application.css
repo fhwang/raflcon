@@ -1,0 +1,9 @@
+.letter_tile {
+  font-family: Courier;
+  background: red;
+  color: white;
+  font-weight: bold;
+  border: 2px solid #333;
+  text-align: center;
+  font-size: x-large;
+}
