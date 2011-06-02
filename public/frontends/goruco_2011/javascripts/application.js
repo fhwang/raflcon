@@ -63,24 +63,16 @@ $(document).ready(function() {
     
     $('#create_giveaway_attempt').live('submit', function(evt) {
         evt.preventDefault();
+
+        response_data =
+        {"giveaway_attempt":{"created_at":"2011-06-02T14:25:43Z","updated_at":"2011-06-02T14:25:43Z","id":7,"giveaway_id":1,"attendees":[{"name":"Meibell Maher","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":20},{"name":"Ari James","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":35},{"name":"Alex Michael","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":68},{"name":"Brian Mueller","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":50},{"name":"Lee Moreno","created_at":"2011-05-30T19:21:59Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":6},{"name":"Nicholas Bergson-Shilcock","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":81},{"name":"Mike Hodel","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":41},{"name":"Wilson Ocampo-Gooding","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":62},{"name":"Gary Katz","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":34},{"name":"Kevin Kaffenberger","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":61}]}};
+        view = new GiveawayAttemptView(
+          response_data.giveaway_attempt.attendees
+        );
+        view.draw();
+
         
-                             
-        attendees = [
-          {'name': 'Brad Mueller'},         
-          {'name': 'Dave McFarland'},
-          {'name': 'Sebastian Mill'},
-          {'name': 'John Nutt'},
-          {'name': 'Aman Nakajima'},
-          {'name': 'Ned McKay'},                             
-          {'name': 'Michael Matarese'},
-          {'name': 'Chad Lan'},
-          {'name': 'Brad Katz'},
-          {'name': "Clifford O'Brien"},
-        ];
-        view = new GiveawayAttemptView(attendees);
-        view.draw();                    
-                  
-        /*
+        /*,
         url = $(this).attr('action');
         data = $(this).serialize();
         $.post(url, data, function(response_data) {
@@ -99,9 +91,12 @@ GiveawayAttemptView = function(attendees) {
 
 GiveawayAttemptView.prototype = {
   draw: function() {
+    console.log('GiveawayAttemptView.draw 0');
     names = _.map(this.attendees, function(attendee) { return attendee.name });
+    console.log(names);
     this.columns = [];
-    max_length = _.max(names, function(n) { return name.length }).length;
+    max_length = _.max(names, function(n) { return n.length }).length;
+    console.log(max_length);
     left_paddings = [];
     for (i = 0; i < names.length; i++) {
       name = names[i];
