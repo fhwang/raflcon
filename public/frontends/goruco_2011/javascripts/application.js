@@ -1,6 +1,6 @@
 // Only works for UTC, which is fine because that's what we're returning by
 // default
-function parse_w3cdtf(time_str) {
+function parseW3cdtf(time_str) {
   var matches = 
     /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z/(time_str);
   return new Date(
@@ -8,6 +8,11 @@ function parse_w3cdtf(time_str) {
       matches[1], matches[2]-1, matches[3], matches[4], matches[5], matches[6]
     )
   );
+}
+
+// Returns a random integer from 0 to i-1.
+function randomInt(i) {
+  return Math.floor(Math.random() * i);
 }
 
 $(document).ready(function() {
@@ -19,7 +24,7 @@ $(document).ready(function() {
         _.each(
           rounds_with_active_giveaways,
           function(round) {
-            var gr_time = parse_w3cdtf(round.time);
+            var gr_time = parseW3cdtf(round.time);
             round.time_str = gr_time.strftime("%a %b %d %I:%M %p");
           }
         );
@@ -54,26 +59,27 @@ $(document).ready(function() {
                   appendTo('#create_giveaway_attempt');
             });
         });
-    });
+    });                                          
     
     $('#create_giveaway_attempt').live('submit', function(evt) {
         evt.preventDefault();
         
+                             
         attendees = [
-          {'name': 'Brad Mueller'},
+          {'name': 'Brad Mueller'},         
           {'name': 'Dave McFarland'},
           {'name': 'Sebastian Mill'},
           {'name': 'John Nutt'},
           {'name': 'Aman Nakajima'},
-          {'name': 'Ned McKay'},
+          {'name': 'Ned McKay'},                             
           {'name': 'Michael Matarese'},
           {'name': 'Chad Lan'},
           {'name': 'Brad Katz'},
           {'name': "Clifford O'Brien"},
         ];
         view = new GiveawayAttemptView(attendees);
-        view.draw();
-
+        view.draw();                    
+                  
         /*
         url = $(this).attr('action');
         data = $(this).serialize();
@@ -94,12 +100,12 @@ GiveawayAttemptView = function(attendees) {
 GiveawayAttemptView.prototype = {
   draw: function() {
     names = _.map(this.attendees, function(attendee) { return attendee.name });
-    columns = [];
+    this.columns = [];
     max_length = _.max(names, function(n) { return name.length }).length;
     left_paddings = [];
     for (i = 0; i < names.length; i++) {
       name = names[i];
-      left_padding = Math.floor(Math.random() * (max_length - name.length));
+      left_padding = randomInt(max_length - name.length);
       left_paddings[i] = left_padding;
     }
     for (i = 0; i < max_length; i++) {
@@ -114,15 +120,26 @@ GiveawayAttemptView.prototype = {
           letters.push(letter);
         }
       }
-      columns.push(new GiveawayAttemptView.Column(i, letters));
+      this.columns.push(new GiveawayAttemptView.Column(this, i, letters));
     }
-    _.each(columns, function(c) { c.draw() });
+    this.drawColumn();
+  },
+  
+  drawColumn: function() {
+    notCurrentlyDrawing = _.reject(
+      this.columns, function(c) { return c.isDrawing() }
+    );
+    if (column = notCurrentlyDrawing[randomInt(notCurrentlyDrawing.length)]) {
+      column.draw();
+    }
   }
 };
 
-GiveawayAttemptView.Column = function(columnNumber, letters) {
+GiveawayAttemptView.Column = function(view, columnNumber, letters) {
+  this.view =         view;
   this.columnNumber = columnNumber;
   this.letters =      letters;
+  this.drawing = false;
   this.initialize();
 };
 
@@ -142,25 +159,36 @@ GiveawayAttemptView.Column.prototype = {
   },
   
   draw: function() {
-    interval =
-      Math.floor(Math.random() * 1000) + Math.floor(Math.random() * 1000);
-    setTimeout(
-      _.bind(
-        function() { this.letterTiles[this.letterTiles.length-1].draw(); },
-        this
-      ),
-      interval
-    );
+    this.drawing = true;
+    this.letterTiles[this.letterTiles.length-1].draw();
   },
   
-  drawTile: function(rowNumber) {
-    if (tile = this.letterTiles[rowNumber]) {
+  isDrawing: function() {
+    return this.drawing;
+  },
+  
+  notifyTileDrawn: function(rowNumber) {
+    nextRowNumber = rowNumber - 1;
+    if (tile = this.letterTiles[nextRowNumber]) {
       var timeout =
-        this.tileDrawGapBase / (Math.pow(1.75, this.letters.length - rowNumber));
+        this.tileDrawGapBase / (Math.pow(1.75, this.letters.length - nextRowNumber));
       setTimeout(_.bind(function() { this.draw() }, tile), timeout);
     }
+    thresholdToFireOtherColumnDraws =
+      Math.floor(this.letterTiles.length * 0.66);
+    if (rowNumber == thresholdToFireOtherColumnDraws) {
+      _(3).times(_.bind(
+        function() {
+          interval = randomInt(750);
+          setTimeout(
+            _.bind(function() { this.drawColumn() }, this.view), interval
+          )
+        },
+        this
+      ));
+    }
   },
-  
+
   width: function() {
     return this.tileWidth;
   },
@@ -196,7 +224,7 @@ GiveawayAttemptView.Column.LetterTile.prototype = {
       {top: positionTop + "px"},
       75,
       'linear',
-      _.bind(function() { this.column.drawTile(this.rowNumber - 1) }, this)
+      _.bind(function() { this.column.notifyTileDrawn(this.rowNumber) }, this)
     );
   }
 };
