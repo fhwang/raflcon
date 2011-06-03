@@ -1,3 +1,5 @@
+require 'tzinfo'
+
 class ApplicationSetting < ActiveRecord::Base
   acts_as_durable_hash do |dh|
     dh.serialize(TZInfo::Timezone) do |value|

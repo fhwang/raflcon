@@ -59,20 +59,58 @@ $(document).ready(function() {
                   appendTo('#create_giveaway_attempt');
             });
         });
-    });                                          
+    });        
     
+    // test mode
     $('#create_giveaway_attempt').live('submit', function(evt) {
         evt.preventDefault();
 
-        response_data =
-        {"giveaway_attempt":{"created_at":"2011-06-02T14:25:43Z","updated_at":"2011-06-02T14:25:43Z","id":7,"giveaway_id":1,"attendees":[{"name":"Meibell Maher","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":20},{"name":"Ari James","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":35},{"name":"Alex Michael","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":68},{"name":"Brian Mueller","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":50},{"name":"Lee Moreno","created_at":"2011-05-30T19:21:59Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":6},{"name":"Nicholas Bergson-Shilcock","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":81},{"name":"Mike Hodel","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":41},{"name":"Wilson Ocampo-Gooding","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":62},{"name":"Gary Katz","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":34},{"name":"Kevin Kaffenberger","created_at":"2011-05-30T19:22:00Z","updated_at":"2011-06-02T14:25:43Z","giveaway_attempt_id":7,"id":61}]}};
-        view = new GiveawayAttemptView(
-          response_data.giveaway_attempt.attendees
-        );
+        attendees = []
+        rawNames = [
+          "Ari Kudria",
+          "Sebastian Liu",
+          "Aman Nakajima",
+          "Kevin Olson",
+          "Allen Menard",
+          "Peter Liu",
+          "Michael Maher",
+          "Lee Nussbaum",
+          "Brad Ngo",
+          "Tim Jaros",
+          "Clifford Moreno",
+          "Chris Maximov",
+          "Allen Khattri",
+          "Tom Maher",
+          "Sebastian Mill",
+          "Dan Maximov",
+          "Sean McNamara",
+          "Courtenay Moreno",
+          "Clifford Ocampo-Gooding",
+          "Dave Mango",
+          "Allen Hodel",
+          "Chad Lade",
+          "Matthew Kudria",
+          "Clifford Muldoon",
+          "Clifford Mango",
+          "Alex Menard",
+          "Dan Ocampo-Gooding",
+          "Brad Menard",
+          "Elliott Maher",
+          "Nicholas Bergson-Shilcock"
+        ]
+        size = randomInt(10) + 1;
+        while (attendees.length < size) {
+          name = rawNames[randomInt(rawNames.length)];
+          attendees.push({'name':name});
+        }
+        view = new GiveawayAttemptView(attendees);
         view.draw();
+    });
 
-        
-        /*,
+    // real mode
+    /*
+    $('#create_giveaway_attempt').live('submit', function(evt) {
+        evt.preventDefault();
         url = $(this).attr('action');
         data = $(this).serialize();
         $.post(url, data, function(response_data) {
@@ -81,8 +119,8 @@ $(document).ready(function() {
             );
             view.draw();
         });
-        */
     });
+    */
 });
 
 GiveawayAttemptView = function(attendees) {
@@ -90,27 +128,30 @@ GiveawayAttemptView = function(attendees) {
 };
 
 GiveawayAttemptView.prototype = {
+  baseTileHeight: function() {
+    return Math.round(675 / this.attendees.length);
+  },
+  
+  baseTileWidth: function() {
+    return Math.round(1100 / this.maxNameLength());
+  },
+  
   draw: function() {
-    console.log('GiveawayAttemptView.draw 0');
-    names = _.map(this.attendees, function(attendee) { return attendee.name });
-    console.log(names);
     this.columns = [];
-    max_length = _.max(names, function(n) { return n.length }).length;
-    console.log(max_length);
     left_paddings = [];
-    for (i = 0; i < names.length; i++) {
-      name = names[i];
-      left_padding = randomInt(max_length - name.length);
+    for (i = 0; i < this.names().length; i++) {
+      name = this.names()[i];
+      left_padding = randomInt(this.maxNameLength() - name.length);
       left_paddings[i] = left_padding;
     }
-    for (i = 0; i < max_length; i++) {
+    for (i = 0; i < this.maxNameLength(); i++) {
       letters = []
-      for (j = 0; j < names.length; j++) {
+      for (j = 0; j < this.names().length; j++) {
         left_padding = left_paddings[j];
         if (left_padding > i) {
           letters.push('')
         } else {
-          letter = names[j][i-left_padding];
+          letter = this.names()[j][i-left_padding];
           if (!letter) { letter = '' }
           letters.push(letter);
         }
@@ -127,6 +168,30 @@ GiveawayAttemptView.prototype = {
     if (column = notCurrentlyDrawing[randomInt(notCurrentlyDrawing.length)]) {
       column.draw();
     }
+  },
+  
+  maxNameLength: function() {
+    return _.max(this.names(), function(n) { return n.length }).length;
+  },
+  
+  names: function() {
+    return _.map(this.attendees, function(attendee) { return attendee.name });
+  },
+  
+  tileHeight: function() {
+    if (this.baseTileHeight() / this.baseTileWidth() > 1.5) {
+      return this.baseTileWidth() * 1.5;
+    } else {
+      return this.baseTileHeight();
+    }
+  },
+  
+  tileWidth: function() {
+    if (this.baseTileWidth() / this.baseTileHeight() > 1.5) {
+      return this.baseTileHeight() * 1.5;
+    } else {
+      return this.baseTileWidth();
+    }
   }
 };
 
@@ -139,8 +204,7 @@ GiveawayAttemptView.Column = function(view, columnNumber, letters) {
 };
 
 GiveawayAttemptView.Column.prototype = {
-  tileDrawGapBase: 1750,
-  tileWidth: 50,
+  tileDrawGapBase: 600,
   
   initialize: function() {
     this.letterTiles = [];
@@ -166,11 +230,11 @@ GiveawayAttemptView.Column.prototype = {
     nextRowNumber = rowNumber - 1;
     if (tile = this.letterTiles[nextRowNumber]) {
       var timeout =
-        this.tileDrawGapBase / (Math.pow(1.75, this.letters.length - nextRowNumber));
+        this.tileDrawGapBase / (Math.pow(1.5, this.letters.length - nextRowNumber));
       setTimeout(_.bind(function() { this.draw() }, tile), timeout);
     }
     thresholdToFireOtherColumnDraws =
-      Math.floor(this.letterTiles.length * 0.66);
+      Math.floor(this.letterTiles.length * 0.90);
     if (rowNumber == thresholdToFireOtherColumnDraws) {
       _(3).times(_.bind(
         function() {
@@ -183,13 +247,17 @@ GiveawayAttemptView.Column.prototype = {
       ));
     }
   },
-
-  width: function() {
-    return this.tileWidth;
+  
+  tileHeight: function() {
+    return this.view.tileHeight();
+  },
+  
+  tileWidth: function() {
+    return this.view.tileWidth();
   },
   
   x: function() {
-    return this.columnNumber * this.tileWidth;
+    return this.columnNumber * this.view.tileWidth();
   }
 };
 
@@ -200,16 +268,14 @@ GiveawayAttemptView.Column.LetterTile = function(column, rowNumber, letter) {
 };
 
 GiveawayAttemptView.Column.LetterTile.prototype = {
-  tileHeight: 50,
-
   draw: function() {
-    var positionTop = this.rowNumber * this.tileHeight;
+    var positionTop = this.rowNumber * this.tileHeight();
     style = "position: absolute; "
-    style = style + "top: -" + (this.tileHeight * 1.5) + "px; ";
+    style = style + "top: -" + (this.tileHeight() * 1.5) + "px; ";
     style = style + "left: " + this.column.x() + "px; ";
-    style = style + "width: " + this.column.width() + "px; ";
-    style = style + "height: " + this.tileHeight + "px; ";
-    style = style + "line-height: " + this.tileHeight + "px; ";
+    style = style + "width: " + this.column.tileWidth() + "px; ";
+    style = style + "height: " + this.tileHeight() + "px; ";
+    style = style + "line-height: " + this.tileHeight() + "px; ";
     divId = "tile_" + this.column.columnNumber + "_" + this.rowNumber;
     html =
       "<div style='" + style + "' class='letter_tile' id='" + divId + "'>" +
@@ -221,5 +287,9 @@ GiveawayAttemptView.Column.LetterTile.prototype = {
       'linear',
       _.bind(function() { this.column.notifyTileDrawn(this.rowNumber) }, this)
     );
+  },
+  
+  tileHeight: function() {
+    return this.column.tileHeight();
   }
 };
