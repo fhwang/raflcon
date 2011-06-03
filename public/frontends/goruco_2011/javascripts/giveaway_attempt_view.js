@@ -175,6 +175,17 @@ GiveawayAttemptView.Column.LetterTile.prototype = {
     style = style + "width: " + this.column.tileWidth() + "px; ";
     style = style + "height: " + this.tileHeight() + "px; ";
     style = style + "line-height: " + this.tileHeight() + "px; ";
+    if (this.letter.trim() == "") {
+//      style = style + "border: 1px solid #444; ";
+    } else {
+      style =
+        style + "background-image: url(/frontends/goruco_2011/images/bg.png); ";
+      style =
+        style + "background-position: -" + this.column.x() + "px -" +
+        positionTop + "px; ";
+      style = style + "border: 1px solid #111; ";
+    }
+    console.log(style);
     html =
       "<div style='" + style + "' class='letter_tile' id='" + this.divId() +
       "'>" + this.letter + "</div>"

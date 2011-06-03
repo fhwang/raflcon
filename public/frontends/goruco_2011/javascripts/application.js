@@ -1,8 +1,10 @@
 function loadControlPanel() {
     $.get("/giveaway_rounds", function(data) {
+        $('#giveaway_rounds').html('');
+        allRounds = _.map(data, function(h) { return h.giveaway_round })
+        console.log(allRounds);
         rounds_with_active_giveaways = _.select(
-          _.map(data, function(h) { return h.giveaway_round }),
-          function(h) { return (h.active_giveaways > 0) }
+          allRounds, function(h) { return (h.active_giveaways > 0) }
         );
         _.each(
           rounds_with_active_giveaways,
@@ -70,9 +72,9 @@ $(document).ready(function() {
         giveawayId = 
           $('#create_giveaway_attempt input[type=hidden]').attr('value');
         url = "/giveaways/update/" + giveawayId;
-        $.post(url, function(data) {
-            
-        });
+        $.post(
+          url, {"giveaway[active]":0}, function(data) { loadControlPanel() }
+        );
     });
     
     $('#create_giveaway_attempt').live('submit', function(evt) {
@@ -81,7 +83,7 @@ $(document).ready(function() {
           giveawayAttemptView.undraw();
         }
 
-        /*==================================================================*/
+        /*==================================================================* /
         // test mode
         attendees = []
         rawNames = [
@@ -123,16 +125,17 @@ $(document).ready(function() {
         }
         giveawayAttemptView = new GiveawayAttemptView(attendees);
         giveawayAttemptView.draw();
+        
 
-        /*==================================================================* /
+        /*==================================================================*/
         // real mode
         url = $(this).attr('action');
         data = $(this).serialize();
         $.post(url, data, function(response_data) {
-            view = new GiveawayAttemptView(
+            giveawayAttemptView = new GiveawayAttemptView(
               response_data.giveaway_attempt.attendees
             );
-            view.draw();
+            giveawayAttemptView.draw();
         });
         /*==================================================================*/
     });

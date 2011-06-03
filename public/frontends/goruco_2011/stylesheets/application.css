@@ -1,5 +1,5 @@
 #control_panel {
-  width: 140px;
+  width: 160px;
   float: left;
   padding: 10px;
 }
@@ -14,12 +14,21 @@
 
 form#create_giveaway_attempt {
   margin-top: 10px;
+  background: #eee;
+  padding: 2px;
 }
 
 form#create_giveaway_attempt input.text {
-  width: 50px;
+  width: 25px;
 }
 
+form#create_giveaway_attempt input.submit {
+  margin: 0 5px 0 20px;
+}
+
+form#create_giveaway_attempt .count {
+  font-size: small;
+}
 
 
 #giveaway_attempt_view {
@@ -28,15 +37,13 @@ form#create_giveaway_attempt input.text {
   height: 683px;
   position: relative;
   overflow: hidden;
-  background: #333;
+  background: black;
 }
 
 .letter_tile {
-  font-family: Courier;
-  background: red;
+  font-family: Tahoma, sans-serif;
   color: white;
-  font-weight: bold;
-  border: 2px solid #666;
   text-align: center;
-  font-size: x-large;
+  font-size: 45px;
+  font-weight: bold;
 }
