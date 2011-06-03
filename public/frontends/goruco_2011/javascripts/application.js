@@ -128,12 +128,15 @@ GiveawayAttemptView = function(attendees) {
 };
 
 GiveawayAttemptView.prototype = {
+  height: 675,
+  width: 1100,
+  
   baseTileHeight: function() {
-    return Math.round(675 / this.attendees.length);
+    return Math.round(this.height / this.attendees.length);
   },
   
   baseTileWidth: function() {
-    return Math.round(1100 / this.maxNameLength());
+    return Math.round(this.width / this.maxNameLength());
   },
   
   draw: function() {
@@ -192,6 +195,10 @@ GiveawayAttemptView.prototype = {
     } else {
       return this.baseTileWidth();
     }
+  },
+  
+  vPadding: function() {
+    return (this.height - (this.tileHeight() * this.attendees.length)) / 2;
   }
 };
 
@@ -258,6 +265,10 @@ GiveawayAttemptView.Column.prototype = {
   
   x: function() {
     return this.columnNumber * this.view.tileWidth();
+  },
+  
+  vPadding: function() {
+    return this.view.vPadding();
   }
 };
 
@@ -269,7 +280,8 @@ GiveawayAttemptView.Column.LetterTile = function(column, rowNumber, letter) {
 
 GiveawayAttemptView.Column.LetterTile.prototype = {
   draw: function() {
-    var positionTop = this.rowNumber * this.tileHeight();
+    var positionTop =
+      this.rowNumber * this.tileHeight() + this.column.vPadding();
     style = "position: absolute; "
     style = style + "top: -" + (this.tileHeight() * 1.5) + "px; ";
     style = style + "left: " + this.column.x() + "px; ";

@@ -1,9 +1,42 @@
+#control_panel {
+  width: 140px;
+  float: left;
+  padding: 10px;
+}
+
+#giveaway_rounds {
+  margin-top: 10px;
+}
+
+#giveaways {
+  margin-top: 10px;
+}
+
+form#create_giveaway_attempt {
+  margin-top: 10px;
+}
+
+form#create_giveaway_attempt input.text {
+  width: 50px;
+}
+
+
+
+#giveaway_attempt_view {
+  float:right;
+  width: 1100px;
+  height: 675px;
+  position: relative;
+  overflow: hidden;
+  background: #333;
+}
+
 .letter_tile {
   font-family: Courier;
   background: red;
   color: white;
   font-weight: bold;
-  border: 2px solid #333;
+  border: 2px solid #666;
   text-align: center;
   font-size: x-large;
 }
