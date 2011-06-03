@@ -25,7 +25,7 @@ form#create_giveaway_attempt input.text {
 #giveaway_attempt_view {
   float:right;
   width: 1100px;
-  height: 675px;
+  height: 683px;
   position: relative;
   overflow: hidden;
   background: #333;
