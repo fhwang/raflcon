@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <script src="/frontends/goruco_2011/javascripts/vendor/jquery-1.6.1.min.js" type="text/javascript"></script>
+    <script src="frontends/goruco_2011/javascripts/vendor/jquery.tmpl.min.js" type="text/javascript"></script>
+    <script src="frontends/goruco_2011/javascripts/vendor/underscore-min.js" type="text/javascript"></script>
+    <script src="frontends/goruco_2011/javascripts/vendor/strftime.js" type="text/javascript"></script>
+    <script src="/frontends/goruco_2011/javascripts/giveaway_attempt_view.js" type="text/javascript"></script>
+    <script src="/frontends/goruco_2011/javascripts/application.js" type="text/javascript"></script>
+    <link href="/frontends/goruco_2011/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
+    <title>Gotham Ruby Conference 2011</title>
+  </head>
+  <body style="padding: 0; margin: 0">
+    <div id="control_panel">
+      <img src="/frontends/goruco_2011/images/logo.png">
+      
+      <select id="giveaway_rounds">
+      </select>
+      <script id="giveaway_round_option" type="text/x-jquery-tmpl">
+        <option value="${id}">${time_str}</option>
+      </script>
+      
+      <select id="giveaways">
+      </select>
+      <script id="giveaway_option" type="text/x-jquery-tmpl">
+        <option value="${id}">${prize_category.name}</option>
+      </script>
+      
+      <form action="/giveaway_attempts/create" method="post" id="create_giveaway_attempt">
+      </form>
+      <script id="giveaway_attempt_form_fields" type="text/x-jquery-tmpl">
+        <input type="hidden" name="giveaway_attempt[giveaway_id]" value="${id}">
+        <input name="giveaway_attempt[size]" value="${suggested_attempt_size}" class="text">
+        / <span class="count">${count}</span>
+        <input type="submit" class="submit" value="RAFL">
+        <img src="/frontends/goruco_2011/images/close.png" class="close"/>
+      </script>
+    </div>
+    
+    <div id="giveaway_attempt_view"></div>
+  </body>
+</html>
