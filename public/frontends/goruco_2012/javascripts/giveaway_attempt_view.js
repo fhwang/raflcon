@@ -3,8 +3,8 @@ GiveawayAttemptView = function(attendees) {
 };
 
 GiveawayAttemptView.prototype = {
-  height: 683,
-  width: 1100,
+  height: 500,
+  width: 700,
   
   baseTileHeight: function() {
     return Math.round(this.height / this.attendees.length);
