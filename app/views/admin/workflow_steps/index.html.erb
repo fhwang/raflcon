@@ -3,3 +3,28 @@
   <%= render :partial => 'show', :locals => {:workflow_step => workflow_step} %>
   </div>
 <% end %>
+<script>
+$('#content').on('click', '.workflow_step .open_or_close a', 'click', function(e) {
+  e.preventDefault();
+  var changeToOpen;
+  var url = $(e.target).attr('href');
+  var container = $(e.target).closest('.workflow_step');
+  if (container.hasClass('open')) {
+    changeToOpen = 0;
+  } else {
+    changeToOpen = 1;
+  }
+  var workflowStepId = parseInt(
+    container.attr('id').replace('workflow_step_', '')
+  );
+  $.ajax({
+    type: "PUT",
+    url: url,
+    data: JSON.stringify({workflow_step: {open: changeToOpen}}),
+    dataType: 'json'
+  }).always(function(msg) {
+    container.toggleClass('open').toggleClass('closed');
+    container.html(msg.responseText);
+  });
+});
+</script>

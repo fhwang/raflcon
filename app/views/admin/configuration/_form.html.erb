@@ -1,4 +1,4 @@
-<% form_for @configuration, :url => {:action => action, :id => params[:id]} do |f| %>
+<%= form_for @configuration, :url => {:action => action, :id => params[:id]} do |f| %>
   <% unless @configuration.errors.empty? %>
     <%= error_messages_for :configuration %>
   <% end %>
@@ -50,8 +50,21 @@
 <% end %>
 
 <script type="text/javascript">
-new Ajax.Autocompleter(
-  'configuration_time_zone', 'time_zone_palette', "/admin/time_zones"
-);
+$('#configuration_time_zone').autocomplete({
+  source: function(request, response) {
+    $.ajax({
+      url: '/admin/time_zones',
+      dataType: 'json',
+      data: {q: request.term},
+      success: function(data) {
+        response($.map(data, function(timeZone) {
+          return {
+            label: timeZone.friendly_identifier, 
+            value: timeZone.friendly_identifier
+          }
+        }));
+      }
+    })
+  }
+})
 </script>
-

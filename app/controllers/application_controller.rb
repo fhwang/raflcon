@@ -2,6 +2,8 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+  protect_from_forgery
+
   helper :all # include all helpers, all the time
 
   before_filter :login_required
@@ -10,8 +12,7 @@ class ApplicationController < ActionController::Base
   
   def login_required
     config_setup_paths = %w(
-      /admin/configuration/new /admin/configuration/create 
-      /admin/time_zones
+      /admin/configuration/new /admin/configuration /admin/time_zones
     )
     unless config_setup_paths.include?(request.path)
       username = ApplicationSetting['username']

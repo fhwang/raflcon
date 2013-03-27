@@ -11,7 +11,7 @@ class Admin::WorkflowStepsController < ApplicationController
     @workflow_step = WorkflowStep.find_by_position params[:id]
     @workflow_step.attributes = params[:workflow_step]
     @workflow_step.save
-    render :partial => 'show', :locals => {:workflow_step => @workflow_step}
+    render partial: 'show.html.erb', locals: {workflow_step: @workflow_step}
   end
   
   protected

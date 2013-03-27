@@ -1,10 +1,6 @@
-class WorkflowStep < ActiveRecord::BaseWithoutTable
-  column :description,  :string
-  column :link,         :string
-  column :name,         :string
-  column :open,         :boolean
-  column :position,     :integer
-  
+class WorkflowStep
+  attr_accessor :description, :link, :name, :open, :position
+
   StepAttrs = [
     {
       :description => "Setup general configuration.",
@@ -69,7 +65,27 @@ class WorkflowStep < ActiveRecord::BaseWithoutTable
   def self.find_by_position(position)
     all.detect { |workflow_step| workflow_step.position == position.to_i }
   end
-  
+
+  def initialize(attributes={})
+    self.attributes = attributes
+  end
+
+  def attributes=(attributes)
+    attributes = attributes.stringify_keys
+    attributes && attributes.each do |name, value|
+      if respond_to? name.to_sym
+        if name.to_sym == :open && value == '0'
+          value = false
+        end
+        send("#{name}=", value)
+      end
+    end
+  end
+
+  def open?
+    open
+  end
+
   def save
     closed = self.class.closed_steps
     if open? && closed.include?(position)

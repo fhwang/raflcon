@@ -1,12 +1,12 @@
 <html>
   <head>
-    <%= javascript_include_tag(
-      "prototype", "effects", "controls", 'dragdrop'
-    ) %>
+    <%= javascript_include_tag('vendor/jquery-1.9.1.min') %>
+    <%= javascript_include_tag('vendor/jquery-ui-1.9.2.all.min') %>
     <%= if self.respond_to?(:admin_assistant_includes) 
       admin_assistant_includes
     end %>
     <%= stylesheet_link_tag 'admin' %>
+    <%= stylesheet_link_tag('vendor/ui-lightness/jquery-ui-1.9.2.all.min') %>
   </head>
   <body>
   <h1>raflcon!</h1>
@@ -70,11 +70,11 @@
     <% unless controller_name == 'workflow_steps' %>
       <p id="back_to_dashboard">
       <%= link_to(
-        '&laquo; Back to dashboard', :controller => 'admin/workflow_steps'
+        raw('&laquo; Back to dashboard'), :controller => 'admin/workflow_steps'
       ) %>
       </p>
     <% end %>
-    <%= @content_for_layout %>
+    <%= yield %>
     </div>
   </body>
 </html>

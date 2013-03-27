@@ -12,7 +12,7 @@ describe 'GiveawayRound creation when time is set to UTC' do
   
   it 'should save the UTC values in the DB' do
     GiveawayRound.count(
-      :conditions => "time = '2009-09-30 19:45:00'"
+      :conditions => "time = '2009-09-30 19:45:00.000000'"
     ).should == 1
   end
 end

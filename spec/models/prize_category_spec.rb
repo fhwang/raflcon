@@ -4,10 +4,8 @@ describe 'PrizeCategory.unfilled when there are no giveaways' do
   before :all do
     setup_configuration
     Giveaway.destroy_all
-    @books = PrizeCategory.sample :name => 'Books', :count => 150
-    @messenger_bags = PrizeCategory.sample(
-      :name => 'Messenger bags', :count => 5
-    )
+    @books = PrizeCategory.sample :count => 150
+    @messenger_bags = PrizeCategory.sample :count => 5
     @unfilled = PrizeCategory.unfilled
   end
   
@@ -25,10 +23,8 @@ describe 'PrizeCategory.unfilled when there are some giveaways' do
   before :all do
     setup_configuration
     Giveaway.destroy_all
-    @books = PrizeCategory.sample :name => 'Books', :count => 150
-    @messenger_bags = PrizeCategory.sample(
-      :name => 'Messenger bags', :count => 5
-    )
+    @books = PrizeCategory.sample :count => 150
+    @messenger_bags = PrizeCategory.sample :count => 5
     Giveaway.sample :prize_category => @books, :count => 25
     Giveaway.sample :prize_category => @messenger_bags, :count => 5
     @unfilled = PrizeCategory.unfilled
@@ -48,10 +44,8 @@ describe 'PrizeCategory.unfilled when there everything has been filled' do
   before :all do
     setup_configuration
     Giveaway.destroy_all
-    @books = PrizeCategory.sample :name => 'Books', :count => 150
-    @messenger_bags = PrizeCategory.sample(
-      :name => 'Messenger bags', :count => 5
-    )
+    @books = PrizeCategory.sample :count => 150
+    @messenger_bags = PrizeCategory.sample :count => 5
     Giveaway.sample :prize_category => @books, :count => 150
     Giveaway.sample :prize_category => @messenger_bags, :count => 5
     @unfilled = PrizeCategory.unfilled

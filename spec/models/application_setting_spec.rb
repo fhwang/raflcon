@@ -6,9 +6,9 @@ describe 'ApplicationSetting#value_class TZInfo::Timezone' do
     ApplicationSetting['time_zone'] = TZInfo::Timezone.get('America/New_York')
   end
   
-  it 'should save as the identifier' do
+  it 'should save as the YAMLized identifier' do
     ApplicationSetting.count(
-      :conditions => {:value => 'America/New_York'}
+      :conditions => {:value => "--- America/New_York\n...\n"}
     ).should == 1
   end
   
@@ -23,7 +23,7 @@ describe 'ApplicationSetting key' do
     ApplicationSetting['username'] = 'bill'
   end
   
-  it 'should be uniquness' do
+  it 'should be uniqueness' do
     app_setting = ApplicationSetting.new :key => 'username', :value => 'bob'
     app_setting.should_not be_valid
   end

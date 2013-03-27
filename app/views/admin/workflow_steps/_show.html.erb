@@ -1,17 +1,15 @@
 <h2><%= workflow_step.position %>. <%= h(workflow_step.name) %></h2>
 <div class="open_or_close">
-  <%= link_to_remote(
-    (workflow_step.open? ? 'Close' : 'Open'),
-    :update => "workflow_step_#{workflow_step.position}",
-    :url => {
-      :action => 'update', :id => workflow_step.position,
-      :workflow_step => {:open => (workflow_step.open? ? '0' : '1')}
-    },
-    :success => "$('workflow_step_#{workflow_step.position}').toggleClassName('open'); $('workflow_step_#{workflow_step.position}').toggleClassName('closed')"
+  <%= link_to(
+    (workflow_step.open? ? 'Close' : 'Open'), 
+    {
+      action: 'update', id: workflow_step.position, 
+      workflow_step: {open: (workflow_step.open? ? '0' : '1')}
+    }
   ) %>
 </div>
 <% if workflow_step.open? %>
   <%= h(workflow_step.description) %>
-  <%= link_to("&raquo;", workflow_step.link) %>
+  <%= link_to(raw("&raquo;"), workflow_step.link) %>
 <% end %>
 

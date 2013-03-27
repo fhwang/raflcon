@@ -1,7 +1,0 @@
-mysql:
-  adapter: mysql
-  host: localhost
-  username: test
-  password: test
-  database: sample_models_test
-
