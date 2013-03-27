@@ -132,7 +132,7 @@ class AdminAssistant
         end
         
         def method_missing(meth, *args, &block)
-          if my_field_helpers.include?(meth.to_s)
+          if my_field_helpers.include?(meth)
             method = args.shift
             options = args.shift || {}
             @template.send(
