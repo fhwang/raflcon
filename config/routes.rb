@@ -60,7 +60,7 @@ Raflcon::Application.routes.draw do
 
   namespace :admin do
     resources :attendees, :configuration, :giveaway_rounds, :giveaways,
-              :prize_categories, :time_zones
+              :prize_categories, :reset, :time_zones
   end
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
