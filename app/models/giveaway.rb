@@ -8,8 +8,9 @@ class Giveaway < ActiveRecord::Base
   validates_presence_of   :giveaway_round_id
   validates_presence_of   :prize_category_id
   validates_uniqueness_of :prize_category_id, :scope => :giveaway_round_id
+  validate :totals_cant_exceed_prize_category_count
   
-  def after_save
+  after_save do
     if giveaway_round_id_changed? or active_changed?
       GiveawayRound.update_active_giveaways
     end
@@ -20,7 +21,7 @@ class Giveaway < ActiveRecord::Base
     count < setting ? count : setting
   end
   
-  def validate
+  def totals_cant_exceed_prize_category_count
     if count
       conditions = ["prize_category_id = ?", self.prize_category_id]
       if self.id

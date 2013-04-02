@@ -2,11 +2,11 @@ class Admin::ConfigurationController < ApplicationController
   layout 'admin'
 
   def new
-    @configuration = Configuration.new
+    @configuration = ::Configuration.new
   end
   
   def create
-    @configuration = Configuration.new params_from_post
+    @configuration = ::Configuration.new params_from_post
     if @configuration.save
       redirect_to "/admin"
     else
@@ -15,12 +15,12 @@ class Admin::ConfigurationController < ApplicationController
   end
   
   def edit
-    @configuration = Configuration.first
+    @configuration = ::Configuration.first
     @configuration.password = nil
   end
   
   def update
-    @configuration = Configuration.first
+    @configuration = ::Configuration.first
     @configuration.attributes = params_from_post
     if @configuration.save
       redirect_to "/admin"

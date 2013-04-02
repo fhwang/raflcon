@@ -17,12 +17,12 @@ describe AttendeesController do
 
     it 'should return the unawarded attendee' do
       json = JSON.parse response.body
-      assert json.any? { |rec| rec['attendee']['id'] == @unawarded.id }
+      assert json.any? { |rec| rec['id'] == @unawarded.id }
     end
 
     it 'should not return the unawarded attendee' do
       json = JSON.parse response.body
-      assert !json.any? { |rec| rec['attendee']['id'] == @awarded.id }
+      assert !json.any? { |rec| rec['id'] == @awarded.id }
     end
   end
 end

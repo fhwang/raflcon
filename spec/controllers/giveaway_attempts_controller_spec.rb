@@ -29,7 +29,7 @@ describe GiveawayAttemptsController do
 
     it 'should return a JSON response' do
       json = JSON.parse response.body
-      json["giveaway_attempt"].should_not be_nil
+      json.class.should == Hash
     end
   end
 

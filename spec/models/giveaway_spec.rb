@@ -134,7 +134,7 @@ describe 'Giveaway updating from one GiveawayRound to another' do
   before :all do
     setup_configuration
     @giveaway = Giveaway.sample :active => true
-    @old_giveaway_round = @giveaway.giveaway_round.target
+    @old_giveaway_round = @giveaway.giveaway_round
     @orig_old_active_giveaways = @old_giveaway_round.active_giveaways
     @new_giveaway_round = GiveawayRound.create_sample
     @orig_new_active_giveaways = @new_giveaway_round.active_giveaways

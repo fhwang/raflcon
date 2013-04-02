@@ -1,12 +1,7 @@
 <html>
   <head>
-    <%= javascript_include_tag('vendor/jquery-1.9.1.min') %>
-    <%= javascript_include_tag('vendor/jquery-ui-1.9.2.all.min') %>
-    <%= if self.respond_to?(:admin_assistant_includes) 
-      admin_assistant_includes
-    end %>
+    <%= javascript_include_tag 'admin' %>
     <%= stylesheet_link_tag 'admin' %>
-    <%= stylesheet_link_tag('vendor/ui-lightness/jquery-ui-1.9.2.all.min') %>
   </head>
   <body>
   <h1>raflcon!</h1>

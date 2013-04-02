@@ -21,8 +21,7 @@ describe GiveawaysController do
 
     it 'should return JSON for the updated Giveaway' do
       json = JSON.parse response.body
-      json['giveaway'].should_not be_nil
-      json['giveaway']['giveaway_round']['active_giveaways'].should ==
+      json['giveaway_round']['active_giveaways'].should ==
         @giveaway.giveaway_round(true).active_giveaways
     end
   end
