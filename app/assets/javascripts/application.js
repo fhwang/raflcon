@@ -117,13 +117,21 @@ Raflcon.prototype = {
   },
 
   tryDrawingIframe: function() {
+    var self = this
     var width = $(window).width() - $('#control_panel').outerWidth();
     var height = $(window).height();
     if (width > 0 && height > 0) {
-      var html = this.templateResult(
-        '#iframe_tmpl', {width: width, height: height}
-      );
-      $('body').append(html);
+      $.get("/conference", function(data) {
+        var html = self.templateResult(
+          '#iframe_tmpl',
+          {
+            width: width, 
+            height: height,
+            remaining_attendee_name_max: data.remaining_attendee_name_max
+          }
+        );
+        $('body').append(html);
+      });
     } else {
       _(this.tryDrawingIframe).delay(10);
     }

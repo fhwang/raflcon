@@ -3,6 +3,14 @@ class Conference < ActiveRecord::Base
   validates_presence_of :start_date
   validate              :end_date_should_be_after_start_date
   validate              :one_conference_per_raflcon_install
+
+  def as_json(options = nil)
+    remaining_attendee_name_max = 
+      Attendee.where(giveaway_attempt_id: nil).maximum("length(name)")
+    super.merge(
+      remaining_attendee_name_max: remaining_attendee_name_max
+    )
+  end
   
   def end_date_should_be_after_start_date
     if end_date < start_date
