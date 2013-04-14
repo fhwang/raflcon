@@ -1,0 +1,35 @@
+#control_panel {
+  width: 160px;
+  float: left;
+  padding: 10px;
+}
+
+#giveaway_rounds {
+  margin-top: 10px;
+}
+
+#giveaways {
+  margin-top: 10px;
+}
+
+form#create_giveaway_attempt {
+  margin-top: 10px;
+  background: #eee;
+  padding: 2px;
+}
+
+form#create_giveaway_attempt input.text {
+  width: 25px;
+}
+
+form#create_giveaway_attempt input.submit {
+  margin: 0 5px 0 20px;
+}
+
+form#create_giveaway_attempt .count {
+  font-size: small;
+}
+
+iframe {
+  border: none;
+}

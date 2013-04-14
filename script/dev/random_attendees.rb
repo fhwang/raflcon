@@ -5,8 +5,6 @@ unless ARGV.size == 1
   exit
 end
 
-require 'config/environment'
-
 first_names = %w(
   Alex Alfonso Allen Alpha Aman Ari Brad Brian Chad Chris Clifford Courtenay
   Dan Dave David Duncan Elliott Gary Jim John Kevin Lee Luke Marcy Matthew 
