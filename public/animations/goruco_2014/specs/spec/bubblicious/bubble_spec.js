@@ -15,13 +15,6 @@ describe('Bubblicious.Bubble', function() {
     });
   });
 
-  describe(".setTarget", function() {
-    it("turns on the isMovable flag", function() {
-      bubble = newBubble('a', 0, 0, {isMovable: false, target: [1,1]});
-      expect(bubble.isMovable).toBeTruthy()
-    });
-  });
-
   describe(".update", function() {
     it("locks to the target if close enough", function() {
       transition = {

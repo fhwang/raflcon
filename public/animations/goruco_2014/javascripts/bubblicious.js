@@ -24,8 +24,16 @@ _(function() {
     return this._maxDimensions
   };
 
+  this.minDimensions = function() {
+    if (!this._minDimensions) {
+      this._minDimensions = [-this.padding, -this.padding];
+    }
+    return this._minDimensions
+  };
+
   this.resetConstants = function() {
     this._boundingBox = null;
     this._maxDimensions = null;
+    this._minDimensions = null;
   }
 }).bind(Bubblicious)();

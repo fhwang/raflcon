@@ -29,10 +29,19 @@ describe('Bubblicious.TransitionState.StartFrame', function() {
     });
   });
 
-  describe(".setTarget", function() {
-    it("turns on the isMovable flag", function() {
-      bubble = newBubble('a', 0, 0, {isMovable: false, target: [1,1]});
-      expect(bubble.isMovable).toBeTruthy()
+  describe(".bubbles", function() {
+    it("sets locked to false", function() {
+      startBubble1 = newBubble('a', 0, 0);
+      startBubble2 = newBubble('b', 1, 1);
+      endBubble1 = newBubble('c', 2, 2);
+      endBubble2 = newBubble('d', 3, 3);
+      startFrame = new Bubblicious.TransitionState.StartFrame(
+        [startBubble1, startBubble2], [endBubble1, endBubble2]
+      )
+      bubble = _(startFrame.bubbles()).find(function(b) {
+        return b.char === 'a'
+      });
+      expect(bubble.locked).toBeFalsy()
     });
   });
 });
