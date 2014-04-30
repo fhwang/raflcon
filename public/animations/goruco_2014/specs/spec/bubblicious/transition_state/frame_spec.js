@@ -46,10 +46,10 @@ describe('Bubblicious.TransitionState.Frame', function() {
       Bubblicious.resetConstants();
       Bubblicious.rect = [1,1]
       Bubblicious.padding = 3;
-      bubble = newBubble('a', -10, -11, {velocity: [-1,-1]});
-      bubble.target = new Bubblicious.Location(0,0);
-      transition = new Bubblicious.Transition([bubble]);
-      transition.resolveAllCollisions();
+      bubble = newBubble('a', -10, -11, {velocity: [-1,-1], target: [0,0]});
+      frame = new Bubblicious.TransitionState.Frame([bubble]);
+      frame.resolveAllCollisions();
+      bubble = frame.bubbles[0]
       expect(bubble).toHaveLocation(2,1);
       expect(bubble.velocity).toBeCloseToElements([-0.656, -0.656], 0.01);
     });
