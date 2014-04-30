@@ -7,6 +7,7 @@ Bubblicious.Velocity = function(first, second) {
   } else {
     this._vector = Vector.create([first, second]);
   }
+  Object.freeze(this);
 };
 
 Bubblicious.Velocity.prototype = {

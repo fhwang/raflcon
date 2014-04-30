@@ -1,6 +1,7 @@
 Bubblicious.Location = function(x, y) {
   this.x = x;
   this.y = y;
+  Object.freeze(this);
 };
 
 Bubblicious.Location.prototype = {
