@@ -4,7 +4,7 @@ describe('Bubblicious.Velocity', function() {
       expect(function() {
         new Bubblicious.Velocity(null);
       }).toThrow(
-        new Error("Bubblicious.Velocity takes either (x, y) or a Vector")
+        "Bubblicious.Velocity takes either (x, y) or a Vector"
       )
     });
 
