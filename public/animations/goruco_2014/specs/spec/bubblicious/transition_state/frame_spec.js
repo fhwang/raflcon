@@ -67,8 +67,9 @@ describe('Bubblicious.TransitionState.Frame', function() {
       Bubblicious.padding = 3;
       bubble = newBubble('a', -3.5, 0, {velocity: [-1,-1]});
       bubble.target = new Bubblicious.Location(0,0);
-      transition = new Bubblicious.Transition([bubble]);
-      transition.resolveAllCollisions();
+      frame = new Bubblicious.TransitionState.Frame([bubble]);
+      frame.resolveAllCollisions();
+      bubble = frame.bubbles[0]
       expect(bubble).toHaveLocation(-2.5,0);
       expect(bubble.velocity).toBeCloseToElements([0.9, -0.9], 0.01);
     });
@@ -80,8 +81,9 @@ describe('Bubblicious.TransitionState.Frame', function() {
       Bubblicious.spacing = 2.1;
       bubble = newBubble('a', 100, 0, {velocity: [100, 0]})
       bubble.target = new Bubblicious.Location(0,0);
-      transition = new Bubblicious.Transition([bubble]);
-      transition.resolveAllCollisions();
+      frame = new Bubblicious.TransitionState.Frame([bubble]);
+      frame.resolveAllCollisions();
+      bubble = frame.bubbles[0]
       expect(bubble).toHaveLocation(1.6,0);
       expect(bubble.velocity).toBeCloseToElements([65.609,0], 0.01);
     });

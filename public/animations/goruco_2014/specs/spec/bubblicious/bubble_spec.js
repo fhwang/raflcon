@@ -36,20 +36,5 @@ describe('Bubblicious.Bubble', function() {
       expect(bubble.velocity.elements()).toBeCloseToElements([0, 0], 0.01);
       expect(bubble.isMovable).toBeFalsy();
     });
-
-    it('resets velocity to aim at the target if it has a target and is offscreen', function() {
-      transition = {
-        gravity: function() { return 20; },
-        cheatThreshold: function() { return 0.05; }
-      }
-      Bubblicious.Bubble.newBubbleStartingSpeed = 20;
-      bubble = newBubble('a', -20, 0, {velocity: [-10, -10], target: [0,0]})
-      bubble.transition = transition;
-      bubble.startedOffscreen = true;
-      expect(bubble.isOnscreen()).toBeFalsy();
-      bubble.update(0.1)
-      expect(bubble).toHaveLocation(-18, 0);
-      expect(bubble.velocity).toBeCloseToElements([20, 0], 0.001);
-    });
   });
 });
