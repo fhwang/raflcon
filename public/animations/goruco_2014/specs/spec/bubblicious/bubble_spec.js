@@ -3,11 +3,11 @@ describe('Bubblicious.Bubble', function() {
 
   describe(".overlaps", function() {
     it("should return true if the centers are less than one unit apart", function() {
-      bubble = new Bubblicious.Bubble('a', 0, 0);
-      bubble2 = new Bubblicious.Bubble('b', 0.5, 0.5);
+      bubble = new Bubblicious.Bubble('a', new Bubblicious.Location(0, 0));
+      bubble2 = new Bubblicious.Bubble('b', new Bubblicious.Location(0.5, 0.5));
       expect(bubble.overlaps(bubble2)).toBeTrue
       expect(bubble2.overlaps(bubble)).toBeTrue
-      bubble3 = new Bubblicious.Bubble('c', 1, 1);
+      bubble3 = new Bubblicious.Bubble('c', new Bubblicious.Location(1, 1));
       expect(bubble.overlaps(bubble3)).toBeFalsy();
       expect(bubble3.overlaps(bubble)).toBeFalsy();
       expect(bubble2.overlaps(bubble3)).toBeTruthy();

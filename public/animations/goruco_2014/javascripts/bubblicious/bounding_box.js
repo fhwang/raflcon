@@ -51,9 +51,9 @@ Bubblicious.BoundingBox.Axis.prototype = {
 
   normal: function(velocity) {
     if (this.number === 0) {
-      return $V([velocity.elements[0], 0])
+      return $V([velocity.elements()[0], 0])
     } else {
-      return $V([0, velocity.elements[1]])
+      return $V([0, velocity.elements()[1]])
     }
   },
 

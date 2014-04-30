@@ -86,7 +86,7 @@ Bubblicious.Collision.BoundingBox.prototype = _.extend({
   },
 
   buildNewVelocity: function() {
-    newVelocity = this.newVelocity.x(
+    var newVelocity = this.newVelocity.x(
       Math.pow(Bubblicious.Collision.elasticity, this.axisBounces)
     );
     if (Bubblicious.Collision.enableJitter) {

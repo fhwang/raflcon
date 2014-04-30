@@ -50,13 +50,14 @@ beforeEach(function() {
       }
     }
   });
-
 });
 
 window.newBubble = function(char, x, y, opts) {
   if (!opts) opts = {};
   var velocity, locked, target;
-  if (elements = opts.velocity) velocity = Vector.create(elements)
+  if (elements = opts.velocity) {
+    velocity = new Bubblicious.Velocity(elements[0], elements[1]);
+  }
   if (typeof opts.locked !== 'undefined') locked = opts.locked;
   if (coords = opts.target) {
     target = new Bubblicious.Location(coords[0], coords[1])

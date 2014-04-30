@@ -14,6 +14,9 @@ describe('Bubblicious.Location', function() {
       location2 = location.add([1,0])
       expect(location2.x).toEqual(-2.5);
       expect(location2.y).toEqual(0);
+      location3 = location.add([0,1])
+      expect(location3.x).toEqual(-3.5);
+      expect(location3.y).toEqual(1);
     });
   });
 

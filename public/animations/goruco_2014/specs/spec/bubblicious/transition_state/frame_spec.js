@@ -6,7 +6,7 @@ describe('Bubblicious.TransitionState.Frame', function() {
   });
   
   describe(".resolveAllCollisions", function() {
-    it("handles a collision with a boundary", function() {
+    it("handles a collision with a boundary once", function() {
       Bubblicious.padding = 3;
       bubble = newBubble('a', -3.5, 0, {velocity: [-1,0], target: [0,0]});
       frame = new Bubblicious.TransitionState.Frame([bubble]);
@@ -35,8 +35,9 @@ describe('Bubblicious.TransitionState.Frame', function() {
       Bubblicious.padding = 3;
       bubble = newBubble('a', -4, -5, {velocity: [-1,-1]});
       bubble.target = new Bubblicious.Location(0,0);
-      transition = new Bubblicious.Transition([bubble]);
-      transition.resolveAllCollisions();
+      frame = new Bubblicious.TransitionState.Frame([bubble]);
+      frame.resolveAllCollisions();
+      bubble = frame.bubbles[0]
       expect(bubble).toHaveLocation(-2,-1);
       expect(bubble.velocity).toBeCloseToElements([0.81, 0.81], 0.01);
     });
@@ -58,8 +59,8 @@ describe('Bubblicious.TransitionState.Frame', function() {
       Bubblicious.padding = 3;
       bubble = newBubble('a', -3.5, 0, {velocity: [-1,0]});
       bubble.target = new Bubblicious.Location(0,0);
-      transition = new Bubblicious.Transition([bubble]);
-      transition.resolveAllCollisions();
+      frame = new Bubblicious.TransitionState.Frame([bubble]);
+      frame.resolveAllCollisions();
     });
 
     it("handles a collision with a boundary at an angle", function() {

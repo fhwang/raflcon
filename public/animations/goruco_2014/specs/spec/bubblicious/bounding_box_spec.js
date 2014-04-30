@@ -30,7 +30,7 @@ describe('Bubblicious.BoundingBox.Axis', function() {
   describe('.normal', function() {
     it('returns a straight line away into the edge of the axis', function() {
       axis = new Bubblicious.BoundingBox.Axis(0);
-      velocity = Vector.create([-1, 1]);
+      velocity = new Bubblicious.Velocity(-1, 1);
       normal = axis.normal(velocity)
       expect(normal).toBeCloseToElements([-1, 0], 0.01);
     });

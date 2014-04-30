@@ -5,7 +5,7 @@ Bubblicious.Location = function(x, y) {
 
 Bubblicious.Location.prototype = {
   add: function(otherLoc) {
-    if (otherLoc[0]) {
+    if (typeof otherLoc[0] === 'number') {
       elements = otherLoc
     } else {
       elements = otherLoc.elements
