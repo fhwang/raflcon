@@ -32,17 +32,17 @@ beforeEach(function() {
 
   newBubble = function(char, x, y, opts) {
     if (!opts) opts = {};
-    bubble = { char: char, location: {x: x, y: y} }
-    if (elements = opts.velocity) {
-      bubble.velocity = Vector.create(elements)
-    }
-    if (typeof opts.locked !== 'undefined') {
-      bubble.locked = opts.locked;
-    }
+    var velocity, locked, target;
+    if (elements = opts.velocity) velocity = Vector.create(elements)
+    if (typeof opts.locked !== 'undefined') locked = opts.locked;
     if (coords = opts.target) {
-      bubble.target = {x: coords[0], y: coords[1]}
+      target = new Bubblicious.Location(coords[0], coords[1])
     }
-    return bubble;
+    return new Bubblicious.Bubble(
+      char, 
+      new Bubblicious.Location(x, y), 
+      {velocity: velocity, locked: locked, target: target}
+    )
   }
 });
 

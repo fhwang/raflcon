@@ -4,6 +4,17 @@ Bubblicious.Location = function(x, y) {
 };
 
 Bubblicious.Location.prototype = {
+  add: function(otherLoc) {
+    if (otherLoc[0]) {
+      elements = otherLoc
+    } else {
+      elements = otherLoc.elements
+    }
+    return new Bubblicious.Location(
+      this.x + elements[0], this.y + elements[1]
+    );
+  },
+
   vectorTo: function(otherLoc) {
     if (typeof otherLoc.x !== 'number' || typeof otherLoc.y !== 'number') {
       return otherLoc.vectorTo().x(-1);
