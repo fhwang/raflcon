@@ -1,17 +1,24 @@
-describe('Bubblicious.BubbleFunctions', function() {
+describe('Bubblicious.Bubble', function() {
   var bubble;
 
-  describe(".overlapping", function() {
+  describe(".overlaps", function() {
     it("should return true if the centers are less than one unit apart", function() {
-      bubble = {location: {x: 0, y: 0}}
-      bubble2 = {location: {x: 0.5, y: 0.5}}
-      expect(Bubblicious.BubbleFunctions.overlapping(bubble, bubble2)).toBeTrue
-      expect(Bubblicious.BubbleFunctions.overlapping(bubble2, bubble)).toBeTrue
-      bubble3 = {location: {x: 1, y: 1}};
-      expect(Bubblicious.BubbleFunctions.overlapping(bubble, bubble3)).toBeFalsy();
-      expect(Bubblicious.BubbleFunctions.overlapping(bubble3, bubble)).toBeFalsy();
-      expect(Bubblicious.BubbleFunctions.overlapping(bubble2, bubble3)).toBeTruthy()
-      expect(Bubblicious.BubbleFunctions.overlapping(bubble3, bubble2)).toBeTruthy();
+      bubble = new Bubblicious.Bubble('a', 0, 0);
+      bubble2 = new Bubblicious.Bubble('b', 0.5, 0.5);
+      expect(bubble.overlaps(bubble2)).toBeTrue
+      expect(bubble2.overlaps(bubble)).toBeTrue
+      bubble3 = new Bubblicious.Bubble('c', 1, 1);
+      expect(bubble.overlaps(bubble3)).toBeFalsy();
+      expect(bubble3.overlaps(bubble)).toBeFalsy();
+      expect(bubble2.overlaps(bubble3)).toBeTruthy();
+      expect(bubble3.overlaps(bubble2)).toBeTruthy();
+    });
+  });
+
+  describe(".setTarget", function() {
+    it("turns on the isMovable flag", function() {
+      bubble = newBubble('a', 0, 0, {isMovable: false, target: [1,1]});
+      expect(bubble.isMovable).toBeTruthy()
     });
   });
 
