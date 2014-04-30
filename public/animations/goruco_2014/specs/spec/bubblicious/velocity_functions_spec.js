@@ -1,0 +1,2 @@
+describe('Bubblicious.VelocityFunctions', function() {
+});
