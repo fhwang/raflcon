@@ -21,6 +21,10 @@ Bubblicious.Velocity.prototype = {
     return this._vector.elements;
   },
 
+  modulus: function() {
+    return this._vector.modulus();
+  },
+
   subtract: function(arg) {
     vector = arg.vector ? arg.vector() : arg
     newVector = this._vector.subtract(vector)

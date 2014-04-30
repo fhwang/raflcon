@@ -25,14 +25,13 @@ Bubblicious.TransitionState.StartFrame.prototype = {
     var location = this.randomAvailableOffscreenLocation();
     var target = endBubble.location;
     var vectorToTarget = location.vectorTo(target);
-    var velocity = vectorToTarget.toUnitVector().x(newBubbleStartingSpeed);
-    return {
-      char: endBubble.char,
-      location: location,
-      target: target,
-      enteringScreen: true,
-      velocity: velocity
-    }
+    var velocity = new Bubblicious.Velocity(
+      vectorToTarget.toUnitVector().x(newBubbleStartingSpeed)
+    )
+    return new Bubblicious.Bubble(
+      endBubble.char, location,
+      { target: target, enteringScreen: true, velocity: velocity }
+    )
   },
 
   offscreenBubbles: function() {

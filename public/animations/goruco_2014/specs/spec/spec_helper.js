@@ -1,5 +1,16 @@
 beforeEach(function() {
   jasmine.addMatchers({
+    toBeClose: function() {
+      return {
+        compare: function(actual, expected, delta) {
+          if (typeof delta === 'undefined') delta = 0.0001;
+          return {
+            pass: Math.abs(actual - expected) < delta
+          }
+        }
+      }
+    },
+
     toBeCloseToElements: function() {
       return {
         compare: function(actual, expected, delta) {
@@ -39,7 +50,6 @@ beforeEach(function() {
         compare: function(actual, expectedX, expectedY, delta) {
           var location = actual.location;
           if (typeof delta === 'undefined') delta = 0.0001;
-          var result = {}
           return {
             pass: (
               Math.abs(location.x-expectedX) < delta &&
