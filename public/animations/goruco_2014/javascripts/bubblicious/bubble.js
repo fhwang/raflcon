@@ -10,6 +10,7 @@ Bubblicious.Bubble = function(char, location, opts) {
   }
   this.locked = opts.locked;
   this.target = opts.target;
+  Object.freeze(this);
 };
 
 Bubblicious.Bubble.prototype = {
