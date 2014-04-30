@@ -15,6 +15,10 @@ Bubblicious.Location.prototype = {
     );
   },
 
+  coords: function(location) {
+    return [location.x, location.y]
+  },
+
   vectorTo: function(otherLoc) {
     if (typeof otherLoc.x !== 'number' || typeof otherLoc.y !== 'number') {
       return otherLoc.vectorTo().x(-1);

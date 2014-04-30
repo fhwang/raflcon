@@ -22,6 +22,10 @@ _(function() {
       ]
     }
     return this._maxDimensions
+  };
+
+  this.resetConstants = function() {
+    this._boundingBox = null;
+    this._maxDimensions = null;
   }
-  
 }).bind(Bubblicious)();

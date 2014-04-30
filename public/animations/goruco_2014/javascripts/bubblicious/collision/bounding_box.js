@@ -31,8 +31,7 @@ Bubblicious.Collision.BoundingBox.prototype = _.extend({
         axis = Bubblicious.boundingBox().axis(axisNumber);
         bounds = axis.bounds
         boundsRange = bounds[1] - bounds[0];
-        point = 
-          Bubblicious.LocationFunctions.coords(self.newLocation)[axisNumber]
+        points = self.newLocation.coords[axisNumber]
         if (point < bounds[0] || point > bounds[1]) {
           self.bounceWithinAxisBounds(point, bounds, axis, axisNumber);
         }

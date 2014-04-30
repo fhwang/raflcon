@@ -22,8 +22,9 @@ describe('Bubblicious.TransitionState.Frame', function() {
       Bubblicious.padding = 3;
       bubble = newBubble('a', -10, 0, {velocity: [-1,0]});
       bubble.target = new Bubblicious.Location(0,0);
-      transition = new Bubblicious.Transition([bubble]);
-      transition.resolveAllCollisions();
+      frame = new Bubblicious.TransitionState.Frame([bubble]);
+      frame.resolveAllCollisions();
+      bubble = frame.bubbles[0]
       expect(bubble).toHaveLocation(2,0);
       expect(bubble.velocity).toBeCloseToElements([-0.81, 0], 0.01);
     });
