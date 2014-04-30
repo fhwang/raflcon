@@ -1,19 +1,17 @@
-describe('Bubblicious.LocationFunctions', function() {
+describe('Bubblicious.Location', function() {
   var location;
 
-  describe(".vector", function() {
+  describe(".vectorTo", function() {
     it("should return a zeroed distance if the two locations are the same", function() {
-      location = {x: 5, y: 5}
-      var difference = Bubblicious.LocationFunctions.vector(
-        location, location
-      );
+      location = new Bubblicious.Location(5,5);
+      var difference = location.vectorTo(location);
       expect(difference.elements).toEqual([0,0]);
     });
 
     it("should return a non-zero array of elements if the two locations are different", function() {
-      source = {x: 3, y: 4}
-      dest = {x: 0, y: 0};
-      var difference = Bubblicious.LocationFunctions.vector(source, dest);
+      sourceLocation = new Bubblicious.Location(3,4);
+      destLocation = new Bubblicious.Location(0,0);
+      var difference = sourceLocation.vectorTo(destLocation);
       expect(difference.elements).toEqual([-3,-4]);
     });
   });
