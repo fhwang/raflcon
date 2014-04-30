@@ -20,6 +20,17 @@ Bubblicious.Location.prototype = {
     return [location.x, location.y]
   },
 
+  px: function() {
+    return (this.x + Bubblicious.padding + 0.5) * Bubblicious.bubbleDiameter();
+  },
+
+  py: function() {
+    return(
+      Bubblicious.canvasHeight() -
+      ((this.y + Bubblicious.padding + 0.5) * Bubblicious.bubbleDiameter())
+    )
+  },
+
   vectorTo: function(otherLoc) {
     if (typeof otherLoc.x !== 'number' || typeof otherLoc.y !== 'number') {
       return otherLoc.vectorTo().x(-1);
