@@ -40,10 +40,10 @@ Bubblicious.Collision.TwoBubble.LocationCorrector.prototype = {
   correction: function(i, normal) {
     if (i === 0) {
       otherIdx = 1;
-      multiplier = -0.5;
+      multiplier = -1;
     } else {
       otherIdx = 0;
-      multiplier = 0.5;
+      multiplier = 1;
     }
     if (this.collision.bubbles[otherIdx].locked) {
       multiplier = multiplier * 2
@@ -54,11 +54,10 @@ Bubblicious.Collision.TwoBubble.LocationCorrector.prototype = {
     )
   },
 
-  run: function() {
+  nonZeroDistanceCorrections: function(vectorBetween) {
     var self = this,
         result = []
     overlapDistance = Math.max(this.collision.overlapDistance(), 0.001)
-    vectorBetween = this.collision.normalVector();
     normal = vectorBetween.toUnitVector().x(overlapDistance)
     _([0,1]).each(function(i) {
       if (!self.collision.bubbles[i].locked) { 
@@ -66,6 +65,32 @@ Bubblicious.Collision.TwoBubble.LocationCorrector.prototype = {
       }
     });
     return result
+  },
+
+  run: function() {
+    var vectorBetween = this.collision.normalVector();
+    if (vectorBetween.modulus() > 0) {
+      return this.nonZeroDistanceCorrections(vectorBetween)
+    } else {
+      return this.zeroDistanceCorrections();
+    }
+  },
+
+  // When the bodies are at the exact same location, we push back the fastest
+  // one and call it a day
+  zeroDistanceCorrections: function() {
+    var fastestBubble, originalVelocity;
+    fastestBubble = this.collision.fastestBubble();
+    unitVector = fastestBubble.velocity.vector().toUnitVector();
+    if (unitVector.modulus() === 0) {
+      var x = (Math.random() * 2) - 1
+      var y = (Math.random() * 2) - 1
+      unitVector = $V([x, y]).toUnitVector();
+    }
+    vector = unitVector.x(-1);
+    return [new Bubblicious.Collision.LocationCorrection(
+      fastestBubble, vector
+    )];
   }
 }
 

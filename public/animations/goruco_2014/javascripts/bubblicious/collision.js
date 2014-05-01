@@ -4,6 +4,17 @@ Bubblicious.Collision = {
 };
 
 Bubblicious.Collision.prototype = {
+  fastestBubble: function() {
+    if (!this._fastestBubble) {
+      if (this.bubbles[0].speed() > this.bubbles[1].speed()) {
+        this._fastestBubble = this.bubbles[0];
+      } else {
+        this._fastestBubble = this.bubbles[1];
+      }
+    }
+    return this._fastestBubble
+  },
+
   jitterMagnitude: function() {
     var jitterMax = 0.1;
     return (Math.random() * jitterMax * 2) - jitterMax

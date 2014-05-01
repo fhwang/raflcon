@@ -17,9 +17,9 @@ describe('Bubblicious.TransitionState.Frame.CollisionResolver', function() {
       bubble2Prime = _(newBubbles).detect(function(b) {
         return b.char === 'b'
       });
-      expect(bubble1Prime).toHaveLocation(0.05,0);
+      expect(bubble1Prime).toHaveLocation(0,0);
       expect(bubble1Prime.velocity).toBeCloseToElements([0,0], 0.01);
-      expect(bubble2Prime).toHaveLocation(1.05,0);
+      expect(bubble2Prime).toHaveLocation(1.1,0);
       expect(bubble2Prime.velocity).toBeCloseToElements([0.9, 0], 0.01);
     });
   });
