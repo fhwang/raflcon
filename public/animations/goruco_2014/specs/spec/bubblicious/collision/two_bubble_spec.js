@@ -18,7 +18,7 @@ describe('Bubblicious.Collision.TwoBubble', function() {
         return c.bubbleKey.char === 'b'
       });
       expect(correction1.delta).toBeCloseToElements([-0.1, 0])
-      expect(correction2.delta).toBeCloseToElements([0.1, 0])
+      expect(correction2.delta).toBeCloseToElements([0, 0])
     });
 
     it("should return a random unit vector if the bubbles are in the same location with zero velocity", function() {

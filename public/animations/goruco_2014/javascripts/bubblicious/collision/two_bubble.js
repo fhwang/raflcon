@@ -38,16 +38,14 @@ Bubblicious.Collision.TwoBubble.LocationCorrector = function(collision) {
 
 Bubblicious.Collision.TwoBubble.LocationCorrector.prototype = {
   correction: function(i, normal) {
+    var multiplier = this.ratioOfTotalSpeed(i);
     if (i === 0) {
       otherIdx = 1;
-      multiplier = -1;
+      multiplier *= -1;
     } else {
       otherIdx = 0;
-      multiplier = 1;
     }
-    if (this.collision.bubbles[otherIdx].locked) {
-      multiplier = multiplier * 2
-    }
+    if (this.collision.bubbles[otherIdx].locked) multiplier *= 2
     vector = normal.x(multiplier); 
     return new Bubblicious.Collision.LocationCorrection(
       this.collision.bubbles[i], vector
@@ -65,6 +63,13 @@ Bubblicious.Collision.TwoBubble.LocationCorrector.prototype = {
       }
     });
     return result
+  },
+
+  ratioOfTotalSpeed: function(i) {
+    var totalSpeed = _(this.collision.bubbles).reduce(function(memo, bubble) {
+      return memo + bubble.speed();
+    }, 0);
+    return this.collision.bubbles[i].speed() / totalSpeed;
   },
 
   run: function() {
