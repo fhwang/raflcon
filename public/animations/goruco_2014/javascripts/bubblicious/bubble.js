@@ -14,6 +14,14 @@ Bubblicious.Bubble = function(char, location, opts) {
   Object.freeze(this);
 };
 
+Bubblicious.Bubble.isCloseEnoughToTarget = function(location, target, cheatThreshold) {
+  return (
+    location && 
+    target && 
+    (location.vectorTo(target).modulus() <= cheatThreshold)
+  ) 
+};
+
 Bubblicious.Bubble.prototype = {
   acceleration: function(interval, gravity) {
     if (this.target) {
@@ -27,20 +35,35 @@ Bubblicious.Bubble.prototype = {
     }
   },
 
-  advanced: function(interval, gravity) {
+  lockedToTarget: function() {
+    return this.modifiedCopy(
+      { 
+        location: this.target, 
+        velocity: new Bubblicious.Velocity(0,0), 
+        enteringScreen: false, 
+        locked: true
+      }
+    )
+  },
+
+  advanced: function(interval, gravity, cheatThreshold) {
     if (this.locked) {
       return this;
     } else {
       var velocity = this.advancedVelocity(interval, gravity)
       var location = this.advancedLocation(velocity, interval);
       var enteringScreen = this.advancedEnteringScreen(location);
-      return this.modifiedCopy(
-        {
-          location: location, 
-          velocity: velocity, 
-          enteringScreen: enteringScreen
-        }
-      );
+      if (Bubblicious.Bubble.isCloseEnoughToTarget(location, this.target, cheatThreshold)) {
+        return this.lockedToTarget()
+      } else {
+        return this.modifiedCopy(
+          {
+            location: location, 
+            velocity: velocity, 
+            enteringScreen: enteringScreen
+          }
+        );
+      }
     }
   },
 

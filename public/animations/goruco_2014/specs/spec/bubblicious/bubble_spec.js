@@ -19,6 +19,21 @@ describe('Bubblicious.Bubble', function() {
       advanced = bubble.advanced(0.1, 10);
       expect(advanced.location.coords()).toEqual([0.1, 0]);
     });
+
+    it("locks to the target if close enough", function() {
+      bubble = new Bubblicious.Bubble(
+        'a', new Bubblicious.Location(0, 0),
+        {target: new Bubblicious.Location(1, 0)}
+      )
+      var interval = 0.31;
+      var gravity = 10;
+      var cheatThreshold = 0.1
+      advanced = bubble.advanced(interval, gravity, cheatThreshold)
+      expect(advanced.location.coords()).toEqual([1,0]);
+      expect(advanced.velocity.elements()).toEqual([0,0]);
+      expect(advanced.locked).toBeTrue
+      expect(advanced.target).toBeFalsy
+    });
   });
 
   describe(".modifiedCopy", function() {
@@ -44,22 +59,6 @@ describe('Bubblicious.Bubble', function() {
       expect(bubble3.overlaps(bubble)).toBeFalsy();
       expect(bubble2.overlaps(bubble3)).toBeTruthy();
       expect(bubble3.overlaps(bubble2)).toBeTruthy();
-    });
-  });
-
-  describe(".update", function() {
-    it("locks to the target if close enough", function() {
-      transition = {
-        gravity: function() { return 20; },
-        cheatThreshold: function() { return 0.05; }
-      }
-      bubble = newBubble('a', 0.001, 0, {target: [0,0]});
-      target = bubble.target;
-      bubble.transition = transition;
-      bubble.update(1);
-      expect(bubble.location).toEqual(target);
-      expect(bubble.velocity.elements()).toBeCloseToElements([0, 0], 0.01);
-      expect(bubble.isMovable).toBeFalsy();
     });
   });
 });
