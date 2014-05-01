@@ -21,23 +21,9 @@ Bubblicious.Collision.prototype = {
   }
 };
 
-Bubblicious.Collision.Correction = function(bubbleKey, locationDelta, velocityDelta) {
-  // bubbleKey is only used so clients can match corrections to a specific key
-  // in isMatch below
-  this.bubbleKey = bubbleKey
-  this.locationDelta = locationDelta;
-  this.velocityDelta = velocityDelta;
-}
+Bubblicious.Collision.Correction = {}
 
 Bubblicious.Collision.Correction.prototype = {
-  apply: function(bubble) {
-    var location = bubble.location.add(this.locationDelta);
-    velocity = bubble.velocity.add(this.velocityDelta);
-    return bubble.modifiedCopy(
-      { location: location, velocity: velocity }
-    )
-  },
-
   isFieldMatch: function(bubble, field) {
     return (!bubble[field] && !this.bubbleKey[field]) || (
       bubble[field] && this.bubbleKey[field] && 
@@ -52,3 +38,26 @@ Bubblicious.Collision.Correction.prototype = {
   }
 }
 
+Bubblicious.Collision.LocationCorrection = function(bubbleKey, delta) {
+  this.bubbleKey = bubbleKey;
+  this.delta = delta;
+}
+
+Bubblicious.Collision.LocationCorrection.prototype = _.extend({
+  apply: function(bubble) {
+    var location = bubble.location.add(this.delta);
+    return bubble.modifiedCopy({location: location})
+  },
+}, Bubblicious.Collision.Correction.prototype);
+
+Bubblicious.Collision.VelocityCorrection = function(bubbleKey, delta) {
+  this.bubbleKey = bubbleKey;
+  this.delta = delta;
+}
+
+Bubblicious.Collision.VelocityCorrection.prototype = _.extend({
+  apply: function(bubble) {
+    velocity = bubble.velocity.add(this.delta);
+    return bubble.modifiedCopy({velocity: velocity})
+  },
+}, Bubblicious.Collision.Correction.prototype);

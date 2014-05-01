@@ -113,9 +113,12 @@ Bubblicious.Collision.BoundingBox.prototype = _.extend({
       }
       this.newVelocity = this.buildNewVelocity();
       this._corrections = [
-        new Bubblicious.Collision.Correction(
+        new Bubblicious.Collision.LocationCorrection(
           this.bubble,
-          this.bubble.location.vectorTo(this.newLocation),
+          this.bubble.location.vectorTo(this.newLocation)
+        ),
+        new Bubblicious.Collision.VelocityCorrection(
+          this.bubble,
           this.newVelocity.subtract(this.bubble.velocity)
         )
       ]
