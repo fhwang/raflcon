@@ -18,7 +18,6 @@ Bubblicious.ProcessingWrapper.prototype = _.extend({
   drawBubble: function(bubble) {
     this.processing.noStroke();
     this.processing.fill('#ffffff');
-    if (!bubble.location.px) debugger
     this.processing.ellipse(
       bubble.location.px(),
       bubble.location.py(),

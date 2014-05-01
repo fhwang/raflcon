@@ -31,14 +31,9 @@ Bubblicious.Bubble.prototype = {
     if (this.locked) {
       return this;
     } else {
-      var enteringScreen = this.enteringScreen;
-      velocity = this.velocity
-      acceleration = this.acceleration(interval, gravity);
-      if (acceleration) velocity = velocity.add(acceleration);
+      var velocity = this.advancedVelocity(interval, gravity)
       var location = this.advancedLocation(velocity, interval);
-      if (enteringScreen && this.isFullyOnscreen()) {
-        enteringScreen = false
-      }
+      var enteringScreen = this.advancedEnteringScreen(location);
       return this.modifiedCopy(
         {
           location: location, 
@@ -49,12 +44,25 @@ Bubblicious.Bubble.prototype = {
     }
   },
 
+  advancedEnteringScreen: function(location) {
+    return (
+      this.enteringScreen && !Bubblicious.boundingBox().fullyContains(location)
+    );
+  },
+
   advancedLocation: function(velocity, interval) {
     move = velocity.x(interval);
     return new Bubblicious.Location(
       this.location.x + move.elements()[0], 
       this.location.y + move.elements()[1]
     )
+  },
+
+  advancedVelocity: function(interval, gravity) {
+    velocity = this.velocity
+    acceleration = this.acceleration(interval, gravity);
+    if (acceleration) velocity = velocity.add(acceleration);
+    return velocity
   },
 
   gravitationalAcceleration: function(source, dest, interval, gravity) {
