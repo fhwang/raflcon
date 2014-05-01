@@ -6,14 +6,6 @@ describe('Bubblicious.Transition', function() {
   });
   
   describe(".resolveAllCollisions", function() {
-    it("does not change the velocity of a locked bubble even when jitter is on", function() {
-      Bubblicious.Collision.enableJitter = true;
-      bubble0 = newBubble('a', 0.1, 0, {velocity: [1,0]});
-      bubble1 = newBubble('b', 1, 0, {velocity: [0,0], isMovable: false});
-      transition = new Bubblicious.Transition([bubble0, bubble1]);
-      transition.resolveAllCollisions();
-      expect(bubble1.velocity.elements()).toEqual([0,0]);
-    });
 
     it("knows how to resolve a collision where both bubbles end up at the exact same location", function() {
       Bubblicious.Collision.enableJitter = false;

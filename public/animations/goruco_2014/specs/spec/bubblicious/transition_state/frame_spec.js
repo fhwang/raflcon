@@ -102,5 +102,19 @@ describe('Bubblicious.TransitionState.Frame', function() {
       expect(bubble1Prime).toHaveLocation(1,0);
       expect(bubble1Prime.velocity).toBeCloseToElements([0, 0], 0.01);
     });
+
+    it("does not change the velocity of a locked bubble even when jitter is on", function() {
+      Bubblicious.Collision.enableJitter = true;
+      bubble0 = newBubble('a', 0.1, 0, {velocity: [1,0], target: [1,1]});
+      bubble1 = newBubble(
+        'b', 1, 0, {velocity: [0,0], target: [0,0], locked: true}
+      );
+      frame = new Bubblicious.TransitionState.Frame([bubble0, bubble1]);
+      frame.resolveAllCollisions();
+      bubble1Prime = _(frame.bubbles).detect(function(b) {
+        return b.char === 'b'
+      });
+      expect(bubble1Prime.velocity.elements()).toEqual([0,0]);
+    });
   });
 });
