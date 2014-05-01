@@ -98,6 +98,14 @@ Bubblicious.Bubble.prototype = {
     return Bubblicious.boundingBox().partiallyContains(this);
   },
 
+  mass: function() {
+    if (this.locked) {
+      return 1000000;
+    } else {
+      return 1
+    }
+  },
+
   modifiedCopy: function(newAttrs) {
     var location = newAttrs.location || this.location;
     opts = {
