@@ -24,6 +24,13 @@ Bubblicious.Collision.prototype = {
 Bubblicious.Collision.Correction = {}
 
 Bubblicious.Collision.Correction.prototype = {
+  initialize: function(bubbleKey) {
+    if (!bubbleKey.target && !bubbleKey.antiTarget) {
+      throw "bubbleKey needs either a target or an antiTarget"
+    }
+    this.bubbleKey = bubbleKey;
+  },
+
   isFieldMatch: function(bubble, field) {
     return (!bubble[field] && !this.bubbleKey[field]) || (
       bubble[field] && this.bubbleKey[field] && 
@@ -39,7 +46,7 @@ Bubblicious.Collision.Correction.prototype = {
 }
 
 Bubblicious.Collision.LocationCorrection = function(bubbleKey, delta) {
-  this.bubbleKey = bubbleKey;
+  this.initialize(bubbleKey);
   this.delta = delta;
 }
 
@@ -51,7 +58,7 @@ Bubblicious.Collision.LocationCorrection.prototype = _.extend({
 }, Bubblicious.Collision.Correction.prototype);
 
 Bubblicious.Collision.VelocityCorrection = function(bubbleKey, delta) {
-  this.bubbleKey = bubbleKey;
+  this.initialize(bubbleKey);
   this.delta = delta;
 }
 

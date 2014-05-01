@@ -35,27 +35,16 @@ Bubblicious.Bubble.prototype = {
     }
   },
 
-  lockedToTarget: function() {
-    return this.modifiedCopy(
-      { 
-        location: this.target, 
-        velocity: new Bubblicious.Velocity(0,0), 
-        enteringScreen: false, 
-        locked: true
-      }
-    )
-  },
-
   advanced: function(interval, gravity, cheatThreshold) {
     if (this.locked) {
       return this;
     } else {
       var velocity = this.advancedVelocity(interval, gravity)
       var location = this.advancedLocation(velocity, interval);
-      var enteringScreen = this.advancedEnteringScreen(location);
       if (Bubblicious.Bubble.isCloseEnoughToTarget(location, this.target, cheatThreshold)) {
-        return this.lockedToTarget()
+        return this.advancedLockedToTarget()
       } else {
+        var enteringScreen = this.advancedEnteringScreen(location);
         return this.modifiedCopy(
           {
             location: location, 
@@ -78,6 +67,17 @@ Bubblicious.Bubble.prototype = {
     return new Bubblicious.Location(
       this.location.x + move.elements()[0], 
       this.location.y + move.elements()[1]
+    )
+  },
+
+  advancedLockedToTarget: function() {
+    return this.modifiedCopy(
+      { 
+        location: this.target, 
+        velocity: new Bubblicious.Velocity(0,0), 
+        enteringScreen: false, 
+        locked: true
+      }
     )
   },
 
@@ -108,7 +108,27 @@ Bubblicious.Bubble.prototype = {
     return new Bubblicious.Bubble(this.char, location, opts)
   },
 
+  overlapDistance: function(otherBubble) {
+    overlapDistance = 1 - this.vectorTo(otherBubble).modulus();
+    overlapDistance = Math.max(overlapDistance, 0);
+    return overlapDistance;
+  },
+
   overlaps: function(otherBubble) {
     return this.location.vectorTo(otherBubble.location).modulus() < 1;
+  },
+
+  speed: function() {
+    return this.velocity.modulus();
+  },
+
+  vectorTo: function(arg) {
+    var otherLocation;
+    if (arg.location) {
+      otherLocation = arg.location;
+    } else {
+      otherLocation = arg;
+    }
+    return this.location.vectorTo(otherLocation);
   },
 }

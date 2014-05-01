@@ -14,9 +14,7 @@ beforeEach(function() {
     toBeCloseToElements: function() {
       return {
         compare: function(actual, expected, delta) {
-          if (typeof delta === 'undefined') {
-            throw "toBeCloseToElements: delta must be defined"
-          }
+          if (typeof delta === 'undefined') delta = 0.0001;
           var actualElements;
           if (actual.elements) {
             if (typeof actual.elements === 'function') {

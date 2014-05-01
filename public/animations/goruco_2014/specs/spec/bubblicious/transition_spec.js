@@ -6,17 +6,6 @@ describe('Bubblicious.Transition', function() {
   });
   
   describe(".resolveAllCollisions", function() {
-    it("should handle simple single-axis collision", function() {
-      bubble1 = newBubble('a', 0.1, 0, {velocity: [1,0]});
-      bubble2 = newBubble('b', 1, 0, {velocity: [0,0]});
-      transition = new Bubblicious.Transition([bubble1, bubble2]);
-      transition.resolveAllCollisions();
-      expect(bubble1).toHaveLocation(0,0);
-      expect(bubble1.velocity).toBeCloseToElements([0,0], 0.01);
-      expect(bubble2).toHaveLocation(1,0);
-      expect(bubble2.velocity).toBeCloseToElements([0.9, 0], 0.01);
-    });
-
     it("handles the collision when one of the bubbles is locked on its target", function() {
       bubble0 = newBubble('a', 0.1, 0, {velocity: [1,0]});
       bubble1 = newBubble('b', 1, 0, {velocity: [0,0], isMovable: false});

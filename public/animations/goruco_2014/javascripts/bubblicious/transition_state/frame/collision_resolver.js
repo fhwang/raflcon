@@ -11,12 +11,15 @@ Bubblicious.TransitionState.Frame.CollisionResolver.prototype = {
     }
   },
 
-  collisions: function() {
+  boundingBoxCollisions: function() {
     var self = this;
-    boundingBoxCollisions = _(this.bubbles).chain().collect(function(bubble) {
+    return _(this.bubbles).chain().collect(function(bubble) {
       return self.boundingBoxCollision(bubble);
     }).compact().value();
-    return boundingBoxCollisions;
+  },
+
+  collisions: function() {
+    return this.boundingBoxCollisions().concat(this.twoBubbleCollisions());
   },
 
   run: function() {
@@ -30,6 +33,25 @@ Bubblicious.TransitionState.Frame.CollisionResolver.prototype = {
       collisions = this.collisions();
     }
     return this.bubbles;
+  },
+
+  twoBubbleCollisions: function() {
+    var self = this,
+        bubble1, bubble2;
+    result = [];
+    for (var i = 0; i < this.bubbles.length; i++) {
+      for (var j = i + 1; j < this.bubbles.length; j++) {
+        bubble1 = this.bubbles[i];
+        bubble2 = this.bubbles[j];
+        if (bubble1.overlaps(bubble2) && bubble1.isOnscreen() &&
+            bubble2.isOnscreen()) {
+          result.push(
+            new Bubblicious.Collision.TwoBubble([bubble1, bubble2])
+          );
+        }
+      }
+    }
+    return result
   }
 }
 
