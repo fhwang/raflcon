@@ -63,7 +63,7 @@ Bubblicious.TransitionState.StartFrame.prototype = {
       return (bubble.location === excludeLocation);
     });
     var randomStartBubble = this.firstRandomElt(usableStartBubbles);
-    return { x: randomStartBubble.location.x, y: randomStartBubble.location.y }
+    return randomStartBubble.location
   },
 
   randomAvailableOffscreenLocation: function() {

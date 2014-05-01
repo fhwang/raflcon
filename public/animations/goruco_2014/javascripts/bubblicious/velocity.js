@@ -12,6 +12,7 @@ Bubblicious.Velocity = function(first, second) {
 
 Bubblicious.Velocity.prototype = {
   add: function(arg) {
+    if (typeof arg === 'undefined') debugger
     vector = arg.vector ? arg.vector() : arg;
     newVector = this._vector.add(vector)
     return new Bubblicious.Velocity(newVector);

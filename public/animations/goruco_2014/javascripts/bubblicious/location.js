@@ -1,4 +1,10 @@
 Bubblicious.Location = function(x, y) {
+  if (isNaN(x) || x === null) {
+    throw "Bubblicious.Location received invalid x: " + x;
+  }
+  if (isNaN(y) || y === null) {
+    throw "Bubblicious.Location received invalid y: " + y;
+  }
   this.x = x;
   this.y = y;
   Object.freeze(this);
@@ -16,8 +22,8 @@ Bubblicious.Location.prototype = {
     );
   },
 
-  coords: function(location) {
-    return [location.x, location.y]
+  coords: function() {
+    return [this.x, this.y]
   },
 
   px: function() {

@@ -1,6 +1,16 @@
 describe('Bubblicious.Location', function() {
   var location;
 
+  describe("new", function() {
+    it("should throw an error if it receives an invalid x", function() {
+      expect(function() {
+        new Bubblicious.Location(NaN, NaN);
+      }).toThrow(
+        "Bubblicious.Location received invalid x: NaN"
+      )
+    });
+  });
+
   describe(".add", function() {
     it("should handle a vector", function() {
       location = new Bubblicious.Location(-3.5, 0);

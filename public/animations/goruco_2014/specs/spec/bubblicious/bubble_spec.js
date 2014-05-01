@@ -1,6 +1,38 @@
 describe('Bubblicious.Bubble', function() {
   var bubble;
 
+  describe(".advanced", function() {
+    it("returns a copy with an update location when there's a velocity", function() {
+      bubble = new Bubblicious.Bubble(
+        'a', new Bubblicious.Location(0, 0),
+        {velocity: new Bubblicious.Velocity(1, 1)}
+      )
+      advanced = bubble.advanced(0.1, 10);
+      expect(advanced.location.coords()).toEqual([0.1, 0.1]);
+    });
+
+    it("accelerates towards a target if there is one", function() {
+      bubble = new Bubblicious.Bubble(
+        'a', new Bubblicious.Location(0, 0),
+        {target: new Bubblicious.Location(1, 0)}
+      )
+      advanced = bubble.advanced(0.1, 10);
+      expect(advanced.location.coords()).toEqual([0.1, 0]);
+    });
+  });
+
+  describe(".modifiedCopy", function() {
+    it("copies all relevant fields", function() {
+      bubble = new Bubblicious.Bubble(
+        'a', new Bubblicious.Location(0, 0),
+        {antiTarget: new Bubblicious.Location(1, 1)}
+      )
+      expect(bubble.antiTarget.coords()).toEqual([1,1]);
+      bubblePrime = bubble.modifiedCopy({})
+      expect(bubblePrime.antiTarget.coords()).toEqual([1,1]);
+    });
+  });
+
   describe(".overlaps", function() {
     it("should return true if the centers are less than one unit apart", function() {
       bubble = new Bubblicious.Bubble('a', new Bubblicious.Location(0, 0));

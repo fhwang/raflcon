@@ -8,19 +8,23 @@ Bubblicious.Collision.BoundingBox.prototype = _.extend({
     _([0,1]).each(function(axisNumber) {
       axis = Bubblicious.boundingBox().axis(axisNumber);
       if (!axis.fullyContains(self.newLocation)) {
-        direction = axis.outOfBoundsDirection(self.newLocation)
-        if (axis.number === 0) {
-          coords = [direction * -2, 0]
-        } else {
-          coords = [0, direction * -2]
-        }
-        self.newLocation = self.newLocation.add(coords)
-        normal = axis.normal(self.newVelocity);
-        vector = normal.x(-2)
-        self.newVelocity = self.newVelocity.add(vector);
-        self.axisBounces += 1
+        self.bounceOnceOffAxis(axis)
       }
     });
+  },
+
+  bounceOnceOffAxis: function(axis) {
+    direction = axis.outOfBoundsDirection(this.newLocation)
+    if (axis.number === 0) {
+      coords = [direction * -2, 0]
+    } else {
+      coords = [0, direction * -2]
+    }
+    this.newLocation = this.newLocation.add(coords)
+    normal = axis.normal(this.newVelocity);
+    vector = normal.x(-2)
+    this.newVelocity = this.newVelocity.add(vector);
+    this.axisBounces += 1
   },
 
   bounceUntilPartiallyVisible: function() {

@@ -10,11 +10,12 @@ Bubblicious.Bubble = function(char, location, opts) {
   }
   this.locked = opts.locked;
   this.target = opts.target;
+  this.antiTarget = opts.antiTarget
   Object.freeze(this);
 };
 
 Bubblicious.Bubble.prototype = {
-  acceleration: function(bubble, interval, gravity) {
+  acceleration: function(interval, gravity) {
     if (this.target) {
       return this.gravitationalAcceleration(
         this.location, this.target, interval, gravity
@@ -26,19 +27,19 @@ Bubblicious.Bubble.prototype = {
     }
   },
 
-  advanced: function(bubble, interval, gravity) {
+  advanced: function(interval, gravity) {
     if (this.locked) {
       return this;
     } else {
       var enteringScreen = this.enteringScreen;
-      acceleration = this.acceleration(bubble, interval, gravity);
-      velocity = this.velocity.add(acceleration);
-      var location = this.advancedLocation(bubble, velocity, interval);
-      if (enteringScreen && this.isFullyOnscreen(bubble)) {
+      velocity = this.velocity
+      acceleration = this.acceleration(interval, gravity);
+      if (acceleration) velocity = velocity.add(acceleration);
+      var location = this.advancedLocation(velocity, interval);
+      if (enteringScreen && this.isFullyOnscreen()) {
         enteringScreen = false
       }
       return this.modifiedCopy(
-        bubble, 
         {
           location: location, 
           velocity: velocity, 
@@ -48,12 +49,12 @@ Bubblicious.Bubble.prototype = {
     }
   },
 
-  advancedLocation: function(bubble, velocity, interval) {
+  advancedLocation: function(velocity, interval) {
     move = velocity.x(interval);
-    return {
-      x: this.location.x + move.elements[0], 
-      y: this.location.y + move.elements[1]
-    }
+    return new Bubblicious.Location(
+      this.location.x + move.elements()[0], 
+      this.location.y + move.elements()[1]
+    )
   },
 
   gravitationalAcceleration: function(source, dest, interval, gravity) {
@@ -69,7 +70,8 @@ Bubblicious.Bubble.prototype = {
   modifiedCopy: function(newAttrs) {
     var location = newAttrs.location || this.location;
     opts = {
-      velocity: this.velocity, locked: this.locked, target: this.target
+      velocity: this.velocity, locked: this.locked, target: this.target,
+      antiTarget: this.antiTarget
     }
     opts = _(opts).extend(newAttrs);
     return new Bubblicious.Bubble(this.char, location, opts)

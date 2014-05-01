@@ -40,6 +40,7 @@ Bubblicious.Collision.Correction.prototype = {
 
   isFieldMatch: function(bubble, field) {
     return (!bubble[field] && !this.bubbleKey[field]) || (
+      bubble[field] && this.bubbleKey[field] && 
       bubble[field].x == this.bubbleKey[field].x &&
       bubble[field].y == this.bubbleKey[field].y
     )
