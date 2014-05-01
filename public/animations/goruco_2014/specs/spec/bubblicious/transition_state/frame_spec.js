@@ -116,5 +116,45 @@ describe('Bubblicious.TransitionState.Frame', function() {
       });
       expect(bubble1Prime.velocity.elements()).toEqual([0,0]);
     });
+
+    it("knows how to resolve a collision where both bubbles end up at the exact same location", function() {
+      bubble0 = newBubble('a', 1, 0, {velocity: [1,0]}, target: [1,1]);
+      bubble1 = newBubble('b', 1, 0, {velocity: [0,0], locked: true});
+      frame = new Bubblicious.TransitionState.Frame([bubble0, bubble1]);
+      frame.resolveAllCollisions();
+      bubble0Prime = _(frame.bubbles).detect(function(b) {
+        return b.char === 'a'
+      });
+      bubble1Prime = _(frame.bubbles).detect(function(b) {
+        return b.char === 'b'
+      });
+      vector = bubble0Prime.vectorTo(bubble1Prime)
+      expect(vector.modulus()).toBeGreaterThanOrEqualTo(1);
+    });
+
+    it("resolves multiple collisions involving the same bubble", function() {
+      // bubble0 and bubble1 are hitting bubble2 from the left and below
+      bubble0 = newBubble('a', 0.1, 1, {velocity: [1,0], target: [1, 0]});
+      bubble1 = newBubble('b', 1, 0.1, {velocity: [0,1], target: [1, 2]});
+      bubble2 = newBubble('c', 1, 1, {velocity: [0,0], target: [2, 2]});
+      bubbles = [bubble0, bubble1, bubble2]
+      frame = new Bubblicious.TransitionState.Frame(bubbles);
+      frame.resolveAllCollisions();
+      bubble0Prime = _(frame.bubbles).detect(function(b) {
+        return b.char === 'a'
+      });
+      bubble1Prime = _(frame.bubbles).detect(function(b) {
+        return b.char === 'b'
+      });
+      bubble2Prime = _(frame.bubbles).detect(function(b) {
+        return b.char === 'c'
+      });
+      expect(bubble0Prime).toHaveLocation(0, 1);
+      expect(bubble0Prime.velocity).toBeCloseToElements([0, 0], 0.001);
+      expect(bubble1Prime).toHaveLocation(1, 0);
+      expect(bubble1Prime.velocity).toBeCloseToElements([0, 0], 0.001);
+      expect(bubble2Prime).toHaveLocation(1, 1);
+      expect(bubble2Prime.velocity).toBeCloseToElements([0.9, 0.9], 0.001);
+    });
   });
 });
