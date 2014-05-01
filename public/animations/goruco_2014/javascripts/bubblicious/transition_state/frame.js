@@ -6,6 +6,16 @@ Bubblicious.TransitionState.Frame = function(bubbles, previousTime, transitionSt
 };
 
 Bubblicious.TransitionState.Frame.prototype = {
+  cheatThreshold: function() {
+    if (!this._cheatThreshold) {
+      var base = 0.05,
+          scaleFactor = 20;
+      this._cheatThreshold = 
+        base * (1 + (this.transitionTimeElapsed() * scaleFactor))
+    }
+    return this._cheatThreshold
+  },
+
   gravity: function() {
     if (!this._gravity) {
       var base = 10,
@@ -25,7 +35,9 @@ Bubblicious.TransitionState.Frame.prototype = {
   run: function() {
     var self = this;
     this.bubbles = _(this.bubbles).map(function(bubble) {
-      advanced = bubble.advanced(self.timeIncrement(), self.gravity());
+      advanced = bubble.advanced(
+        self.timeIncrement(), self.gravity(), self.cheatThreshold()
+      );
       return advanced
     });
     this.resolveAllCollisions();
