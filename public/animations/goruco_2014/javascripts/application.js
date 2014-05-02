@@ -1,10 +1,9 @@
 results = 
-[[" VAN", " BOB", "BOB "],
- [" HOY", "KEN ", " JOE"],
- [" AMY", "  WU", " ITO"],
- ["LAR ", " AL ", " DER"],
- [" ITO", " LI ", "FOX "]]
-
+[[" JOE ", " COOK", " JOE ", " AMAL"],
+ ["ADAM ", "HOY  ", " KATZ", "MARX "],
+ ["LEE  ", "NG LI", " AMIN", "VENU "],
+ ["ADAM ", "DAN  ", " COOK", "GABE "],
+ [" ITO ", " MACH", "  JOE", "BOB  "]]
   
 var animate = function(winners) {
   bubblicious.transitionTo(results.shift());
