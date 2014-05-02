@@ -93,11 +93,6 @@ Bubblicious.Collision.BoundingBox.prototype = _.extend({
     var newVelocity = this.newVelocity.x(
       Math.pow(Bubblicious.Collision.elasticity, this.axisBounces)
     );
-    if (Bubblicious.Collision.enableJitter) {
-      newVelocity = this.newVelocity.add(
-        this.summedJitterVelocities(this.axisBounces)
-      );
-    }
     return newVelocity;
   },
 
@@ -122,6 +117,11 @@ Bubblicious.Collision.BoundingBox.prototype = _.extend({
           this.newVelocity.subtract(this.bubbleState.velocity)
         )
       ]
+      if (Bubblicious.Collision.enableJitter) {
+        this._corrections.push(
+          new Bubblicious.Collision.VelocityJitter(this.bubbleState.bubble)
+        )
+      }
     }
     return this._corrections;
   }

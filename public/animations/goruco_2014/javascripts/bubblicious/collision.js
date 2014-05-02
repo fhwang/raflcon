@@ -19,17 +19,6 @@ Bubblicious.Collision.prototype = {
     var jitterMax = 0.1;
     return (Math.random() * jitterMax * 2) - jitterMax
   },
-
-  summedJitterVelocities: function(num) {
-    var self = this,
-        dx = 0,
-        dy = 0;
-    _(num).times(function() {
-      dx += self.jitterMagnitude();
-      dy += self.jitterMagnitude();
-    });
-    return new Bubblicious.Velocity(dx, dy);
-  }
 };
 
 Bubblicious.Collision.Correction = {}
