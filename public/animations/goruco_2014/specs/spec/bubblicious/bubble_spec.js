@@ -20,16 +20,16 @@ describe('Bubblicious.Bubble', function() {
       expect(advanced.location.coords()).toEqual([0.1, 0]);
     });
 
-    it("locks to the target if close enough", function() {
+    it("locks to target if it is already close enough", function() {
       bubble = new Bubblicious.Bubble(
         'a', new Bubblicious.Location(0, 0),
-        {target: new Bubblicious.Location(1, 0)}
+        {target: new Bubblicious.Location(0, 0)}
       )
       var interval = 0.31;
       var gravity = 10;
       var cheatThreshold = 0.1
       advanced = bubble.advanced(interval, gravity, cheatThreshold)
-      expect(advanced.location.coords()).toEqual([1,0]);
+      expect(advanced.location.coords()).toEqual([0,0]);
       expect(advanced.velocity.elements()).toEqual([0,0]);
       expect(advanced.locked).toBeTruthy()
       expect(advanced.target).toBeNull()

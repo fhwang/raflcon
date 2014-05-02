@@ -39,11 +39,11 @@ Bubblicious.Bubble.prototype = {
     if (this.locked) {
       return this;
     } else {
-      var velocity = this.advancedVelocity(interval, gravity)
-      var location = this.advancedLocation(velocity, interval);
-      if (Bubblicious.Bubble.isCloseEnoughToTarget(location, this.target, cheatThreshold)) {
+      if (Bubblicious.Bubble.isCloseEnoughToTarget(this.location, this.target, cheatThreshold)) {
         return this.advancedLockedToTarget()
       } else {
+        var velocity = this.advancedVelocity(interval, gravity)
+        var location = this.advancedLocation(velocity, interval);
         var enteringScreen = this.advancedEnteringScreen(location);
         return this.modifiedCopy(
           {
