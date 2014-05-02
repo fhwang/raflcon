@@ -42,30 +42,25 @@ Bubblicious.Collision.TwoBubble.VelocityCorrector.prototype = {
     ) / (bubble.mass() + otherBubble.mass())
   },
 
-  jitterMagnitude: function() {
-    var jitterMax = 0.1;
-    return (Math.random() * jitterMax * 2) - jitterMax
-  },
-
-  jitterVelocity: function() {
-    return new Bubblicious.Velocity(
-      this.jitterMagnitude(), this.jitterMagnitude()
-    );
-  },
-
   jitterCorrections: function() {
     var self = this,
         result = [];
     _([0,1]).each(function(i) { 
       if (!self.collision.bubbles[i].locked) {
         result.push(
-          new Bubblicious.Collision.VelocityCorrection(
-            self.collision.bubbles[i], self.jitterVelocity()
-          )
+          new Bubblicious.Collision.VelocityJitter(self.collision.bubbles[i])
         )
       }
     }); 
     return result;
+  },
+
+  newCorrection: function(i) {
+    var bubble = this.collision.bubbles[i]
+    if (!bubble.locked) {
+      var velocityDiff = this.newVelocity(i).subtract(bubble.velocity)
+      return new Bubblicious.Collision.VelocityCorrection(bubble, velocityDiff)
+    }
   },
 
   newVelocity: function(i) {
@@ -80,13 +75,7 @@ Bubblicious.Collision.TwoBubble.VelocityCorrector.prototype = {
     var result = [],
         self = this;
     _([0,1]).each(function(i) {
-      var bubble = self.collision.bubbles[i]
-      if (!bubble.locked) {
-        var velocityDiff = self.newVelocity(i).subtract(bubble.velocity)
-        result.push(
-          new Bubblicious.Collision.VelocityCorrection(bubble, velocityDiff)
-        );
-      }
+      if (correction = self.newCorrection(i)) result.push(correction);
     });
     if (Bubblicious.Collision.enableJitter) {
       result = result.concat(this.jitterCorrections());

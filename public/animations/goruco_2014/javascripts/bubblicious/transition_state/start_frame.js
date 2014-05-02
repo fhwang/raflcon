@@ -8,8 +8,8 @@ Bubblicious.TransitionState.StartFrame.prototype = {
     return this.onscreenBubbles().concat(this.offscreenBubbles());
   },
 
-  deleteEndBubbleWithLocation: function(location) {
-    this.endBubbles = _(this.endBubbles).reject(function(bubble) {
+  endBubblesWithout: function(location) {
+    return _(this.endBubbles).reject(function(bubble) {
       return (bubble.location === location);
     });
   },
@@ -54,7 +54,7 @@ Bubblicious.TransitionState.StartFrame.prototype = {
         var target = self.randomEndLocation(bubble.char);
         if (target) {
           newAttrs.target = target;
-          self.deleteEndBubbleWithLocation(target);
+          self.endBubbles = self.endBubblesWithout(target);
         } else {
           newAttrs.antiTarget = self.randomAntiTarget(bubble.location);
         }

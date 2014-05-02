@@ -35,7 +35,7 @@ Bubblicious.Collision.prototype = {
 Bubblicious.Collision.Correction = {}
 
 Bubblicious.Collision.Correction.prototype = {
-  initialize: function(bubbleKey) {
+  setBubbleKey: function(bubbleKey) {
     if (!bubbleKey.target && !bubbleKey.antiTarget) {
       throw "bubbleKey needs either a target or an antiTarget"
     }
@@ -57,7 +57,7 @@ Bubblicious.Collision.Correction.prototype = {
 }
 
 Bubblicious.Collision.LocationCorrection = function(bubbleKey, delta) {
-  this.initialize(bubbleKey);
+  this.setBubbleKey(bubbleKey);
   this.delta = delta;
 }
 
@@ -69,7 +69,7 @@ Bubblicious.Collision.LocationCorrection.prototype = _.extend({
 }, Bubblicious.Collision.Correction.prototype);
 
 Bubblicious.Collision.VelocityCorrection = function(bubbleKey, delta) {
-  this.initialize(bubbleKey);
+  this.setBubbleKey(bubbleKey);
   this.delta = delta;
 }
 
@@ -79,3 +79,21 @@ Bubblicious.Collision.VelocityCorrection.prototype = _.extend({
     return bubble.modifiedCopy({velocity: velocity})
   },
 }, Bubblicious.Collision.Correction.prototype);
+
+Bubblicious.Collision.VelocityJitter = function(bubbleKey) {
+  this.setBubbleKey(bubbleKey);
+  this.delta = this.jitterVelocity()
+}
+
+Bubblicious.Collision.VelocityJitter.prototype = _.extend({
+  jitterMagnitude: function() {
+    var jitterMax = 0.1;
+    return (Math.random() * jitterMax * 2) - jitterMax
+  },
+
+  jitterVelocity: function() {
+    return new Bubblicious.Velocity(
+      this.jitterMagnitude(), this.jitterMagnitude()
+    );
+  },
+}, Bubblicious.Collision.VelocityCorrection.prototype)
