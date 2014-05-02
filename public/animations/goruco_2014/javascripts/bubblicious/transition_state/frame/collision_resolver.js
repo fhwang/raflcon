@@ -31,7 +31,7 @@ Bubblicious.TransitionState.Frame.CollisionResolver.prototype = {
           this.bubbleStates, collisions
         )
       attempts += 1
-      if (attempts > 25) debugger
+      if (attempts > 50) debugger
       this.bubbleStates = resolutionAttempt.result();
       collisions = this.collisions();
     }
