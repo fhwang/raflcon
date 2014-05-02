@@ -1,10 +1,10 @@
-results = [
-  ["WU ", " WU"],
-  [" JJ", " NG"],
-  [" LI", "AL "],
-  ["JJ ", " AL"],
-  ["JJ ", "NG "]
-]
+results = 
+[[" VAN", " BOB", "BOB "],
+ [" HOY", "KEN ", " JOE"],
+ [" AMY", "  WU", " ITO"],
+ ["LAR ", " AL ", " DER"],
+ [" ITO", " LI ", "FOX "]]
+
   
 var animate = function(winners) {
   bubblicious.transitionTo(results.shift());

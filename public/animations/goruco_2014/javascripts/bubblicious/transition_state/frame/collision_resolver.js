@@ -24,11 +24,14 @@ Bubblicious.TransitionState.Frame.CollisionResolver.prototype = {
 
   run: function() {
     var collisions = this.collisions();
+    var attempts = 0
     while (collisions.length > 0) {
       resolutionAttempt = 
         new Bubblicious.TransitionState.Frame.CollisionResolver.Attempt(
           this.bubbles, collisions
         )
+      attempts += 1
+      if (attempts > 10) debugger
       this.bubbles = resolutionAttempt.result();
       collisions = this.collisions();
     }

@@ -54,6 +54,9 @@ Bubblicious.TransitionState.Frame.prototype = {
     if (!this._transitionTimeElapsed) {
       this._transitionTimeElapsed = 
         (this.timestamp - this.transitionStart) / 1000;
+      if (this._transitionTimeElapsed > 1) {
+        this._transitionTimeElapsed = 1
+      }
     }
     return this._transitionTimeElapsed;
   },

@@ -37,6 +37,7 @@ Bubblicious.Collision.Correction = {}
 Bubblicious.Collision.Correction.prototype = {
   setBubbleKey: function(bubbleKey) {
     if (!bubbleKey.target && !bubbleKey.antiTarget) {
+      debugger
       throw "bubbleKey needs either a target or an antiTarget"
     }
     this.bubbleKey = bubbleKey;

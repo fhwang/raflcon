@@ -35,7 +35,7 @@ Bubblicious.Collision.BoundingBox.prototype = _.extend({
         axis = Bubblicious.boundingBox().axis(axisNumber);
         bounds = axis.bounds
         boundsRange = bounds[1] - bounds[0];
-        points = self.newLocation.coords[axisNumber]
+        point = self.newLocation.coords()[axisNumber]
         if (point < bounds[0] || point > bounds[1]) {
           self.bounceWithinAxisBounds(point, bounds, axis, axisNumber);
         }
@@ -80,7 +80,7 @@ Bubblicious.Collision.BoundingBox.prototype = _.extend({
       x = this.newLocation.x;
       y = newPoint;
     }
-    this.newLocation = {x: x, y: y}
+    this.newLocation = new Bubblicious.Location(x, y);
     if (numBounces === 1) {
       normal = axis.normal(this.newVelocity);
       vector = normal.x(-2)
