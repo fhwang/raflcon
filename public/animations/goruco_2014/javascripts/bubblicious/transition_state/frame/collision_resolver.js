@@ -31,7 +31,7 @@ Bubblicious.TransitionState.Frame.CollisionResolver.prototype = {
           this.bubbles, collisions
         )
       attempts += 1
-      if (attempts > 10) debugger
+      if (attempts > 20) debugger
       this.bubbles = resolutionAttempt.result();
       collisions = this.collisions();
     }
@@ -65,9 +65,12 @@ Bubblicious.TransitionState.Frame.CollisionResolver.Attempt = function(bubbles, 
 
 Bubblicious.TransitionState.Frame.CollisionResolver.Attempt.prototype = {
   corrections: function() {
-    return _(this.collisions).chain().map(function(collision) {
-      return collision.corrections()
-    }).flatten().value();
+    if (!this._corrections) {
+      this._corrections = _(this.collisions).chain().map(function(collision) {
+        return collision.corrections()
+      }).flatten().value();
+    }
+    return this._corrections
   },
 
   result: function() {
