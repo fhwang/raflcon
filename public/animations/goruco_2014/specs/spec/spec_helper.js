@@ -60,11 +60,11 @@ beforeEach(function() {
   });
 });
 
-window.firstBubbleMatch = function(bubbles, char) {
-  return _(bubbles).find(function(b) { return b.char === char });
+window.firstBubbleStateMatch = function(bubbleStates, char) {
+  return _(bubbleStates).find(function(b) { return b.bubble.char === char });
 };
 
-window.newBubble = function(char, x, y, opts) {
+window.newBubbleState = function(char, x, y, opts) {
   if (!opts) opts = {};
   var velocity, locked, target, antiTarget;
   if (elements = opts.velocity) {
@@ -77,8 +77,8 @@ window.newBubble = function(char, x, y, opts) {
   if (coords = opts.antiTarget) {
     antiTarget = new Bubblicious.Location(coords[0], coords[1])
   }
-  return new Bubblicious.Bubble(
-    char, 
+  bubble = new Bubblicious.Bubble(char)
+  return bubble.state(
     new Bubblicious.Location(x, y), 
     {
       velocity: velocity,

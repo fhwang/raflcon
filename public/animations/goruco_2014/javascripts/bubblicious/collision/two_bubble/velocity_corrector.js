@@ -4,7 +4,7 @@ Bubblicious.Collision.TwoBubble.VelocityCorrector = function(collision) {
 
 Bubblicious.Collision.TwoBubble.VelocityCorrector.prototype = {
   collisionUnitNormal: function() {
-    var normal = this.collision.bubbles[0].vectorTo(this.collision.bubbles[1]);
+    var normal = this.collision.bubbleStates[0].vectorTo(this.collision.bubbleStates[1]);
     return normal.toUnitVector();
   },
   
@@ -18,10 +18,10 @@ Bubblicious.Collision.TwoBubble.VelocityCorrector.prototype = {
   decomposedCollisionSpeed: function(i) {
     return {
       normal: this.collisionUnitNormal().dot(
-        this.collision.bubbles[i].velocity.elements()
+        this.collision.bubbleStates[i].velocity.elements()
       ),
       tangent: this.collisionUnitTangent().dot(
-        this.collision.bubbles[i].velocity.elements()
+        this.collision.bubbleStates[i].velocity.elements()
       )
     }
   },
@@ -32,23 +32,25 @@ Bubblicious.Collision.TwoBubble.VelocityCorrector.prototype = {
     } else {
       otherIndex = 0;
     }
-    bubble = this.collision.bubbles[i]
-    otherBubble = this.collision.bubbles[otherIndex]
+    bubbleState = this.collision.bubbleStates[i]
+    otherBubbleState = this.collision.bubbleStates[otherIndex]
     speed = this.decomposedCollisionSpeed(i);
     otherSpeed = this.decomposedCollisionSpeed(otherIndex);
     return (
-      (speed.normal * (bubble.mass() - otherBubble.mass())) +
-      (2 * otherBubble.mass() * otherSpeed.normal)
-    ) / (bubble.mass() + otherBubble.mass())
+      (speed.normal * (bubbleState.mass() - otherBubbleState.mass())) +
+      (2 * otherBubbleState.mass() * otherSpeed.normal)
+    ) / (bubbleState.mass() + otherBubbleState.mass())
   },
 
   jitterCorrections: function() {
     var self = this,
         result = [];
     _([0,1]).each(function(i) { 
-      if (!self.collision.bubbles[i].locked) {
+      if (!self.collision.bubbleStates[i].locked) {
         result.push(
-          new Bubblicious.Collision.VelocityJitter(self.collision.bubbles[i])
+          new Bubblicious.Collision.VelocityJitter(
+            self.collision.bubbleStates[i].bubble
+          )
         )
       }
     }); 
@@ -56,10 +58,12 @@ Bubblicious.Collision.TwoBubble.VelocityCorrector.prototype = {
   },
 
   newCorrection: function(i) {
-    var bubble = this.collision.bubbles[i]
-    if (!bubble.locked) {
-      var velocityDiff = this.newVelocity(i).subtract(bubble.velocity)
-      return new Bubblicious.Collision.VelocityCorrection(bubble, velocityDiff)
+    var bubbleState = this.collision.bubbleStates[i]
+    if (!bubbleState.locked) {
+      var velocityDiff = this.newVelocity(i).subtract(bubbleState.velocity)
+      return new Bubblicious.Collision.VelocityCorrection(
+        bubbleState.bubble, velocityDiff
+      )
     }
   },
 

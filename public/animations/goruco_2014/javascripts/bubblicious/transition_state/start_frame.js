@@ -1,69 +1,68 @@
-Bubblicious.TransitionState.StartFrame = function(startBubbles, endBubbles) {
-  this.startBubbles = startBubbles;
-  this.endBubbles = _(endBubbles).clone();
+Bubblicious.TransitionState.StartFrame = function(startBubbleStates, endBubbleStates) {
+  this.startBubbleStates = startBubbleStates;
+  this.endBubbleStates = _(endBubbleStates).clone();
 }
 
 Bubblicious.TransitionState.StartFrame.prototype = {
-  bubbles: function() {
-    return this.onscreenBubbles().concat(this.offscreenBubbles());
+  bubbleStates: function() {
+    return this.onscreenBubbleStates().concat(this.offscreenBubbleStates());
   },
 
-  endBubblesWithout: function(location) {
-    return _(this.endBubbles).reject(function(bubble) {
+  endBubbleStatesWithout: function(location) {
+    return _(this.endBubbleStates).reject(function(bubble) {
       return (bubble.location === location);
     });
   },
 
-  offscreenBubble: function(endBubble) {
-    var newBubbleStartingSpeed = 50;
+  offscreenBubbleState: function(endBubbleState) {
+    var newBubbleStateStartingSpeed = 50;
     var location = this.randomAvailableOffscreenLocation();
-    var target = endBubble.location;
+    var target = endBubbleState.location;
     var vectorToTarget = location.vectorTo(target);
     var velocity = new Bubblicious.Velocity(
-      vectorToTarget.toUnitVector().x(newBubbleStartingSpeed)
+      vectorToTarget.toUnitVector().x(newBubbleStateStartingSpeed)
     )
-    return new Bubblicious.Bubble(
-      endBubble.char, location,
-      { target: target, enteringScreen: true, velocity: velocity }
+    return endBubbleState.bubble.state(
+      location, { target: target, enteringScreen: true, velocity: velocity }
     )
   },
 
-  offscreenBubbles: function() {
+  offscreenBubbleStates: function() {
     // This can't be done without first calling onscreen bubbles, which might
     // claim some of the end bubbles for some of the start bubbles.
-    this.onscreenBubbles(); 
+    this.onscreenBubbleStates(); 
     var self = this;
-    this._offscreenBubbles = []
-    _(this.endBubbles).each(function(endBubble) {
-      self._offscreenBubbles.push(self.offscreenBubble(endBubble));
+    this._offscreenBubbleStates = []
+    _(this.endBubbleStates).each(function(endBubbleState) {
+      self._offscreenBubbleStates.push(self.offscreenBubbleState(endBubbleState));
     });
-    return this._offscreenBubbles;
+    return this._offscreenBubbleStates;
   },
 
-  onscreenBubbles: function() {
-    if (!this._onscreenBubbles) {
+  onscreenBubbleStates: function() {
+    if (!this._onscreenBubbleStates) {
       var self = this;
-      this._onscreenBubbles = _(this.startBubbles).map(function(bubble) {
+      this._onscreenBubbleStates = _(this.startBubbleStates).map(function(bubbleState) {
         var newAttrs = {locked: false};
-        var target = self.randomEndLocation(bubble.char);
+        var target = self.randomEndLocation(bubbleState.bubble.char);
         if (target) {
           newAttrs.target = target;
-          self.endBubbles = self.endBubblesWithout(target);
+          self.endBubbleStates = self.endBubbleStatesWithout(target);
         } else {
           newAttrs.antiTarget = self.randomAntiTarget(bubble.location);
         }
-        return bubble.modifiedCopy(newAttrs);
+        return bubbleState.modifiedCopy(newAttrs);
       });
     }
-    return this._onscreenBubbles
+    return this._onscreenBubbleStates
   },
 
   randomAntiTarget: function(excludeLocation) {
-    var usableStartBubbles = _(this.startBubbles).reject(function(bubble) {
+    var usableStartBubbleStates = _(this.startBubbleStates).reject(function(bubble) {
       return (bubble.location === excludeLocation);
     });
-    var randomStartBubble = Bubblicious.firstRandomElt(usableStartBubbles);
-    return randomStartBubble.location
+    var randomStartBubbleState = Bubblicious.firstRandomElt(usableStartBubbleStates);
+    return randomStartBubbleState.location
   },
 
   randomAvailableOffscreenLocation: function() {
@@ -72,7 +71,7 @@ Bubblicious.TransitionState.StartFrame.prototype = {
     while (!clearSpaceFound) {
       x = this.randomOffscreenAxisPoint(0);
       y = this.randomOffscreenAxisPoint(1);
-      clearSpaceFound = _(this._offscreenBubbles).all(function(b) {
+      clearSpaceFound = _(this._offscreenBubbleStates).all(function(b) {
         return (b.location.x !== x || b.location.y !== y)
       });
     }
@@ -80,11 +79,11 @@ Bubblicious.TransitionState.StartFrame.prototype = {
   },
 
   randomEndLocation: function(char) {
-    var matchingEndBubbles = _(this.endBubbles).select(function(bubble) {
-      return (bubble.char === char);
+    var matchingEndBubbleStates = _(this.endBubbleStates).select(function(bubbleState) {
+      return (bubbleState.bubble.char === char);
     });
-    var randomEndBubble = Bubblicious.firstRandomElt(matchingEndBubbles);
-    if (randomEndBubble) { return randomEndBubble.location }
+    var randomEndBubbleState = Bubblicious.firstRandomElt(matchingEndBubbleStates);
+    if (randomEndBubbleState) { return randomEndBubbleState.location }
   },
 
   randomOffscreenAxisPoint: function(axis) {

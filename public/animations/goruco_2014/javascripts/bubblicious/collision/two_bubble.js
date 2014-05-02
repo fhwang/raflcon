@@ -1,5 +1,5 @@
-Bubblicious.Collision.TwoBubble = function(bubbles) {
-  this.bubbles = bubbles
+Bubblicious.Collision.TwoBubble = function(bubbleStates) {
+  this.bubbleStates = bubbleStates
 }
 
 Bubblicious.Collision.TwoBubble.prototype = _.extend({
@@ -15,14 +15,16 @@ Bubblicious.Collision.TwoBubble.prototype = _.extend({
 
   normalVector: function() {
     if (!this._normalVector) {
-      this._normalVector = this.bubbles[0].vectorTo(this.bubbles[1]);
+      this._normalVector = this.bubbleStates[0].vectorTo(this.bubbleStates[1]);
     }
     return this._normalVector;
   },
 
   overlapDistance: function() {
     if (!this._overlapDistance) {
-      this._overlapDistance = this.bubbles[0].overlapDistance(this.bubbles[1]);
+      this._overlapDistance = this.bubbleStates[0].overlapDistance(
+        this.bubbleStates[1]
+      );
     }
     return this._overlapDistance
   },

@@ -4,15 +4,15 @@ Bubblicious.Collision = {
 };
 
 Bubblicious.Collision.prototype = {
-  fastestBubble: function() {
-    if (!this._fastestBubble) {
-      if (this.bubbles[0].speed() > this.bubbles[1].speed()) {
-        this._fastestBubble = this.bubbles[0];
+  fastestBubbleState: function() {
+    if (!this._fastestBubbleState) {
+      if (this.bubbleStates[0].speed() > this.bubbleStates[1].speed()) {
+        this._fastestBubbleState = this.bubbleStates[0];
       } else {
-        this._fastestBubble = this.bubbles[1];
+        this._fastestBubbleState = this.bubbleStates[1];
       }
     }
-    return this._fastestBubble
+    return this._fastestBubbleState
   },
 
   jitterMagnitude: function() {
@@ -35,30 +35,10 @@ Bubblicious.Collision.prototype = {
 Bubblicious.Collision.Correction = {}
 
 Bubblicious.Collision.Correction.prototype = {
-  setBubbleKey: function(bubbleKey) {
-    if (!bubbleKey.target && !bubbleKey.antiTarget) {
-      debugger
-      throw "bubbleKey needs either a target or an antiTarget"
-    }
-    this.bubbleKey = bubbleKey;
-  },
-
-  isFieldMatch: function(bubble, field) {
-    return (!bubble[field] && !this.bubbleKey[field]) || (
-      bubble[field] && this.bubbleKey[field] && 
-      bubble[field].x == this.bubbleKey[field].x &&
-      bubble[field].y == this.bubbleKey[field].y
-    )
-  },
-
-  isMatch: function(bubble) {
-    return this.isFieldMatch(bubble, 'target') && 
-      this.isFieldMatch(bubble, 'antiTarget');
-  }
 }
 
-Bubblicious.Collision.LocationCorrection = function(bubbleKey, delta) {
-  this.setBubbleKey(bubbleKey);
+Bubblicious.Collision.LocationCorrection = function(bubble, delta) {
+  this.bubble = bubble;
   this.delta = delta;
 }
 
@@ -69,8 +49,8 @@ Bubblicious.Collision.LocationCorrection.prototype = _.extend({
   },
 }, Bubblicious.Collision.Correction.prototype);
 
-Bubblicious.Collision.VelocityCorrection = function(bubbleKey, delta) {
-  this.setBubbleKey(bubbleKey);
+Bubblicious.Collision.VelocityCorrection = function(bubble, delta) {
+  this.bubble = bubble;
   this.delta = delta;
 }
 
@@ -81,8 +61,8 @@ Bubblicious.Collision.VelocityCorrection.prototype = _.extend({
   },
 }, Bubblicious.Collision.Correction.prototype);
 
-Bubblicious.Collision.VelocityJitter = function(bubbleKey) {
-  this.setBubbleKey(bubbleKey);
+Bubblicious.Collision.VelocityJitter = function(bubble) {
+  this.bubble = bubble;
   this.delta = this.jitterVelocity()
 }
 

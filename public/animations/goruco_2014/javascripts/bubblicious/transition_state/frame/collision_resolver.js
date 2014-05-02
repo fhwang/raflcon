@@ -1,20 +1,20 @@
-Bubblicious.TransitionState.Frame.CollisionResolver = function(bubbles) {
-  this.bubbles = bubbles;
+Bubblicious.TransitionState.Frame.CollisionResolver = function(bubbleStates) {
+  this.bubbleStates = bubbleStates;
 };
 
 Bubblicious.TransitionState.Frame.CollisionResolver.prototype = {
-  boundingBoxCollision: function(bubble) {
-    if (bubble.target && !bubble.enteringScreen) {
-      if (!Bubblicious.boundingBox().fullyContains(bubble)) {
-        return new Bubblicious.Collision.BoundingBox(bubble);
+  boundingBoxCollision: function(bubbleState) {
+    if (bubbleState.target && !bubbleState.enteringScreen) {
+      if (!Bubblicious.boundingBox().fullyContains(bubbleState)) {
+        return new Bubblicious.Collision.BoundingBox(bubbleState);
       }
     }
   },
 
   boundingBoxCollisions: function() {
     var self = this;
-    return _(this.bubbles).chain().collect(function(bubble) {
-      return self.boundingBoxCollision(bubble);
+    return _(this.bubbleStates).chain().collect(function(bubbleState) {
+      return self.boundingBoxCollision(bubbleState);
     }).compact().value();
   },
 
@@ -28,28 +28,28 @@ Bubblicious.TransitionState.Frame.CollisionResolver.prototype = {
     while (collisions.length > 0) {
       resolutionAttempt = 
         new Bubblicious.TransitionState.Frame.CollisionResolver.Attempt(
-          this.bubbles, collisions
+          this.bubbleStates, collisions
         )
       attempts += 1
       if (attempts > 20) debugger
-      this.bubbles = resolutionAttempt.result();
+      this.bubbleStates = resolutionAttempt.result();
       collisions = this.collisions();
     }
-    return this.bubbles;
+    return this.bubbleStates;
   },
 
   twoBubbleCollisions: function() {
     var self = this,
-        bubble1, bubble2;
+        bubbleState1, bubbleState2;
     result = [];
-    for (var i = 0; i < this.bubbles.length; i++) {
-      for (var j = i + 1; j < this.bubbles.length; j++) {
-        bubble1 = this.bubbles[i];
-        bubble2 = this.bubbles[j];
-        if (bubble1.overlaps(bubble2) && bubble1.isOnscreen() &&
-            bubble2.isOnscreen()) {
+    for (var i = 0; i < this.bubbleStates.length; i++) {
+      for (var j = i + 1; j < this.bubbleStates.length; j++) {
+        bubbleState1 = this.bubbleStates[i];
+        bubbleState2 = this.bubbleStates[j];
+        if (bubbleState1.overlaps(bubbleState2) && bubbleState1.isOnscreen() &&
+            bubbleState2.isOnscreen()) {
           result.push(
-            new Bubblicious.Collision.TwoBubble([bubble1, bubble2])
+            new Bubblicious.Collision.TwoBubble([bubbleState1, bubbleState2])
           );
         }
       }
@@ -58,8 +58,8 @@ Bubblicious.TransitionState.Frame.CollisionResolver.prototype = {
   }
 }
 
-Bubblicious.TransitionState.Frame.CollisionResolver.Attempt = function(bubbles, collisions) {
-  this.bubbles = bubbles;
+Bubblicious.TransitionState.Frame.CollisionResolver.Attempt = function(bubbleStates, collisions) {
+  this.bubbleStates = bubbleStates;
   this.collisions = collisions;
 }
 
@@ -75,14 +75,14 @@ Bubblicious.TransitionState.Frame.CollisionResolver.Attempt.prototype = {
 
   result: function() {
     var self = this;
-    return _(this.bubbles).map(function(bubble) {
+    return _(this.bubbleStates).map(function(bubbleState) {
       corrections = _(self.corrections()).select(function(correction) {
-        return correction.isMatch(bubble)
+        return correction.bubble === bubbleState.bubble
       });
       _(corrections).each(function(correction) {
-        bubble = correction.apply(bubble);
+        bubbleState = correction.apply(bubbleState);
       });
-      return bubble;
+      return bubbleState;
     });
   }
 }

@@ -26,6 +26,10 @@ Bubblicious.Location.prototype = {
     return [this.x, this.y]
   },
 
+  eql: function(otherLoc) {
+    return this.x === otherLoc.x && this.y === otherLoc.y
+  },
+
   px: function() {
     return (this.x + Bubblicious.padding + 0.5) * Bubblicious.bubbleDiameter();
   },

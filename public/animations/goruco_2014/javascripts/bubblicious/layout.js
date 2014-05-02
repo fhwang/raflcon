@@ -1,5 +1,5 @@
 Bubblicious.Layout = function(lines) {
-  this.bubbles = [];
+  this.bubbleStates = [];
   if (lines) {
     var self = this;
     for (y = 0; y < Bubblicious.rect[1]; y++) {
@@ -7,7 +7,7 @@ Bubblicious.Layout = function(lines) {
       for (x = 0; x < Bubblicious.rect[0]; x++) {
         var char = line.charAt(x);
         if (char !== ' ') {
-          self.addBubble(char, x, y);
+          self.addBubbleState(char, x, y);
         }
       }
     }
@@ -15,10 +15,10 @@ Bubblicious.Layout = function(lines) {
 }
 
 Bubblicious.Layout.prototype = {
-  addBubble: function(char, x, y) {
-    this.bubbles.push(
-      new Bubblicious.Bubble(
-        char,
+  addBubbleState: function(char, x, y) {
+    bubble = new Bubblicious.Bubble(char)
+    this.bubbleStates.push(
+      bubble.state(
         new Bubblicious.Location(
           x * (1 + Bubblicious.spacing), 
           y * (1 + Bubblicious.spacing)

@@ -1,5 +1,5 @@
-Bubblicious.TransitionState.Frame = function(bubbles, previousTime, transitionStart) {
-  this.bubbles = bubbles;
+Bubblicious.TransitionState.Frame = function(bubbleStates, previousTime, transitionStart) {
+  this.bubbleStates = bubbleStates;
   this.previousTime = previousTime;
   this.transitionStart = transitionStart;
   this.timestamp = new Date();
@@ -25,28 +25,28 @@ Bubblicious.TransitionState.Frame.prototype = {
     return this._gravity
   },
 
-  leftSuccessfully: function(bubble) {
-    return bubble.antiTarget && bubble.isFullyOffscreen();
+  leftSuccessfully: function(bubbleState) {
+    return bubbleState.antiTarget && bubbleState.isFullyOffscreen();
   },
 
   resolveAllCollisions: function() {
     var resolver = new Bubblicious.TransitionState.Frame.CollisionResolver(
-      this.bubbles
+      this.bubbleStates
     )
-    this.bubbles = resolver.run();
+    this.bubbleStates = resolver.run();
   },
 
   run: function() {
     var self = this;
-    this.bubbles = _(this.bubbles).map(function(bubble) {
-      advanced = bubble.advanced(
+    this.bubbleStates = _(this.bubbleStates).map(function(bubbleState) {
+      advanced = bubbleState.advanced(
         self.timeIncrement(), self.gravity(), self.cheatThreshold()
       );
       return advanced
     });
     this.resolveAllCollisions();
-    this.bubbles = _(this.bubbles).reject(function(bubble) {
-      return self.leftSuccessfully(bubble);
+    this.bubbleStates = _(this.bubbleStates).reject(function(bubbleState) {
+      return self.leftSuccessfully(bubbleState);
     });
   },
 

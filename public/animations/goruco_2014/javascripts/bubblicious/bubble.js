@@ -1,6 +1,17 @@
-Bubblicious.Bubble = function(char, location, opts) {
-  var opts;
+Bubblicious.Bubble = function(char) {
   this.char = char;
+  Object.freeze(this);
+}
+
+Bubblicious.Bubble.prototype = {
+  state: function(location, opts) {
+    return new Bubblicious.Bubble.State(this, location, opts);
+  }
+}
+
+Bubblicious.Bubble.State = function(bubble, location, opts) {
+  var opts;
+  this.bubble = bubble;
   this.location = location;
   if (!opts) opts = {}
   if (opts.velocity) {
@@ -12,9 +23,9 @@ Bubblicious.Bubble = function(char, location, opts) {
   this.target = opts.target;
   this.antiTarget = opts.antiTarget
   Object.freeze(this);
-};
+}
 
-Bubblicious.Bubble.isCloseEnoughToTarget = function(location, target, cheatThreshold) {
+Bubblicious.Bubble.State.isCloseEnoughToTarget = function(location, target, cheatThreshold) {
   return (
     location && 
     target && 
@@ -22,16 +33,20 @@ Bubblicious.Bubble.isCloseEnoughToTarget = function(location, target, cheatThres
   ) 
 };
 
-Bubblicious.Bubble.prototype = {
+Bubblicious.Bubble.State.prototype = {
   acceleration: function(interval, gravity) {
     if (this.target) {
       return this.gravitationalAcceleration(
         this.location, this.target, interval, gravity
       )
     } else if (this.antiTarget) {
-      return this.gravitationalAcceleration(
-        this.antiTarget, this.location, interval, gravity
-      );
+      if (this.antiTarget.eql(this.location)) {
+        return this.randomAcceleration();
+      } else {
+        return this.gravitationalAcceleration(
+          this.antiTarget, this.location, interval, gravity
+        );
+      }
     }
   },
 
@@ -39,10 +54,11 @@ Bubblicious.Bubble.prototype = {
     if (this.locked) {
       return this;
     } else {
-      if (Bubblicious.Bubble.isCloseEnoughToTarget(this.location, this.target, cheatThreshold)) {
+      if (Bubblicious.Bubble.State.isCloseEnoughToTarget(this.location, this.target, cheatThreshold)) {
         return this.advancedLockedToTarget()
       } else {
         var velocity = this.advancedVelocity(interval, gravity)
+        if (velocity.elements()[0].toString() === 'NaN') debugger
         var location = this.advancedLocation(velocity, interval);
         var enteringScreen = this.advancedEnteringScreen(location);
         return this.modifiedCopy(
@@ -118,7 +134,7 @@ Bubblicious.Bubble.prototype = {
       antiTarget: this.antiTarget
     }
     opts = _(opts).extend(newAttrs);
-    return new Bubblicious.Bubble(this.char, location, opts)
+    return new Bubblicious.Bubble.State(this.bubble, location, opts)
   },
 
   overlapDistance: function(otherBubble) {
@@ -129,6 +145,13 @@ Bubblicious.Bubble.prototype = {
 
   overlaps: function(otherBubble) {
     return this.location.vectorTo(otherBubble.location).modulus() < 1;
+  },
+
+  randomAcceleration: function() {
+    var scale = 100
+    var dx = (Math.random() * scale * 2) - scale
+    var dy = (Math.random() * scale * 2) - scale
+    return $V([dx, dy])
   },
 
   speed: function() {

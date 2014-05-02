@@ -1,24 +1,24 @@
-Bubblicious.TransitionState = function(startBubbles, endBubbles) {
+Bubblicious.TransitionState = function(startBubbleStates, endBubbleStates) {
   this.promise = $.Deferred();
   startFrame = new Bubblicious.TransitionState.StartFrame(
-    startBubbles, endBubbles
+    startBubbleStates, endBubbleStates
   );
-  this.bubbles = startFrame.bubbles();
+  this.bubbleStates = startFrame.bubbleStates();
   this.startedAt = new Date();
   this.updatedAt = this.startedAt;
 };
 
 Bubblicious.TransitionState.prototype = {
-  advanceBubbles: function() {
+  advanceBubbleStates: function() {
     frame = new Bubblicious.TransitionState.Frame(
-      this.bubbles, this.updatedAt, this.startedAt
+      this.bubbleStates, this.updatedAt, this.startedAt
     );
     this.updatedAt = frame.timestamp;
     frame.run();
-    this.bubbles = frame.bubbles;
-    if (_(this.bubbles).every(function(bubble) { return bubble.locked })) {
+    this.bubbleStates = frame.bubbleStates;
+    if (_(this.bubbleStates).every(function(bubbleState) { return bubbleState.locked })) {
       this.promise.resolve()
     }
-    return this.bubbles;
+    return this.bubbleStates;
   },
 }

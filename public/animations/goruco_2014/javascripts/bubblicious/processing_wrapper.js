@@ -1,6 +1,6 @@
 // Processing can't be descended from, so we wrap it instead.
 Bubblicious.ProcessingWrapper = function(bubblicious, canvas) {
-  _.bindAll(this, 'draw', 'drawBubble');
+  _.bindAll(this, 'draw', 'drawBubbleState');
   this.processing = new Processing(canvas);
   this.bubblicious = bubblicious;
   this.setup();
@@ -8,27 +8,27 @@ Bubblicious.ProcessingWrapper = function(bubblicious, canvas) {
 
 Bubblicious.ProcessingWrapper.prototype = _.extend({
   draw: function() {
-    var bubbles = this.bubblicious.advanceBubbles(),
+    var bubbleStates = this.bubblicious.advanceBubbleStates(),
         self = this;
     this.processing.colorMode('RGB')
     this.processing.background(255, 0, 0);
-    _(bubbles).each(this.drawBubble)
+    _(bubbleStates).each(this.drawBubbleState)
   },
 
-  drawBubble: function(bubble) {
+  drawBubbleState: function(bubbleState) {
     this.processing.noStroke();
     this.processing.fill('#ffffff');
     this.processing.ellipse(
-      bubble.location.px(),
-      bubble.location.py(),
+      bubbleState.location.px(),
+      bubbleState.location.py(),
       Bubblicious.bubbleDiameter(),
       Bubblicious.bubbleDiameter()
     );
     this.processing.fill(0,0,0);
     this.processing.text(
-      bubble.char, 
-      bubble.location.px() - 5,
-      bubble.location.py() + 5 
+      bubbleState.bubble.char, 
+      bubbleState.location.px() - 5,
+      bubbleState.location.py() + 5 
     );
   },
 

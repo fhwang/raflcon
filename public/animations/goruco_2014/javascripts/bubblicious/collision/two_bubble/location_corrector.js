@@ -11,10 +11,10 @@ Bubblicious.Collision.TwoBubble.LocationCorrector.prototype = {
     } else {
       otherIdx = 0;
     }
-    if (this.collision.bubbles[otherIdx].locked) multiplier *= 2
+    if (this.collision.bubbleStates[otherIdx].locked) multiplier *= 2
     vector = normal.x(multiplier); 
     return new Bubblicious.Collision.LocationCorrection(
-      this.collision.bubbles[i], vector
+      this.collision.bubbleStates[i].bubble, vector
     )
   },
 
@@ -24,7 +24,7 @@ Bubblicious.Collision.TwoBubble.LocationCorrector.prototype = {
     overlapDistance = Math.max(this.collision.overlapDistance(), 0.001)
     normal = vectorBetween.toUnitVector().x(overlapDistance)
     _([0,1]).each(function(i) {
-      if (!self.collision.bubbles[i].locked) { 
+      if (!self.collision.bubbleStates[i].locked) { 
         result.push(self.correction(i, normal))
       }
     });
@@ -32,10 +32,10 @@ Bubblicious.Collision.TwoBubble.LocationCorrector.prototype = {
   },
 
   ratioOfTotalSpeed: function(i) {
-    var totalSpeed = _(this.collision.bubbles).reduce(function(memo, bubble) {
-      return memo + bubble.speed();
+    var totalSpeed = _(this.collision.bubbleStates).reduce(function(memo, bubbleState) {
+      return memo + bubbleState.speed();
     }, 0);
-    return this.collision.bubbles[i].speed() / totalSpeed;
+    return this.collision.bubbleStates[i].speed() / totalSpeed;
   },
 
   run: function() {
@@ -50,9 +50,9 @@ Bubblicious.Collision.TwoBubble.LocationCorrector.prototype = {
   // When the bodies are at the exact same location, we push back the fastest
   // one and call it a day
   zeroDistanceCorrections: function() {
-    var fastestBubble, originalVelocity;
-    fastestBubble = this.collision.fastestBubble();
-    unitVector = fastestBubble.velocity.vector().toUnitVector();
+    var fastestBubbleState, originalVelocity;
+    fastestBubbleState = this.collision.fastestBubbleState();
+    unitVector = fastestBubbleState.velocity.vector().toUnitVector();
     if (unitVector.modulus() === 0) {
       var x = (Math.random() * 2) - 1
       var y = (Math.random() * 2) - 1
@@ -60,7 +60,7 @@ Bubblicious.Collision.TwoBubble.LocationCorrector.prototype = {
     }
     vector = unitVector.x(-1);
     return [new Bubblicious.Collision.LocationCorrection(
-      fastestBubble, vector
+      fastestBubbleState.bubble, vector
     )];
   }
 }

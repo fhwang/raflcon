@@ -1,5 +1,5 @@
-Bubblicious.Collision.BoundingBox = function(bubble) {
-  this.bubble = bubble;
+Bubblicious.Collision.BoundingBox = function(bubbleState) {
+  this.bubbleState = bubbleState;
 }
 
 Bubblicious.Collision.BoundingBox.prototype = _.extend({
@@ -104,8 +104,8 @@ Bubblicious.Collision.BoundingBox.prototype = _.extend({
   corrections: function() {
     if (!this._corrections) {
       var self = this;
-      this.newLocation = this.bubble.location;
-      this.newVelocity = this.bubble.velocity;
+      this.newLocation = this.bubbleState.location;
+      this.newVelocity = this.bubbleState.velocity;
       this.axisBounces = 0;
       this.bounceUntilPartiallyVisible()
       if (!Bubblicious.boundingBox().fullyContains(this.newLocation)) {
@@ -114,12 +114,12 @@ Bubblicious.Collision.BoundingBox.prototype = _.extend({
       this.newVelocity = this.buildNewVelocity();
       this._corrections = [
         new Bubblicious.Collision.LocationCorrection(
-          this.bubble,
-          this.bubble.location.vectorTo(this.newLocation)
+          this.bubbleState.bubble,
+          this.bubbleState.location.vectorTo(this.newLocation)
         ),
         new Bubblicious.Collision.VelocityCorrection(
-          this.bubble,
-          this.newVelocity.subtract(this.bubble.velocity)
+          this.bubbleState.bubble,
+          this.newVelocity.subtract(this.bubbleState.velocity)
         )
       ]
     }

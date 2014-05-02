@@ -1,6 +1,6 @@
 Bubblicious = function(lines) {
   var canvas = $('canvas')[0];
-  this.setSteadyState(new Bubblicious.Layout(lines).bubbles);
+  this.setSteadyState(new Bubblicious.Layout(lines).bubbleStates);
   this.processingWrapper = new Bubblicious.ProcessingWrapper(this, canvas);
 }
 
@@ -65,32 +65,34 @@ _(function() {
 }).bind(Bubblicious)();
 
 Bubblicious.prototype = {
-  advanceBubbles: function() {
-    return this.state.advanceBubbles();
+  advanceBubbleStates: function() {
+    return this.state.advanceBubbleStates();
   },
 
-  setSteadyState: function(bubbles) {
-    this.state = new Bubblicious.SteadyState(bubbles)
+  setSteadyState: function(bubbleStates) {
+    this.state = new Bubblicious.SteadyState(bubbleStates)
   },
 
   transitionTo: function(lines) {
     var self = this,
-        startBubbles = this.state.bubbles,
-        endBubbles = new Bubblicious.Layout(lines).bubbles;
-    this.state = new Bubblicious.TransitionState(startBubbles, endBubbles);
+        startBubbleStates = this.state.bubbleStates,
+        endBubbleStates = new Bubblicious.Layout(lines).bubbleStates;
+    this.state = new Bubblicious.TransitionState(
+      startBubbleStates, endBubbleStates
+    );
     this.state.promise.done(function() {
-      self.setSteadyState(self.state.bubbles);
+      self.setSteadyState(self.state.bubbleStates);
     });
   }
 }
 
-Bubblicious.SteadyState = function(bubbles) {
-  this.bubbles = bubbles;
+Bubblicious.SteadyState = function(bubbleStates) {
+  this.bubbleStates = bubbleStates;
 }
 
 Bubblicious.SteadyState.prototype = {
-  advanceBubbles: function() {
-    return this.bubbles;
+  advanceBubbleStates: function() {
+    return this.bubbleStates;
   }
 }
 
