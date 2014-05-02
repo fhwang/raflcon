@@ -9,7 +9,11 @@ describe('Bubblicious.Velocity', function() {
     });
 
     it("throws when you pass an undefined first value", function() {
-      expect(true).toBeFalsy
+      expect(function() {
+        new Bubblicious.Velocity();
+      }).toThrow(
+        "Bubblicious.Velocity takes either (x, y) or a Vector"
+      )
     });
   });
 });

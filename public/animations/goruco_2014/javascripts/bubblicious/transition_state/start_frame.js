@@ -45,7 +45,7 @@ Bubblicious.TransitionState.StartFrame.prototype = {
 
   onscreenBubbles: function() {
     var self = this, 
-        newAttrs = {};
+        newAttrs = {locked: false};
     return _(this.startBubbles).map(function(bubble) {
       var target = self.randomEndLocation(bubble.char);
       if (target) {

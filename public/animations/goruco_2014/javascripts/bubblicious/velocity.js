@@ -1,5 +1,5 @@
 Bubblicious.Velocity = function(first, second) {
-  if (first === null) {
+  if (first === null || typeof first === 'undefined') {
     throw "Bubblicious.Velocity takes either (x, y) or a Vector"
   }
   if (typeof second === 'undefined') {

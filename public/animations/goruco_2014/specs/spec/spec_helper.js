@@ -62,7 +62,7 @@ beforeEach(function() {
 
 window.newBubble = function(char, x, y, opts) {
   if (!opts) opts = {};
-  var velocity, locked, target;
+  var velocity, locked, target, antiTarget;
   if (elements = opts.velocity) {
     velocity = new Bubblicious.Velocity(elements[0], elements[1]);
   }
@@ -70,9 +70,17 @@ window.newBubble = function(char, x, y, opts) {
   if (coords = opts.target) {
     target = new Bubblicious.Location(coords[0], coords[1])
   }
+  if (coords = opts.antiTarget) {
+    antiTarget = new Bubblicious.Location(coords[0], coords[1])
+  }
   return new Bubblicious.Bubble(
     char, 
     new Bubblicious.Location(x, y), 
-    {velocity: velocity, locked: locked, target: target}
+    {
+      velocity: velocity,
+      locked: locked,
+      target: target,
+      antiTarget: antiTarget
+    }
   )
 }

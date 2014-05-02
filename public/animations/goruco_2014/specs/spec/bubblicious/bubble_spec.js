@@ -31,8 +31,8 @@ describe('Bubblicious.Bubble', function() {
       advanced = bubble.advanced(interval, gravity, cheatThreshold)
       expect(advanced.location.coords()).toEqual([1,0]);
       expect(advanced.velocity.elements()).toEqual([0,0]);
-      expect(advanced.locked).toBeTrue
-      expect(advanced.target).toBeFalsy
+      expect(advanced.locked).toBeTruthy()
+      expect(advanced.target).toBeNull()
     });
   });
 
@@ -52,8 +52,8 @@ describe('Bubblicious.Bubble', function() {
     it("should return true if the centers are less than one unit apart", function() {
       bubble = new Bubblicious.Bubble('a', new Bubblicious.Location(0, 0));
       bubble2 = new Bubblicious.Bubble('b', new Bubblicious.Location(0.5, 0.5));
-      expect(bubble.overlaps(bubble2)).toBeTrue
-      expect(bubble2.overlaps(bubble)).toBeTrue
+      expect(bubble.overlaps(bubble2)).toBeTruthy()
+      expect(bubble2.overlaps(bubble)).toBeTruthy()
       bubble3 = new Bubblicious.Bubble('c', new Bubblicious.Location(1, 1));
       expect(bubble.overlaps(bubble3)).toBeFalsy();
       expect(bubble3.overlaps(bubble)).toBeFalsy();

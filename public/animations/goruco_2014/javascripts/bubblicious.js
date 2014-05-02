@@ -6,7 +6,7 @@ Bubblicious = function(lines) {
 
 _(function() {
   this.rect = [3,2];
-  this.canvasWidth = 850;
+  this.canvasWidth = 300;
   this.padding = 7;
   this.spacing = 2.1; 
 

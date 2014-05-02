@@ -27,8 +27,8 @@ Bubblicious.ProcessingWrapper.prototype = _.extend({
     this.processing.fill(0,0,0);
     this.processing.text(
       bubble.char, 
-      bubble.location.px() - 15,
-      bubble.location.py() + 10
+      bubble.location.px() - 5,
+      bubble.location.py() + 5 
     );
   },
 
@@ -36,7 +36,7 @@ Bubblicious.ProcessingWrapper.prototype = _.extend({
     this.processing.draw = this.draw;
     this.processing.size(Bubblicious.canvasWidth, Bubblicious.canvasHeight());
     var font = this.processing.loadFont('Verdana');
-    this.processing.textFont(font, 30);
+    this.processing.textFont(font, 12);
     this.processing.loop();
   }
 }, Processing.prototype);

@@ -76,7 +76,8 @@ Bubblicious.Bubble.prototype = {
         location: this.target, 
         velocity: new Bubblicious.Velocity(0,0), 
         enteringScreen: false, 
-        locked: true
+        locked: true,
+        target: null
       }
     )
   },
@@ -92,6 +93,10 @@ Bubblicious.Bubble.prototype = {
     vector = source.vectorTo(dest);
     magnitude = gravity / Math.pow(vector.modulus(), 2) * interval
     return vector.x(magnitude);
+  },
+
+  isFullyOffscreen: function() {
+    return !Bubblicious.boundingBox().partiallyContains(this);
   },
 
   isOnscreen: function() {

@@ -25,6 +25,10 @@ Bubblicious.TransitionState.Frame.prototype = {
     return this._gravity
   },
 
+  leftSuccessfully: function(bubble) {
+    return bubble.antiTarget && bubble.isFullyOffscreen();
+  },
+
   resolveAllCollisions: function() {
     var resolver = new Bubblicious.TransitionState.Frame.CollisionResolver(
       this.bubbles
@@ -41,9 +45,9 @@ Bubblicious.TransitionState.Frame.prototype = {
       return advanced
     });
     this.resolveAllCollisions();
-    //this.bubbles = _(this.bubbles).reject(function(bubble) {
-      //return self.leftSuccessfully(bubble);
-    //});
+    this.bubbles = _(this.bubbles).reject(function(bubble) {
+      return self.leftSuccessfully(bubble);
+    });
   },
 
   transitionTimeElapsed: function() {

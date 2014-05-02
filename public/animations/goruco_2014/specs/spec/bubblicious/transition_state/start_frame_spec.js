@@ -9,7 +9,7 @@ describe('Bubblicious.TransitionState.StartFrame', function() {
     });
 
     it("sets locked to false for any bubble", function() {
-      startBubble1 = newBubble('a', 0, 0);
+      startBubble1 = newBubble('a', 0, 0, {locked: true});
       startBubble2 = newBubble('b', 1, 1);
       endBubble1 = newBubble('c', 2, 2);
       endBubble2 = newBubble('d', 3, 3);

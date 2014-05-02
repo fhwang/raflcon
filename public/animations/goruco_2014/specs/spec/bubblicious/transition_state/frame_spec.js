@@ -86,7 +86,7 @@ describe('Bubblicious.TransitionState.Frame', function() {
     it("handles the collision when one of the bubbles is locked on its target", function() {
       bubble0 = newBubble('a', 0.1, 0, {velocity: [1,0], target: [1,1]});
       bubble1 = newBubble(
-        'b', 1, 0, {velocity: [0,0], locked: true, target: [0,0]}
+        'b', 1, 0, {velocity: [0,0], locked: true}
       );
       frame = new Bubblicious.TransitionState.Frame([bubble0, bubble1]);
       frame.resolveAllCollisions();
@@ -107,7 +107,7 @@ describe('Bubblicious.TransitionState.Frame', function() {
       Bubblicious.Collision.enableJitter = true;
       bubble0 = newBubble('a', 0.1, 0, {velocity: [1,0], target: [1,1]});
       bubble1 = newBubble(
-        'b', 1, 0, {velocity: [0,0], target: [0,0], locked: true}
+        'b', 1, 0, {velocity: [0,0], locked: true}
       );
       frame = new Bubblicious.TransitionState.Frame([bubble0, bubble1]);
       frame.resolveAllCollisions();
@@ -118,7 +118,7 @@ describe('Bubblicious.TransitionState.Frame', function() {
     });
 
     it("knows how to resolve a collision where both bubbles end up at the exact same location", function() {
-      bubble0 = newBubble('a', 1, 0, {velocity: [1,0]}, target: [1,1]);
+      bubble0 = newBubble('a', 1, 0, {velocity: [1,0], target: [1,1]});
       bubble1 = newBubble('b', 1, 0, {velocity: [0,0], locked: true});
       frame = new Bubblicious.TransitionState.Frame([bubble0, bubble1]);
       frame.resolveAllCollisions();
@@ -155,6 +155,19 @@ describe('Bubblicious.TransitionState.Frame', function() {
       expect(bubble1Prime.velocity).toBeCloseToElements([0, 0], 0.001);
       expect(bubble2Prime).toHaveLocation(1, 1);
       expect(bubble2Prime.velocity).toBeCloseToElements([0.9, 0.9], 0.001);
+    });
+  });
+
+  describe(".run", function() {
+    it("removes bubbles with anti targets that have left successfully", function() {
+      bubble = newBubble(
+        'a', 100, 100, {velocity: [100, 100], antiTarget: [0, 0]}
+      );
+      frame = new Bubblicious.TransitionState.Frame(
+        [bubble], new Date() - 1, new Date() - 10
+      );
+      frame.run()
+      expect(frame.bubbles.length).toEqual(0)
     });
   });
 });
