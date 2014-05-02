@@ -144,7 +144,14 @@ Bubblicious.Bubble.State.prototype = {
   },
 
   overlaps: function(otherBubble) {
-    return this.location.vectorTo(otherBubble.location).modulus() < 1;
+    if (
+      (Math.abs(this.location.x - otherBubble.location.x) <= 1) || 
+      (Math.abs(this.location.y - otherBubble.location.y) <= 1)
+    ) {
+      return this.location.vectorTo(otherBubble.location).modulus() < 1;
+    } else {
+      return false
+    }
   },
 
   randomAcceleration: function() {

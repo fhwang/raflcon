@@ -43,14 +43,17 @@ Bubblicious.TransitionState.Frame.CollisionResolver.prototype = {
         bubbleState1, bubbleState2;
     result = [];
     for (var i = 0; i < this.bubbleStates.length; i++) {
-      for (var j = i + 1; j < this.bubbleStates.length; j++) {
-        bubbleState1 = this.bubbleStates[i];
-        bubbleState2 = this.bubbleStates[j];
-        if (bubbleState1.overlaps(bubbleState2) && bubbleState1.isOnscreen() &&
-            bubbleState2.isOnscreen()) {
-          result.push(
-            new Bubblicious.Collision.TwoBubble([bubbleState1, bubbleState2])
-          );
+      if (this.bubbleStates[i].isOnscreen()) {
+        for (var j = i + 1; j < this.bubbleStates.length; j++) {
+          if (this.bubbleStates[j].isOnscreen()) {
+            bubbleState1 = this.bubbleStates[i];
+            bubbleState2 = this.bubbleStates[j];
+            if (bubbleState1.overlaps(bubbleState2)) {
+              result.push(
+                new Bubblicious.Collision.TwoBubble([bubbleState1, bubbleState2])
+              );
+            }
+          }
         }
       }
     }
