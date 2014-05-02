@@ -35,6 +35,9 @@ Bubblicious.TransitionState.StartFrame.prototype = {
   },
 
   offscreenBubbles: function() {
+    // This can't be done without first calling onscreen bubbles, which might
+    // claim some of the end bubbles for some of the start bubbles.
+    this.onscreenBubbles(); 
     var self = this;
     this._offscreenBubbles = []
     _(this.endBubbles).each(function(endBubble) {
@@ -44,18 +47,21 @@ Bubblicious.TransitionState.StartFrame.prototype = {
   },
 
   onscreenBubbles: function() {
-    var self = this, 
-        newAttrs = {locked: false};
-    return _(this.startBubbles).map(function(bubble) {
-      var target = self.randomEndLocation(bubble.char);
-      if (target) {
-        newAttrs.target = target;
-        self.deleteEndBubbleWithLocation(target);
-      } else {
-        newAttrs.antiTarget = self.randomAntiTarget(bubble.location);
-      }
-      return bubble.modifiedCopy(newAttrs);
-    });
+    if (!this._onscreenBubbles) {
+      var self = this;
+      this._onscreenBubbles = _(this.startBubbles).map(function(bubble) {
+        var newAttrs = {locked: false};
+        var target = self.randomEndLocation(bubble.char);
+        if (target) {
+          newAttrs.target = target;
+          self.deleteEndBubbleWithLocation(target);
+        } else {
+          newAttrs.antiTarget = self.randomAntiTarget(bubble.location);
+        }
+        return bubble.modifiedCopy(newAttrs);
+      });
+    }
+    return this._onscreenBubbles
   },
 
   randomAntiTarget: function(excludeLocation) {
@@ -84,9 +90,7 @@ Bubblicious.TransitionState.StartFrame.prototype = {
       return (bubble.char === char);
     });
     var randomEndBubble = this.firstRandomElt(matchingEndBubbles);
-    if (randomEndBubble) {
-      return { x: randomEndBubble.location.x, y: randomEndBubble.location.y }
-    }
+    if (randomEndBubble) { return randomEndBubble.location }
   },
 
   randomOffscreenAxisPoint: function(axis) {

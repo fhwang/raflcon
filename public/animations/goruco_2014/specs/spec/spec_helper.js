@@ -60,6 +60,10 @@ beforeEach(function() {
   });
 });
 
+window.firstBubbleMatch = function(bubbles, char) {
+  return _(bubbles).find(function(b) { return b.char === char });
+};
+
 window.newBubble = function(char, x, y, opts) {
   if (!opts) opts = {};
   var velocity, locked, target, antiTarget;

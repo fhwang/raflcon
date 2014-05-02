@@ -21,5 +21,65 @@ describe('Bubblicious.TransitionState.StartFrame', function() {
       });
       expect(bubble.locked).toBeFalsy()
     });
+
+    describe("with duplicate letters, some already onscreen", function() {
+      var startFrame; 
+
+      beforeEach(function() {
+        startBubbles = []
+        startBubbles.push(newBubble('A', 0, 0))
+        startBubbles.push(newBubble('L', 1, 0))
+        startBubbles.push(newBubble('L', 1, 1))
+        startBubbles.push(newBubble('I', 2, 1))
+        endBubbles = []
+        endBubbles.push(newBubble('A', 1, 0))
+        endBubbles.push(newBubble('L', 2, 0))
+        endBubbles.push(newBubble('J', 0, 1))
+        endBubbles.push(newBubble('J', 1, 1))
+        startFrame = new Bubblicious.TransitionState.StartFrame(
+          startBubbles, endBubbles
+        )
+      });
+
+      it("generates onscreen bubbles", function() {
+        onscreenBubbles = startFrame.onscreenBubbles();
+        expect(onscreenBubbles.length).toEqual(4)
+        bubbleA = firstBubbleMatch(onscreenBubbles, 'A');
+        expect(bubbleA.target.coords()).toEqual([1,0])
+        expect(bubbleA.antiTarget).toBeFalsy()
+        bubblesL = _(onscreenBubbles).select(function(b) { 
+          return b.char === 'L'
+        })
+        expect(bubblesL.length).toEqual(2)
+        bubbleLWithTarget = _(bubblesL).detect(function(b) { return b.target });
+        expect(bubbleLWithTarget.target.coords()).toEqual([2,0]);
+        expect(bubbleLWithTarget.antiTarget).toBeFalsy()
+        bubbleLWithoutTarget = _(bubblesL).detect(function(b) { 
+          return !b.target
+        });
+        expect(bubbleLWithoutTarget.target).toBeFalsy()
+        expect(bubbleLWithoutTarget.antiTarget).toBeTruthy()
+        bubbleI = firstBubbleMatch(onscreenBubbles, 'I');
+        expect(bubbleI.target).toBeFalsy()
+        expect(bubbleI.antiTarget).toBeTruthy()
+      });
+
+      it("generates offscreen bubbles", function() {
+        offscreenBubbles = startFrame.offscreenBubbles()
+        expect(offscreenBubbles.length).toEqual(2)
+        allJ = _(offscreenBubbles).every(function(b) {
+          return b.char === 'J'
+        })
+        expect(allJ).toBeTruthy()
+        bubbleJ0 = _(offscreenBubbles).detect(function(b) {
+          return _(b.target.coords()).isEqual([0,1])
+        });
+        expect(bubbleJ0).toBeTruthy()
+        bubbleJ1 = _(offscreenBubbles).detect(function(b) {
+          return _(b.target.coords()).isEqual([1,1])
+        });
+        expect(bubbleJ1).toBeTruthy()
+      });
+    });
   });
 });
