@@ -34,6 +34,10 @@ _(function() {
     return this._canvasHeight
   };
 
+  this.firstRandomElt = function(array) {
+    return _(array).sortBy(function() { return Math.random() })[0];
+  };
+
   this.maxDimensions = function() {
     if (!this._maxDimensions) {
       this._maxDimensions = [

@@ -14,12 +14,6 @@ Bubblicious.TransitionState.StartFrame.prototype = {
     });
   },
 
-  firstRandomElt: function(array) {
-    return _(array).sortBy(function() { 
-      return Math.random()
-    })[0];
-  },
-
   offscreenBubble: function(endBubble) {
     var newBubbleStartingSpeed = 50;
     var location = this.randomAvailableOffscreenLocation();
@@ -68,7 +62,7 @@ Bubblicious.TransitionState.StartFrame.prototype = {
     var usableStartBubbles = _(this.startBubbles).reject(function(bubble) {
       return (bubble.location === excludeLocation);
     });
-    var randomStartBubble = this.firstRandomElt(usableStartBubbles);
+    var randomStartBubble = Bubblicious.firstRandomElt(usableStartBubbles);
     return randomStartBubble.location
   },
 
@@ -89,7 +83,7 @@ Bubblicious.TransitionState.StartFrame.prototype = {
     var matchingEndBubbles = _(this.endBubbles).select(function(bubble) {
       return (bubble.char === char);
     });
-    var randomEndBubble = this.firstRandomElt(matchingEndBubbles);
+    var randomEndBubble = Bubblicious.firstRandomElt(matchingEndBubbles);
     if (randomEndBubble) { return randomEndBubble.location }
   },
 
