@@ -1,8 +1,8 @@
-Bubblicious.TransitionState.Frame.CollisionFinder = function(bubbleStates) {
+Bubblicious.CollisionFinder = function(bubbleStates) {
   this.bubbleStates = bubbleStates;
 };
 
-Bubblicious.TransitionState.Frame.CollisionFinder.prototype = {
+Bubblicious.CollisionFinder.prototype = {
   comparisonBoxDivisor: 4,
 
   boundingBoxCollision: function(bubbleState) {
@@ -44,7 +44,7 @@ Bubblicious.TransitionState.Frame.CollisionFinder.prototype = {
     x1 = this._xAxis.bounds[0] + (i + 1) * this._width + 1;
     y0 = this._yAxis.bounds[0] + j * this._height;
     y1 = this._yAxis.bounds[0] + (j + 1) * this._height + 1;
-    return new Bubblicious.TransitionState.Frame.CollisionFinder.ComparisonBox(
+    return new Bubblicious.CollisionFinder.ComparisonBox(
       [x0, x1], [y0, y1]
     )
   },
@@ -71,13 +71,13 @@ Bubblicious.TransitionState.Frame.CollisionFinder.prototype = {
   }
 }
 
-Bubblicious.TransitionState.Frame.CollisionFinder.ComparisonBox = function(xBounds, yBounds) {
+Bubblicious.CollisionFinder.ComparisonBox = function(xBounds, yBounds) {
   this.xBounds = xBounds;
   this.yBounds = yBounds;
   this.bubbleStates = []
 }
 
-Bubblicious.TransitionState.Frame.CollisionFinder.ComparisonBox.prototype = {
+Bubblicious.CollisionFinder.ComparisonBox.prototype = {
   add: function(bubbleState) {
     this.bubbleStates.push(bubbleState)
   },

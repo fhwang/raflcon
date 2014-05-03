@@ -1,12 +1,10 @@
-Bubblicious.TransitionState.Frame.CollisionResolver = function(bubbleStates) {
+Bubblicious.CollisionResolver = function(bubbleStates) {
   this.bubbleStates = bubbleStates;
 };
 
-Bubblicious.TransitionState.Frame.CollisionResolver.prototype = {
+Bubblicious.CollisionResolver.prototype = {
   collisions: function() {
-    finder = new Bubblicious.TransitionState.Frame.CollisionFinder(
-      this.bubbleStates
-    )
+    finder = new Bubblicious.CollisionFinder(this.bubbleStates)
     return finder.result();
   },
 
@@ -15,7 +13,7 @@ Bubblicious.TransitionState.Frame.CollisionResolver.prototype = {
     var attempts = 0
     while (collisions.length > 0) {
       resolutionAttempt = 
-        new Bubblicious.TransitionState.Frame.CollisionResolver.Attempt(
+        new Bubblicious.CollisionResolver.Attempt(
           this.bubbleStates, collisions
         )
       attempts += 1
@@ -27,14 +25,12 @@ Bubblicious.TransitionState.Frame.CollisionResolver.prototype = {
   },
 }
 
-Bubblicious.TransitionState.Frame.CollisionResolver.Attempt = function(
-  bubbleStates, collisions
-) {
+Bubblicious.CollisionResolver.Attempt = function(bubbleStates, collisions) {
   this.bubbleStates = bubbleStates;
   this.collisions = collisions;
 }
 
-Bubblicious.TransitionState.Frame.CollisionResolver.Attempt.prototype = {
+Bubblicious.CollisionResolver.Attempt.prototype = {
   corrections: function() {
     if (!this._corrections) {
       this._corrections = _(this.collisions).chain().map(function(collision) {

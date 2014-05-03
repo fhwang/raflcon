@@ -32,9 +32,7 @@ Bubblicious.TransitionState.Frame.prototype = {
   },
 
   resolveAllCollisions: function() {
-    var resolver = new Bubblicious.TransitionState.Frame.CollisionResolver(
-      this.bubbleStates
-    )
+    var resolver = new Bubblicious.CollisionResolver(this.bubbleStates)
     this.bubbleStates = resolver.run();
   },
 
