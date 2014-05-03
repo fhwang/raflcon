@@ -49,6 +49,10 @@ Bubblicious.BoundingBox.Axis.prototype = {
     return this.outOfBoundsDirection(bubbleOrLocation) === null
   },
 
+  magnitude: function() {
+    return this.bounds[1] - this.bounds[0];
+  },
+
   normal: function(velocity) {
     if (this.number === 0) {
       return $V([velocity.elements()[0], 0])

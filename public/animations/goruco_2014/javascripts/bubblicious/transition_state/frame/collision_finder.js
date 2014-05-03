@@ -18,11 +18,65 @@ Bubblicious.TransitionState.Frame.CollisionFinder.prototype = {
     }).compact().value();
   },
 
+  comparisonBoxes: function() {
+    result = this.emptyComparisonBoxes();
+    _(this.bubbleStates).each(function(bubbleState) {
+      _(result).each(function(comparisonBox) {
+        if (comparisonBox.shouldContain(bubbleState)) {
+          comparisonBox.add(bubbleState);
+        }
+      });
+    });
+    return result;
+  },
+
+  emptyComparisonBoxes: function() {
+    var divisor = 2, 
+        result = [];
+    boundingBox = Bubblicious.boundingBox();
+    xAxis = boundingBox.axis(0);
+    yAxis = boundingBox.axis(1);
+    width = xAxis.magnitude() / divisor;
+    height = yAxis.magnitude() / divisor;
+    for (i = 0; i < divisor; i++) {
+      for (j = 0; j < divisor; j++) {
+        x0 = xAxis.bounds[0] + i * width;
+        x1 = xAxis.bounds[0] + (i + 1) * width + 1;
+        y0 = yAxis.bounds[0] + j * height;
+        y1 = yAxis.bounds[0] + (j + 1) * height + 1;
+        box = new Bubblicious.TransitionState.Frame.CollisionFinder.ComparisonBox(
+          [x0, x1], [y0, y1]
+        )
+        result.push(box)
+      }
+    }
+    return result;
+  },
+
   result: function() {
     return this.boundingBoxCollisions().concat(this.twoBubbleCollisions());
   },
 
   twoBubbleCollisions: function() {
+    comparisonBoxes = this.comparisonBoxes();
+    return _(comparisonBoxes).chain().collect(function(comparisonBox) {
+      return comparisonBox.collisions()
+    }).flatten().value();
+  }
+}
+
+Bubblicious.TransitionState.Frame.CollisionFinder.ComparisonBox = function(xBounds, yBounds) {
+  this.xBounds = xBounds;
+  this.yBounds = yBounds;
+  this.bubbleStates = []
+}
+
+Bubblicious.TransitionState.Frame.CollisionFinder.ComparisonBox.prototype = {
+  add: function(bubbleState) {
+    this.bubbleStates.push(bubbleState)
+  },
+
+  collisions: function() {
     var self = this,
         bubbleState1, bubbleState2;
     result = [];
@@ -46,5 +100,13 @@ Bubblicious.TransitionState.Frame.CollisionFinder.prototype = {
       }
     }
     return result
+  },
+
+  shouldContain: function(bubbleState) {
+    var location = bubbleState.location
+    return (
+      this.xBounds[0] <= location.x && this.xBounds[1] > location.x &&
+      this.yBounds[0] <= location.y && this.yBounds[1] > location.y
+    )
   }
 }
