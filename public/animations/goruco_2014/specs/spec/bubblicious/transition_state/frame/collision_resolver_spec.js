@@ -3,6 +3,7 @@ describe('Bubblicious.TransitionState.Frame.CollisionResolver', function() {
 
   beforeEach(function() {
     Bubblicious.Collision.enableJitter = false
+    Bubblicious.Collision.elasticity = 0.9
   });
 
   describe(".run", function() {
