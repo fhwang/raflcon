@@ -3,6 +3,8 @@ Bubblicious.TransitionState.Frame.CollisionFinder = function(bubbleStates) {
 };
 
 Bubblicious.TransitionState.Frame.CollisionFinder.prototype = {
+  comparisonBoxDivisor: 4,
+
   boundingBoxCollision: function(bubbleState) {
     if (bubbleState.target && !bubbleState.enteringScreen) {
       if (!Bubblicious.boundingBox().fullyContains(bubbleState)) {
@@ -30,24 +32,28 @@ Bubblicious.TransitionState.Frame.CollisionFinder.prototype = {
     return result;
   },
 
+  emptyComparisonBox: function(i,j) {
+    if (!this._xAxis) {
+      boundingBox = Bubblicious.boundingBox();
+      this._xAxis = boundingBox.axis(0);
+      this._yAxis = boundingBox.axis(1);
+      this._width = this._xAxis.magnitude() / this.comparisonBoxDivisor;
+      this._height = this._yAxis.magnitude() / this.comparisonBoxDivisor;
+    }
+    x0 = this._xAxis.bounds[0] + i * this._width;
+    x1 = this._xAxis.bounds[0] + (i + 1) * this._width + 1;
+    y0 = this._yAxis.bounds[0] + j * this._height;
+    y1 = this._yAxis.bounds[0] + (j + 1) * this._height + 1;
+    return new Bubblicious.TransitionState.Frame.CollisionFinder.ComparisonBox(
+      [x0, x1], [y0, y1]
+    )
+  },
+
   emptyComparisonBoxes: function() {
-    var divisor = 4, 
-        result = [];
-    boundingBox = Bubblicious.boundingBox();
-    xAxis = boundingBox.axis(0);
-    yAxis = boundingBox.axis(1);
-    width = xAxis.magnitude() / divisor;
-    height = yAxis.magnitude() / divisor;
-    for (i = 0; i < divisor; i++) {
-      for (j = 0; j < divisor; j++) {
-        x0 = xAxis.bounds[0] + i * width;
-        x1 = xAxis.bounds[0] + (i + 1) * width + 1;
-        y0 = yAxis.bounds[0] + j * height;
-        y1 = yAxis.bounds[0] + (j + 1) * height + 1;
-        box = new Bubblicious.TransitionState.Frame.CollisionFinder.ComparisonBox(
-          [x0, x1], [y0, y1]
-        )
-        result.push(box)
+    var result = [];
+    for (i = 0; i < this.comparisonBoxDivisor; i++) {
+      for (j = 0; j < this.comparisonBoxDivisor; j++) {
+        result.push(this.emptyComparisonBox(i,j))
       }
     }
     return result;
@@ -76,26 +82,25 @@ Bubblicious.TransitionState.Frame.CollisionFinder.ComparisonBox.prototype = {
     this.bubbleStates.push(bubbleState)
   },
 
+  colliding: function(bubbleState1, bubbleState2) {
+    return (!bubbleState1.locked || !bubbleState2.locked) && 
+      (bubbleState1.overlaps(bubbleState2))
+  },
+
+  collision: function(bubbleState1, bubbleState2) {
+    return new Bubblicious.Collision.TwoBubble([bubbleState1, bubbleState2])
+  },
+
   collisions: function() {
     var self = this,
         bubbleState1, bubbleState2;
     result = [];
     for (var i = 0; i < this.bubbleStates.length; i++) {
       bubbleState1 = this.bubbleStates[i];
-      if (bubbleState1.isOnscreen()) {
-        for (var j = i + 1; j < this.bubbleStates.length; j++) {
-          bubbleState2 = this.bubbleStates[j];
-          if (!bubbleState1.locked || !bubbleState2.locked) {
-            if (bubbleState2.isOnscreen()) {
-              if (bubbleState1.overlaps(bubbleState2)) {
-                result.push(
-                  new Bubblicious.Collision.TwoBubble(
-                    [bubbleState1, bubbleState2]
-                  )
-                );
-              }
-            }
-          }
+      for (var j = i + 1; j < this.bubbleStates.length; j++) {
+        bubbleState2 = this.bubbleStates[j];
+        if (this.colliding(bubbleState1, bubbleState2)) {
+          result.push(this.collision(bubbleState1, bubbleState2))
         }
       }
     }
