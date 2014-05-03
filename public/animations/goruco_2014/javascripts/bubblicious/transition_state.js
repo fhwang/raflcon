@@ -16,7 +16,9 @@ Bubblicious.TransitionState.prototype = {
     this.updatedAt = frame.timestamp;
     frame.run();
     this.bubbleStates = frame.bubbleStates;
-    if (_(this.bubbleStates).every(function(bubbleState) { return bubbleState.locked })) {
+    if (_(this.bubbleStates).every(
+      function(bubbleState) { return bubbleState.locked }
+    )) {
       this.promise.resolve()
     }
     return this.bubbleStates;
