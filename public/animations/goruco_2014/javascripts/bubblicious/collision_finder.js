@@ -3,7 +3,7 @@ Bubblicious.CollisionFinder = function(bubbleStates) {
 };
 
 Bubblicious.CollisionFinder.prototype = {
-  comparisonBoxDivisor: 4,
+  comparisonBoxDivisor: 20,
 
   boundingBoxCollision: function(bubbleState) {
     if (bubbleState.target && !bubbleState.enteringScreen) {

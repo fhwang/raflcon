@@ -10,14 +10,10 @@ Bubblicious.CollisionResolver.prototype = {
 
   run: function() {
     var collisions = this.collisions();
-    var attempts = 0
     while (collisions.length > 0) {
-      resolutionAttempt = 
-        new Bubblicious.CollisionResolver.Attempt(
-          this.bubbleStates, collisions
-        )
-      attempts += 1
-      if (attempts > 50) debugger
+      resolutionAttempt = new Bubblicious.CollisionResolver.Attempt(
+        this.bubbleStates, collisions
+      )
       this.bubbleStates = resolutionAttempt.result();
       collisions = this.collisions();
     }
