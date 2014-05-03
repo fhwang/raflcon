@@ -31,7 +31,7 @@ Bubblicious.TransitionState.Frame.CollisionFinder.prototype = {
   },
 
   emptyComparisonBoxes: function() {
-    var divisor = 2, 
+    var divisor = 4, 
         result = [];
     boundingBox = Bubblicious.boundingBox();
     xAxis = boundingBox.axis(0);
