@@ -61,7 +61,9 @@ Bubblicious.TransitionState.Frame.CollisionResolver.prototype = {
   }
 }
 
-Bubblicious.TransitionState.Frame.CollisionResolver.Attempt = function(bubbleStates, collisions) {
+Bubblicious.TransitionState.Frame.CollisionResolver.Attempt = function(
+  bubbleStates, collisions
+) {
   this.bubbleStates = bubbleStates;
   this.collisions = collisions;
 }

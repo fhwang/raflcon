@@ -1,4 +1,6 @@
-Bubblicious.TransitionState.StartFrame = function(startBubbleStates, endBubbleStates) {
+Bubblicious.TransitionState.StartFrame = function(
+  startBubbleStates, endBubbleStates
+) {
   this.startBubbleStates = startBubbleStates;
   this.endBubbleStates = _(endBubbleStates).clone();
 }
@@ -42,26 +44,37 @@ Bubblicious.TransitionState.StartFrame.prototype = {
   onscreenBubbleStates: function() {
     if (!this._onscreenBubbleStates) {
       var self = this;
-      this._onscreenBubbleStates = _(this.startBubbleStates).map(function(bubbleState) {
-        var newAttrs = {locked: false};
-        var target = self.randomEndLocation(bubbleState.bubble.char);
-        if (target) {
-          newAttrs.target = target;
-          self.endBubbleStates = self.endBubbleStatesWithout(target);
-        } else {
-          newAttrs.antiTarget = self.randomAntiTarget(bubble.location);
+      this._onscreenBubbleStates = _(this.startBubbleStates).map(
+        function(bubbleState) {
+          var newAttrs = self.onscreenBubbleStateAttrs(bubbleState)
+          return bubbleState.modifiedCopy(newAttrs);
         }
-        return bubbleState.modifiedCopy(newAttrs);
-      });
+      );
     }
     return this._onscreenBubbleStates
   },
 
+  onscreenBubbleStateAttrs: function(bubbleState) {
+    var newAttrs = {locked: false};
+    var target = this.randomEndLocation(bubbleState.bubble.char);
+    if (target) {
+      newAttrs.target = target;
+      this.endBubbleStates = this.endBubbleStatesWithout(target);
+    } else {
+      newAttrs.antiTarget = this.randomAntiTarget(bubbleState.location);
+    }
+    return newAttrs;
+  },
+
   randomAntiTarget: function(excludeLocation) {
-    var usableStartBubbleStates = _(this.startBubbleStates).reject(function(bubble) {
-      return (bubble.location === excludeLocation);
-    });
-    var randomStartBubbleState = Bubblicious.firstRandomElt(usableStartBubbleStates);
+    var usableStartBubbleStates = _(this.startBubbleStates).reject(
+      function(bubble) {
+        return (bubble.location === excludeLocation);
+      }
+    );
+    var randomStartBubbleState = Bubblicious.firstRandomElt(
+      usableStartBubbleStates
+    );
     return randomStartBubbleState.location
   },
 
@@ -79,10 +92,14 @@ Bubblicious.TransitionState.StartFrame.prototype = {
   },
 
   randomEndLocation: function(char) {
-    var matchingEndBubbleStates = _(this.endBubbleStates).select(function(bubbleState) {
-      return (bubbleState.bubble.char === char);
-    });
-    var randomEndBubbleState = Bubblicious.firstRandomElt(matchingEndBubbleStates);
+    var matchingEndBubbleStates = _(this.endBubbleStates).select(
+      function(bubbleState) {
+        return (bubbleState.bubble.char === char);
+      }
+    );
+    var randomEndBubbleState = Bubblicious.firstRandomElt(
+      matchingEndBubbleStates
+    );
     if (randomEndBubbleState) { return randomEndBubbleState.location }
   },
 

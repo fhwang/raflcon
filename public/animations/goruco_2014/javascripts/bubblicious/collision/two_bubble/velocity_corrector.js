@@ -4,7 +4,9 @@ Bubblicious.Collision.TwoBubble.VelocityCorrector = function(collision) {
 
 Bubblicious.Collision.TwoBubble.VelocityCorrector.prototype = {
   collisionUnitNormal: function() {
-    var normal = this.collision.bubbleStates[0].vectorTo(this.collision.bubbleStates[1]);
+    var normal = this.collision.bubbleStates[0].vectorTo(
+      this.collision.bubbleStates[1]
+    );
     return normal.toUnitVector();
   },
   

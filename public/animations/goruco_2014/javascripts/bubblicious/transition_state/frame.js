@@ -1,4 +1,6 @@
-Bubblicious.TransitionState.Frame = function(bubbleStates, previousTime, transitionStart) {
+Bubblicious.TransitionState.Frame = function(
+  bubbleStates, previousTime, transitionStart
+) {
   this.bubbleStates = bubbleStates;
   this.previousTime = previousTime;
   this.transitionStart = transitionStart;

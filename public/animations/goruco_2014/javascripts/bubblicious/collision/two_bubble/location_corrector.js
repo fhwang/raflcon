@@ -32,9 +32,12 @@ Bubblicious.Collision.TwoBubble.LocationCorrector.prototype = {
   },
 
   ratioOfTotalSpeed: function(i) {
-    var totalSpeed = _(this.collision.bubbleStates).reduce(function(memo, bubbleState) {
-      return memo + bubbleState.speed();
-    }, 0);
+    var totalSpeed = _(this.collision.bubbleStates).reduce(
+      function(memo, bubbleState) {
+        return memo + bubbleState.speed();
+      },
+      0
+    );
     return this.collision.bubbleStates[i].speed() / totalSpeed;
   },
 
