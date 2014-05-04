@@ -20,70 +20,11 @@ Bubblicious.Bubble.State = function(bubble, location, opts) {
 }
 
 Bubblicious.Bubble.State.prototype = {
-  acceleration: function(interval, gravity) {
-    if (this.target) {
-      return this.gravitationalAcceleration(
-        this.location, this.target, interval, gravity
-      )
-    }
-  },
-
   advanced: function(interval, gravity, cheatThreshold) {
-    if (this.locked) {
-      return this;
-    } else {
-      if (this.isCloseEnoughToTarget(cheatThreshold)) {
-        return this.advancedLockedToTarget()
-      } else {
-        return this.advancedAndMoved(interval, gravity)
-      }
-    }
-  },
-
-  advancedAndMoved: function(interval, gravity) {
-    var velocity = this.advancedVelocity(interval, gravity)
-    var location = this.advancedLocation(velocity, interval);
-    var enteringScreen = this.advancedEnteringScreen(location);
-    return this.modifiedCopy(
-      {
-      location: location, 
-      velocity: velocity, 
-      enteringScreen: enteringScreen
-    }
-    );
-  },
-
-  advancedEnteringScreen: function(location) {
-    return (
-      this.enteringScreen && !Bubblicious.boundingBox().fullyContains(location)
-    );
-  },
-
-  advancedLocation: function(velocity, interval) {
-    move = velocity.x(interval);
-    return new Bubblicious.Location(
-      this.location.x + move.elements()[0], 
-      this.location.y + move.elements()[1]
+    advancer = new Bubblicious.TransitionState.Frame.Advancer(
+      this, interval, gravity, cheatThreshold
     )
-  },
-
-  advancedLockedToTarget: function() {
-    return this.modifiedCopy(
-      { 
-        location: this.target, 
-        velocity: new Bubblicious.Velocity(0,0), 
-        enteringScreen: false, 
-        locked: true,
-        target: null
-      }
-    )
-  },
-
-  advancedVelocity: function(interval, gravity) {
-    velocity = this.velocity
-    acceleration = this.acceleration(interval, gravity);
-    if (acceleration) velocity = velocity.add(acceleration);
-    return velocity
+    return advancer.result()
   },
 
   bubblePDiameter: function() {
@@ -108,20 +49,6 @@ Bubblicious.Bubble.State.prototype = {
 
   fontSize: function() {
     return 10 * this.size
-  },
-
-  gravitationalAcceleration: function(source, dest, interval, gravity) {
-    vector = source.vectorTo(dest);
-    magnitude = gravity / Math.pow(vector.modulus(), 2) * interval
-    return vector.x(magnitude);
-  },
-
-  isCloseEnoughToTarget: function(cheatThreshold) {
-    return (
-      this.location && 
-      this.target && 
-      (this.location.vectorTo(this.target).modulus() <= cheatThreshold)
-    ) 
   },
 
   isFullyOffscreen: function() {
