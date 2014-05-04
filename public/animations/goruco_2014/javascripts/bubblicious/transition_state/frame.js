@@ -21,7 +21,7 @@ Bubblicious.TransitionState.Frame.prototype = {
   gravity: function() {
     if (!this._gravity) {
       var base = 10,
-          scaleFactor = 500;
+          scaleFactor = 750;
       this._gravity = base * (1 + (this.transitionTimeElapsed() * scaleFactor))
     }
     return this._gravity
