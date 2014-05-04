@@ -35,22 +35,32 @@ Bubblicious.CollisionFinder.ComparisonBoxGrid.prototype = {
   },
 
   collisions: function() {
-    return _(this.comparisonBoxes()).chain().collect(function(comparisonBox) {
-      return comparisonBox.collisions()
-    }).flatten().value();
+    var result = []
+    for (var i = 0; i < this.comparisonBoxes().length; i++) {
+      var comparisonBox = this.comparisonBoxes()[i];
+      result = result.concat(comparisonBox.collisions());
+    }
+    return result
   },
 
   comparisonBoxes: function() {
-    result = this.emptyComparisonBoxes();
-    for (var i = 0; i < this.bubbleStates.length; i++) {
-      var bubbleState = this.bubbleStates[i];
-      containers = this.containingComparisonBoxes(result, bubbleState.location)
-      for (var j = 0; j < containers.length; j++) {
-        var container = containers[j];
-        container.add(bubbleState);
+    if (!this._comparisonBoxes) {
+      grid = this.emptyComparisonBoxes();
+      for (var i = 0; i < this.bubbleStates.length; i++) {
+        var bubbleState = this.bubbleStates[i];
+        containers = this.containingComparisonBoxes(grid, bubbleState.location)
+        for (var j = 0; j < containers.length; j++) {
+          var container = containers[j];
+          container.add(bubbleState);
+        }
+      }
+      this._comparisonBoxes = []
+      for (var y = 0; y < grid.length; y++) {
+        var row = grid[y];
+        this._comparisonBoxes = this._comparisonBoxes.concat(row);
       }
     }
-    return _(result).flatten();
+    return this._comparisonBoxes
   },
 
   containingComparisonBoxes: function(allBoxes, location) {

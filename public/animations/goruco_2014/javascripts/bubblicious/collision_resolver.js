@@ -29,9 +29,11 @@ Bubblicious.CollisionResolver.Attempt = function(bubbleStates, collisions) {
 Bubblicious.CollisionResolver.Attempt.prototype = {
   corrections: function() {
     if (!this._corrections) {
-      this._corrections = _(this.collisions).chain().map(function(collision) {
-        return collision.corrections()
-      }).flatten().value();
+      this._corrections = []
+      for (var i = 0; i < this.collisions.length; i++) {
+        var collision = this.collisions[i]
+        this._corrections = this._corrections.concat(collision.corrections());
+      }
     }
     return this._corrections
   },
