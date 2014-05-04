@@ -94,11 +94,13 @@ Bubblicious.TransitionState.StartFrame.prototype = {
   },
 
   randomEndLocation: function(char) {
-    var matchingEndBubbleStates = _(this.endBubbleStates).select(
-      function(bubbleState) {
-        return (bubbleState.bubble.char === char);
+    var matchingEndBubbleStates = []
+    for (var i = 0; i < this.endBubbleStates.length; i++) {
+      var bubbleState = this.endBubbleStates[i]
+      if (bubbleState.bubble.char === char) {
+        matchingEndBubbleStates.push(bubbleState)
       }
-    );
+    }
     var randomEndBubbleState = Bubblicious.firstRandomElt(
       matchingEndBubbleStates
     );
