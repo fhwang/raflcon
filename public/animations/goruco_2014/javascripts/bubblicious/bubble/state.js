@@ -8,6 +8,11 @@ Bubblicious.Bubble.State = function(bubble, location, opts) {
   } else {
     this.velocity = new Bubblicious.Velocity(0,0);
   }
+  if (opts.size) {
+    this.size = opts.size
+  } else {
+    this.size = 1
+  }
   this.locked = opts.locked;
   this.target = opts.target;
   this.antiTarget = opts.antiTarget
@@ -82,7 +87,7 @@ Bubblicious.Bubble.State.prototype = {
   },
 
   bubblePDiameter: function() {
-    return Bubblicious.bubblePDiameter()
+    return Bubblicious.bubblePDiameter() * this.size
   },
 
   bubblePx: function() {
@@ -135,7 +140,7 @@ Bubblicious.Bubble.State.prototype = {
     var location = newAttrs.location || this.location;
     opts = {
       velocity: this.velocity, locked: this.locked, target: this.target,
-      antiTarget: this.antiTarget
+      antiTarget: this.antiTarget, size: this.size
     }
     opts = _(opts).extend(newAttrs);
     return new Bubblicious.Bubble.State(this.bubble, location, opts)

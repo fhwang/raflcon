@@ -87,7 +87,12 @@ Bubblicious.prototype = {
 }
 
 Bubblicious.SteadyState = function(bubbleStates) {
-  this.bubbleStates = bubbleStates;
+  var size = 1 + Bubblicious.spacing
+  this.bubbleStates = []
+  for (var i = 0; i < bubbleStates.length; i++) {
+    bubbleState = bubbleStates[i].modifiedCopy({size: size})
+    this.bubbleStates.push(bubbleState)
+  }
 }
 
 Bubblicious.SteadyState.prototype = {

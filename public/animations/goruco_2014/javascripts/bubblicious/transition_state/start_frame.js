@@ -25,7 +25,8 @@ Bubblicious.TransitionState.StartFrame.prototype = {
       vectorToTarget.toUnitVector().x(newBubbleStateStartingSpeed)
     )
     return endBubbleState.bubble.state(
-      location, { target: target, enteringScreen: true, velocity: velocity }
+      location, 
+      { target: target, enteringScreen: true, velocity: velocity, size: 1 }
     )
   },
 
@@ -57,7 +58,7 @@ Bubblicious.TransitionState.StartFrame.prototype = {
   },
 
   onscreenBubbleStateAttrs: function(bubbleState) {
-    var newAttrs = {locked: false};
+    var newAttrs = {locked: false, size: 1};
     var target = this.randomEndLocation(bubbleState.bubble.char);
     if (target) {
       newAttrs.target = target;
