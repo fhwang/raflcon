@@ -81,6 +81,26 @@ Bubblicious.Bubble.State.prototype = {
     return velocity
   },
 
+  bubblePDiameter: function() {
+    return Bubblicious.bubblePDiameter()
+  },
+
+  bubblePx: function() {
+    return this.location.px();
+  },
+
+  bubblePy: function() {
+    return this.location.py();
+  },
+
+  charPx: function() {
+    return this.location.px() - 5
+  },
+
+  charPy: function() {
+    return this.location.py() + 5
+  },
+
   gravitationalAcceleration: function(source, dest, interval, gravity) {
     vector = source.vectorTo(dest);
     magnitude = gravity / Math.pow(vector.modulus(), 2) * interval

@@ -20,16 +20,16 @@ Bubblicious.ProcessingWrapper.prototype = _.extend({
     this.processing.noStroke();
     this.processing.fill(255,224,224);
     this.processing.ellipse(
-      bubbleState.location.px(),
-      bubbleState.location.py(),
-      Bubblicious.bubbleDiameter(),
-      Bubblicious.bubbleDiameter()
+      bubbleState.bubblePx(),
+      bubbleState.bubblePy(),
+      bubbleState.bubblePDiameter(),
+      bubbleState.bubblePDiameter()
     );
     this.processing.fill(0,0,0);
     this.processing.text(
       bubbleState.bubble.char, 
-      bubbleState.location.px() - 5,
-      bubbleState.location.py() + 5 
+      bubbleState.charPx(),
+      bubbleState.charPy()
     );
   },
 

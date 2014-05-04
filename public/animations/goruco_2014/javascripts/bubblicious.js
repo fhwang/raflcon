@@ -17,19 +17,19 @@ _(function() {
     return this._boundingBox;
   };
 
-  this.bubbleDiameter = function() {
-    if (!this._bubbleDiameter) {
-      this._bubbleDiameter = Math.floor(
+  this.bubblePDiameter = function() {
+    if (!this._bubblePDiameter) {
+      this._bubblePDiameter = Math.floor(
         this.canvasWidth / (this.maxDimensions()[0] + this.padding)
       )
     }
-    return this._bubbleDiameter
+    return this._bubblePDiameter
   };
 
   this.canvasHeight = function() {
     if (!this._canvasHeight) {
       this._canvasHeight = 
-        this.bubbleDiameter() * (this.maxDimensions()[1] + this.padding)
+        this.bubblePDiameter() * (this.maxDimensions()[1] + this.padding)
     }
     return this._canvasHeight
   };
@@ -57,7 +57,7 @@ _(function() {
 
   this.resetConstants = function() {
     this._boundingBox = null;
-    this._bubbleDiameter = null;
+    this._bubblePDiameter = null;
     this._canvasHeight = null;
     this._maxDimensions = null;
     this._minDimensions = null;

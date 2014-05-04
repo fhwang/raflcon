@@ -31,13 +31,13 @@ Bubblicious.Location.prototype = {
   },
 
   px: function() {
-    return (this.x + Bubblicious.padding + 0.5) * Bubblicious.bubbleDiameter();
+    return (this.x + Bubblicious.padding + 0.5) * Bubblicious.bubblePDiameter();
   },
 
   py: function() {
     return(
       Bubblicious.canvasHeight() -
-      ((this.y + Bubblicious.padding + 0.5) * Bubblicious.bubbleDiameter())
+      ((this.y + Bubblicious.padding + 0.5) * Bubblicious.bubblePDiameter())
     )
   },
 
