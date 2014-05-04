@@ -36,10 +36,11 @@ describe('Bubblicious.TransitionState.Frame.Advancer', function() {
         {target: new Bubblicious.Location(0, 0)}
       )
       var interval = 0.31;
-      var gravity = 10;
+      var targetGravity = 10;
+      var antiTargetGravity = 0
       var cheatThreshold = 0.1
       advancer = new Bubblicious.TransitionState.Frame.Advancer(
-        bubbleState, interval, gravity, cheatThreshold
+        bubbleState, interval, targetGravity, antiTargetGravity, cheatThreshold
       )
       bubbleStatePrime = advancer.result();
       expect(bubbleStatePrime.location.coords()).toEqual([0,0]);

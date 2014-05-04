@@ -1,5 +1,5 @@
 Bubblicious.Collision = {
-  elasticity: 0.75,
+  elasticity: 0.25,
   enableJitter: true
 };
 

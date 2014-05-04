@@ -1,9 +1,10 @@
 Bubblicious.TransitionState.Frame.Advancer = function(
-  bubbleState, interval, gravity, cheatThreshold
+  bubbleState, interval, targetGravity, antiTargetGravity, cheatThreshold
 ) {
   this.bubbleState = bubbleState
   this.interval = interval
-  this.gravity = gravity
+  this.targetGravity = targetGravity;
+  this.antiTargetGravity = antiTargetGravity
   this.cheatThreshold = cheatThreshold
 }
 
@@ -11,8 +12,18 @@ Bubblicious.TransitionState.Frame.Advancer.prototype = {
   acceleration: function() {
     if (this.bubbleState.target) {
       return this.gravitationalAcceleration(
-        this.bubbleState.location, this.bubbleState.target
+        this.bubbleState.location, this.bubbleState.target, this.targetGravity
       )
+    } else if (this.bubbleState.antiTarget && this.antiTargetGravity) {
+      if (this.bubbleState.antiTarget.eql(this.bubbleState.location)) {
+        return this.randomAcceleration();
+      } else {
+        return this.gravitationalAcceleration(
+          this.bubbleState.antiTarget, 
+          this.bubbleState.location, 
+          this.antiTargetGravity
+        );
+      }
     }
   },
 
@@ -30,18 +41,22 @@ Bubblicious.TransitionState.Frame.Advancer.prototype = {
     );
   },
 
-  gravitationalAcceleration: function(source, dest) {
+  gravitationalAcceleration: function(source, dest, gravity) {
     vector = source.vectorTo(dest);
-    magnitude = this.gravity / Math.pow(vector.modulus(), 2) * this.interval
+    magnitude = gravity / Math.pow(vector.modulus(), 2) * this.interval
     return vector.x(magnitude);
   },
 
   location: function(velocity) {
-    move = velocity.x(this.interval);
-    return new Bubblicious.Location(
-      this.bubbleState.location.x + move.elements()[0], 
-      this.bubbleState.location.y + move.elements()[1]
-    )
+    if (velocity.elements()[0] === 0 && velocity.elements()[1] === 0) {
+      return this.bubbleState.location
+    } else {
+      move = velocity.x(this.interval);
+      return new Bubblicious.Location(
+        this.bubbleState.location.x + move.elements()[0], 
+        this.bubbleState.location.y + move.elements()[1]
+      )
+    }
   },
 
   lockedToTarget: function() {
@@ -67,6 +82,13 @@ Bubblicious.TransitionState.Frame.Advancer.prototype = {
       enteringScreen: enteringScreen
     }
     );
+  },
+
+  randomAcceleration: function() {
+    var scale = 100
+    var dx = (Math.random() * scale * 2) - scale
+    var dy = (Math.random() * scale * 2) - scale
+    return $V([dx, dy])
   },
 
   result: function() {

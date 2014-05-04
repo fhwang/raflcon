@@ -87,13 +87,6 @@ Bubblicious.Bubble.State.prototype = {
     }
   },
 
-  randomAcceleration: function() {
-    var scale = 100
-    var dx = (Math.random() * scale * 2) - scale
-    var dy = (Math.random() * scale * 2) - scale
-    return $V([dx, dy])
-  },
-
   speed: function() {
     return this.velocity.modulus();
   },
