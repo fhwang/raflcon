@@ -1,10 +1,11 @@
 Bubblicious.CollisionFinder = function(bubbleStates) {
   this.bubbleStates = bubbleStates;
+  this.comparisonBoxDivisor = Bubblicious.CollisionFinder.comparisonBoxDivisor
 };
 
-Bubblicious.CollisionFinder.prototype = {
-  comparisonBoxDivisor: 20,
+Bubblicious.CollisionFinder.comparisonBoxDivisor = 20;
 
+Bubblicious.CollisionFinder.prototype = {
   boundingBoxCollision: function(bubbleState) {
     if (bubbleState.target && !bubbleState.enteringScreen) {
       if (!Bubblicious.boundingBox().fullyContains(bubbleState)) {

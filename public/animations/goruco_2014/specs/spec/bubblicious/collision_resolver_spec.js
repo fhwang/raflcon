@@ -4,6 +4,7 @@ describe('Bubblicious.CollisionResolver', function() {
     Bubblicious.resetConstants()
     Bubblicious.Collision.enableJitter = false
     Bubblicious.Collision.elasticity = 0.9
+    Bubblicious.CollisionFinder.comparisonBoxDivisor = 4
   });
 
   describe(".run", function() {
