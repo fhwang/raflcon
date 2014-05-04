@@ -4,13 +4,12 @@ Bubblicious.Collision.BoundingBox = function(bubbleState) {
 
 Bubblicious.Collision.BoundingBox.prototype = _.extend({
   bounceOnce: function() {
-    var self = this;
-    _([0,1]).each(function(axisNumber) {
+    for (var axisNumber = 0; axisNumber < 2; axisNumber++) {
       axis = Bubblicious.boundingBox().axis(axisNumber);
-      if (!axis.fullyContains(self.newLocation)) {
-        self.bounceOnceOffAxis(axis)
+      if (!axis.fullyContains(this.newLocation)) {
+        this.bounceOnceOffAxis(axis)
       }
-    });
+    }
   },
 
   bounceOnceOffAxis: function(axis) {
@@ -31,15 +30,15 @@ Bubblicious.Collision.BoundingBox.prototype = _.extend({
     var self = this,
         axis, bounds, point, newPoint;
     if (!Bubblicious.boundingBox().partiallyContains(this.newLocation)) { 
-      _([0,1]).each(function(axisNumber) {
+      for (var axisNumber = 0; axisNumber < 2; axisNumber++) {
         axis = Bubblicious.boundingBox().axis(axisNumber);
         bounds = axis.bounds
         boundsRange = bounds[1] - bounds[0];
-        point = self.newLocation.coords()[axisNumber]
+        point = this.newLocation.coords()[axisNumber]
         if (point < bounds[0] || point > bounds[1]) {
-          self.bounceWithinAxisBounds(point, bounds, axis, axisNumber);
+          this.bounceWithinAxisBounds(point, bounds, axis, axisNumber);
         }
-      })
+      }
     }
   },
 

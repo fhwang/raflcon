@@ -42,9 +42,10 @@ Bubblicious.CollisionResolver.Attempt.prototype = {
       corrections = _(self.corrections()).select(function(correction) {
         return correction.bubble === bubbleState.bubble
       });
-      _(corrections).each(function(correction) {
+      for (var i = 0; i < corrections.length; i++) {
+        var correction = corrections[i];
         bubbleState = correction.apply(bubbleState);
-      });
+      }
       return bubbleState;
     });
   }

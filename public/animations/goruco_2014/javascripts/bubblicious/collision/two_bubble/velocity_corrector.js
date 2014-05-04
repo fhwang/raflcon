@@ -45,17 +45,16 @@ Bubblicious.Collision.TwoBubble.VelocityCorrector.prototype = {
   },
 
   jitterCorrections: function() {
-    var self = this,
-        result = [];
-    _([0,1]).each(function(i) { 
-      if (!self.collision.bubbleStates[i].locked) {
+    var result = [];
+    for (var i = 0; i < 2; i++) {
+      if (!this.collision.bubbleStates[i].locked) {
         result.push(
           new Bubblicious.Collision.VelocityJitter(
-            self.collision.bubbleStates[i].bubble
+            this.collision.bubbleStates[i].bubble
           )
         )
       }
-    }); 
+    }
     return result;
   },
 
@@ -78,11 +77,10 @@ Bubblicious.Collision.TwoBubble.VelocityCorrector.prototype = {
   },
 
   run: function() {
-    var result = [],
-        self = this;
-    _([0,1]).each(function(i) {
-      if (correction = self.newCorrection(i)) result.push(correction);
-    });
+    var result = []
+    for (var i = 0; i < 2; i++) {
+      if (correction = this.newCorrection(i)) result.push(correction);
+    }
     if (Bubblicious.Collision.enableJitter) {
       result = result.concat(this.jitterCorrections());
     }

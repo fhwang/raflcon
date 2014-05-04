@@ -33,11 +33,13 @@ Bubblicious.TransitionState.StartFrame.prototype = {
     // This can't be done without first calling onscreen bubbles, which might
     // claim some of the end bubbles for some of the start bubbles.
     this.onscreenBubbleStates(); 
-    var self = this;
     this._offscreenBubbleStates = []
-    _(this.endBubbleStates).each(function(endBubbleState) {
-      self._offscreenBubbleStates.push(self.offscreenBubbleState(endBubbleState));
-    });
+    for (var i = 0; i < this.endBubbleStates.length; i++) {
+      var endBubbleState = this.endBubbleStates[i];
+      this._offscreenBubbleStates.push(
+        this.offscreenBubbleState(endBubbleState)
+      );
+    }
     return this._offscreenBubbleStates;
   },
 

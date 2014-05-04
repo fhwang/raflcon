@@ -19,15 +19,14 @@ Bubblicious.Collision.TwoBubble.LocationCorrector.prototype = {
   },
 
   nonZeroDistanceCorrections: function(vectorBetween) {
-    var self = this,
-        result = []
+    var result = []
     overlapDistance = Math.max(this.collision.overlapDistance(), 0.001)
     normal = vectorBetween.toUnitVector().x(overlapDistance)
-    _([0,1]).each(function(i) {
-      if (!self.collision.bubbleStates[i].locked) { 
-        result.push(self.correction(i, normal))
+    for (var i = 0; i < 2; i++) {
+      if (!this.collision.bubbleStates[i].locked) { 
+        result.push(this.correction(i, normal))
       }
-    });
+    }
     return result
   },
 

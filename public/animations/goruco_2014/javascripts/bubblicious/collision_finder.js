@@ -23,13 +23,15 @@ Bubblicious.CollisionFinder.prototype = {
 
   comparisonBoxes: function() {
     result = this.emptyComparisonBoxes();
-    _(this.bubbleStates).each(function(bubbleState) {
-      _(result).each(function(comparisonBox) {
+    for (var i = 0; i < this.bubbleStates.length; i++) {
+      var bubbleState = this.bubbleStates[i];
+      for (var j = 0; j < result.length; j++) {
+        var comparisonBox = result[j];
         if (comparisonBox.shouldContain(bubbleState)) {
           comparisonBox.add(bubbleState);
         }
-      });
-    });
+      }
+    }
     return result;
   },
 

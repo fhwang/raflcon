@@ -8,11 +8,12 @@ Bubblicious.ProcessingWrapper = function(bubblicious, canvas) {
 
 Bubblicious.ProcessingWrapper.prototype = _.extend({
   draw: function() {
-    var bubbleStates = this.bubblicious.advanceBubbleStates(),
-        self = this;
+    var bubbleStates = this.bubblicious.advanceBubbleStates();
     this.processing.colorMode('RGB')
     this.processing.background(255, 0, 0);
-    _(bubbleStates).each(this.drawBubbleState)
+    for (var i = 0; i < bubbleStates.length; i++) {
+      this.drawBubbleState(bubbleStates[i]);
+    }
   },
 
   drawBubbleState: function(bubbleState) {
