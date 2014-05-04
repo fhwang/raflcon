@@ -10,7 +10,7 @@ Bubblicious.ProcessingWrapper.prototype = _.extend({
   draw: function() {
     var bubbleStates = this.bubblicious.advanceBubbleStates();
     this.processing.colorMode('RGB')
-    this.processing.background(255, 0, 0);
+    this.processing.background(255,255,255)
     for (var i = 0; i < bubbleStates.length; i++) {
       this.drawBubbleState(bubbleStates[i]);
     }
@@ -18,7 +18,7 @@ Bubblicious.ProcessingWrapper.prototype = _.extend({
 
   drawBubbleState: function(bubbleState) {
     this.processing.noStroke();
-    this.processing.fill('#ffffff');
+    this.processing.fill(255,224,224);
     this.processing.ellipse(
       bubbleState.location.px(),
       bubbleState.location.py(),
