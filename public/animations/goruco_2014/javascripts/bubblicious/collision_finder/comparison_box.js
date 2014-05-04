@@ -33,12 +33,4 @@ Bubblicious.CollisionFinder.ComparisonBox.prototype = {
     }
     return result
   },
-
-  shouldContain: function(bubbleState) {
-    var location = bubbleState.location
-    return (
-      this.xBounds[0] <= location.x && this.xBounds[1] > location.x &&
-      this.yBounds[0] <= location.y && this.yBounds[1] > location.y
-    )
-  }
 }

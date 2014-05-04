@@ -44,14 +44,40 @@ Bubblicious.CollisionFinder.ComparisonBoxGrid.prototype = {
     result = this.emptyComparisonBoxes();
     for (var i = 0; i < this.bubbleStates.length; i++) {
       var bubbleState = this.bubbleStates[i];
-      for (var j = 0; j < result.length; j++) {
-        var comparisonBox = result[j];
-        if (comparisonBox.shouldContain(bubbleState)) {
-          comparisonBox.add(bubbleState);
-        }
+      containers = this.containingComparisonBoxes(result, bubbleState.location)
+      for (var j = 0; j < containers.length; j++) {
+        var container = containers[j];
+        container.add(bubbleState);
       }
     }
-    return result;
+    return _(result).flatten();
+  },
+
+  containingComparisonBoxes: function(allBoxes, location) {
+    var boxXArray = [],
+        boxYArray = []
+    var topRow = this.bounds[0];
+    for (var x = 0; x < topRow.length; x++) {
+      xBounds = topRow[x][0]
+      if (xBounds[0] <= location.x && xBounds[1] > location.x) {
+        boxXArray.push(x)
+      }
+    }
+    for (var y = 0; y < this.bounds.length; y++) {
+      yBounds = this.bounds[y][0][1]
+      if (yBounds[0] <= location.y && yBounds[1] > location.y) {
+        boxYArray.push(y)
+      }
+    }
+    var result = []
+    for (var xIdx = 0; xIdx < boxXArray.length; xIdx++) {
+      for (var yIdx = 0; yIdx < boxYArray.length; yIdx++) {
+        var x = boxXArray[xIdx]
+        var y = boxYArray[yIdx]
+        result.push(allBoxes[x][y])
+      }
+    }
+    return result
   },
 
   emptyComparisonBox: function(i,j) {
@@ -62,9 +88,11 @@ Bubblicious.CollisionFinder.ComparisonBoxGrid.prototype = {
  
   emptyComparisonBoxes: function() {
     var result = [];
-    for (i = 0; i < this.comparisonBoxDivisor; i++) {
-      for (j = 0; j < this.comparisonBoxDivisor; j++) {
-        result.push(this.emptyComparisonBox(i,j))
+    for (j = 0; j < this.comparisonBoxDivisor; j++) {
+      row = []
+      result.push(row);
+      for (i = 0; i < this.comparisonBoxDivisor; i++) {
+        row.push(this.emptyComparisonBox(i,j))
       }
     }
     return result;
