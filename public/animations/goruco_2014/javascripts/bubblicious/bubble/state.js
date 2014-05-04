@@ -20,14 +20,6 @@ Bubblicious.Bubble.State.prototype = {
       return this.gravitationalAcceleration(
         this.location, this.target, interval, gravity
       )
-    } else if (this.antiTarget) {
-      if (this.antiTarget.eql(this.location)) {
-        return this.randomAcceleration();
-      } else {
-        return this.gravitationalAcceleration(
-          this.antiTarget, this.location, interval, gravity
-        );
-      }
     }
   },
 

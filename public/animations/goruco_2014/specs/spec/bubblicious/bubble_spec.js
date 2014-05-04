@@ -40,17 +40,6 @@ describe('Bubblicious.Bubble.State', function() {
       expect(bubbleStatePrime.locked).toBeTruthy()
       expect(bubbleStatePrime.target).toBeNull()
     });
-
-    it("accelerates a way from an anti-target even if it's exactly on it", function() {
-      bubble = new Bubblicious.Bubble('a')
-      bubbleState = bubble.state(
-        new Bubblicious.Location(0, 0),
-        {antiTarget: new Bubblicious.Location(0, 0)}
-      )
-      acceleration = bubbleState.acceleration(0.01, 11)
-      expect(acceleration.modulus()).toBeGreaterThan(0);
-    });
-
   });
 
   describe(".modifiedCopy", function() {
