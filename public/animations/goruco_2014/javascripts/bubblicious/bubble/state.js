@@ -99,11 +99,15 @@ Bubblicious.Bubble.State.prototype = {
   },
 
   charPx: function() {
-    return this.location.px() - 5
+    return this.location.px() - (3 * this.size)
   },
 
   charPy: function() {
-    return this.location.py() + 5
+    return this.location.py() + (4 * this.size)
+  },
+
+  fontSize: function() {
+    return 10 * this.size
   },
 
   gravitationalAcceleration: function(source, dest, interval, gravity) {

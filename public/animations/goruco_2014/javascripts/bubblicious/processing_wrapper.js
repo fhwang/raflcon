@@ -17,6 +17,7 @@ Bubblicious.ProcessingWrapper.prototype = _.extend({
   },
 
   drawBubbleState: function(bubbleState) {
+    this.processing.textFont(this.font, bubbleState.fontSize());
     this.processing.noStroke();
     this.processing.fill(255,224,224);
     this.processing.ellipse(
@@ -36,8 +37,7 @@ Bubblicious.ProcessingWrapper.prototype = _.extend({
   setup: function() {
     this.processing.draw = this.draw;
     this.processing.size(Bubblicious.canvasWidth, Bubblicious.canvasHeight());
-    var font = this.processing.loadFont('Verdana');
-    this.processing.textFont(font, 12);
+    this.font = this.processing.loadFont('Monaco');
     this.processing.loop();
   }
 }, Processing.prototype);
