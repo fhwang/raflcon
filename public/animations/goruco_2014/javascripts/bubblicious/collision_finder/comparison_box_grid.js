@@ -1,23 +1,37 @@
 Bubblicious.CollisionFinder.ComparisonBoxGrid = function(bubbleStates) {
   this.bubbleStates = bubbleStates
   this.comparisonBoxDivisor = Bubblicious.CollisionFinder.comparisonBoxDivisor
+  this.bounds = this.buildBounds()
 }
 
 Bubblicious.CollisionFinder.ComparisonBoxGrid.prototype = {
-  bounds: function(axisNumber, i) {
+  buildBounds: function() {
+    var result = []
     var boundingBox = Bubblicious.boundingBox();
-    if (!this._boxDimensions) {
-      this._origin = [
-        boundingBox.axis(0).bounds[0], boundingBox.axis(1).bounds[0]
-      ]
-      this._boxDimensions = [
-        boundingBox.axis(0).magnitude() / this.comparisonBoxDivisor,
-        boundingBox.axis(1).magnitude() / this.comparisonBoxDivisor
-      ]
+    var origin = [
+      boundingBox.axis(0).bounds[0], boundingBox.axis(1).bounds[0]
+    ]
+    var boxDimensions = [
+      boundingBox.axis(0).magnitude() / this.comparisonBoxDivisor,
+      boundingBox.axis(1).magnitude() / this.comparisonBoxDivisor
+    ]
+    for (j = 0; j < this.comparisonBoxDivisor; j++) {
+      var row = []
+      result.push(row);
+      for (i = 0; i < this.comparisonBoxDivisor; i++) {
+        var coords = [i,j]
+        var bounds = []
+        for (var axisNumber = 0; axisNumber < 2; axisNumber++) {
+          min = origin[axisNumber] + coords[axisNumber] * 
+            boxDimensions[axisNumber];
+          max = origin[axisNumber] + (coords[axisNumber] + 1) * 
+            boxDimensions[axisNumber] + 1;
+          bounds.push([min, max])
+        }
+        row.push(bounds)
+      }
     }
-    min = this._origin[axisNumber] + i * this._boxDimensions[axisNumber];
-    max = this._origin[axisNumber] + (i + 1) * this._boxDimensions[axisNumber] + 1;
-    return [min, max]
+    return result;
   },
 
   collisions: function() {
@@ -41,9 +55,9 @@ Bubblicious.CollisionFinder.ComparisonBoxGrid.prototype = {
   },
 
   emptyComparisonBox: function(i,j) {
-    return new Bubblicious.CollisionFinder.ComparisonBox(
-      this.bounds(0, i), this.bounds(1, j)
-    )
+    var xBounds = this.bounds[i][j][0]
+    var yBounds = this.bounds[i][j][1]
+    return new Bubblicious.CollisionFinder.ComparisonBox(xBounds, yBounds)
   },
  
   emptyComparisonBoxes: function() {
