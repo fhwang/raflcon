@@ -39,10 +39,13 @@ Bubblicious.TransitionState.Frame.prototype = {
   run: function() {
     var self = this;
     this.bubbleStates = _(this.bubbleStates).map(function(bubbleState) {
-      advanced = bubbleState.advanced(
-        self.timeIncrement(), self.gravity(), self.cheatThreshold()
-      );
-      return advanced
+      advancer = new Bubblicious.TransitionState.Frame.Advancer(
+        bubbleState, 
+        self.timeIncrement(), 
+        self.gravity(), 
+        self.cheatThreshold()
+      )
+      return advancer.result()
     });
     this.resolveAllCollisions();
     this.bubbleStates = _(this.bubbleStates).reject(function(bubbleState) {

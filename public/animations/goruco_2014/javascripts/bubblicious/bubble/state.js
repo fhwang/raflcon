@@ -20,13 +20,6 @@ Bubblicious.Bubble.State = function(bubble, location, opts) {
 }
 
 Bubblicious.Bubble.State.prototype = {
-  advanced: function(interval, gravity, cheatThreshold) {
-    advancer = new Bubblicious.TransitionState.Frame.Advancer(
-      this, interval, gravity, cheatThreshold
-    )
-    return advancer.result()
-  },
-
   bubblePDiameter: function() {
     return Bubblicious.bubblePDiameter() * this.size
   },
