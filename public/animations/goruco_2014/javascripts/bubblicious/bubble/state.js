@@ -16,6 +16,7 @@ Bubblicious.Bubble.State = function(bubble, location, opts) {
   this.locked = opts.locked;
   this.target = opts.target;
   this.antiTarget = opts.antiTarget
+  this.shrinkStart = opts.shrinkStart
   Object.freeze(this);
 }
 
@@ -64,7 +65,8 @@ Bubblicious.Bubble.State.prototype = {
     var location = newAttrs.location || this.location;
     opts = {
       velocity: this.velocity, locked: this.locked, target: this.target,
-      antiTarget: this.antiTarget, size: this.size
+      antiTarget: this.antiTarget, size: this.size, 
+      shrinkStart: this.shrinkStart
     }
     opts = _(opts).extend(newAttrs);
     return new Bubblicious.Bubble.State(this.bubble, location, opts)
