@@ -73,20 +73,25 @@ Bubblicious.prototype = {
     this.state = new Bubblicious.SteadyState(bubbleStates)
   },
 
-  transitionTo: function(lines) {
-    //var self = this,
-        //startBubbleStates = this.state.bubbleStates,
-        //endBubbleStates = new Bubblicious.Layout(lines).bubbleStates;
-    this.state = new Bubblicious.ShrinkingState(this.state.bubbleStates)
-  }
+  startTransitionState: function(lines) {
+    var self = this,
+        startBubbleStates = this.state.bubbleStates,
+        endBubbleStates = new Bubblicious.Layout(lines).bubbleStates;
+    this.state = new Bubblicious.TransitionState(
+      startBubbleStates, endBubbleStates
+    );
+    this.state.promise.done(function() {
+      self.setSteadyState(self.state.bubbleStates);
+    });
+  },
 
-    //this.state = new Bubblicious.TransitionState(
-      //startBubbleStates, endBubbleStates
-    //);
-    //this.state.promise.done(function() {
-      //self.setSteadyState(self.state.bubbleStates);
-    //});
-  //}
+  transitionTo: function(lines) {
+    var self = this
+    this.state = new Bubblicious.ShrinkingState(this.state.bubbleStates)
+    this.state.promise.done(function() {
+      setTimeout(_(self.startTransitionState).bind(self), 200, lines)
+    });
+  }
 }
 
 Bubblicious.SteadyState = function(bubbleStates) {
@@ -106,8 +111,9 @@ Bubblicious.SteadyState.prototype = {
 
 Bubblicious.ShrinkingState = function(bubbleStates) {
   var stateStart = new Date(),
-      phaseTime = 0.11,
+      phaseTime = 0.081,
       phase = 0;
+  this.promise = $.Deferred();
   this.bubbleStates = []
   bubbleStates = _(bubbleStates).sortBy(function() { return Math.random() });
   while (bubbleStates.length > 0) {
@@ -125,12 +131,13 @@ Bubblicious.ShrinkingState = function(bubbleStates) {
 
 Bubblicious.ShrinkingState.prototype = {
   endSize: 1,
-  shrinkTime: 0.2,
+  shrinkTime: 0.15,
   startSize: 1 + Bubblicious.spacing,
 
   advanceBubbleStates: function() {
-    var newBubbleStates = []
-    var timestamp = new Date()
+    var self = this,
+        newBubbleStates = [],
+        timestamp = new Date()
     for (var i = 0; i < this.bubbleStates.length; i++) {
       bubbleState = this.bubbleStates[i]
       if (bubbleState.size === this.endSize || bubbleState.shrinkStart >= timestamp) {
@@ -152,6 +159,11 @@ Bubblicious.ShrinkingState.prototype = {
       }
     }
     this.bubbleStates = newBubbleStates;
+    if (_(this.bubbleStates).every(
+      function(bubbleState) { return bubbleState.size === self.endSize }
+    )) {
+      this.promise.resolve()
+    }
     return this.bubbleStates;
   }
 }
