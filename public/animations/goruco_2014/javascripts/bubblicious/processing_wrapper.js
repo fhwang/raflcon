@@ -10,7 +10,7 @@ Bubblicious.ProcessingWrapper.prototype = _.extend({
   draw: function() {
     var bubbleStates = this.bubblicious.advanceBubbleStates();
     this.processing.colorMode('RGB')
-    this.processing.background(255,255,255)
+    this.processing.background(255,64,64)
     for (var i = 0; i < bubbleStates.length; i++) {
       this.drawBubbleState(bubbleStates[i]);
     }
@@ -19,7 +19,7 @@ Bubblicious.ProcessingWrapper.prototype = _.extend({
   drawBubbleState: function(bubbleState) {
     this.processing.textFont(this.font, bubbleState.fontSize());
     this.processing.noStroke();
-    this.processing.fill(255,224,224);
+    this.processing.fill(255,255,255);
     this.processing.ellipse(
       bubbleState.bubblePx(),
       bubbleState.bubblePy(),
@@ -37,7 +37,7 @@ Bubblicious.ProcessingWrapper.prototype = _.extend({
   setup: function() {
     this.processing.draw = this.draw;
     this.processing.size(Bubblicious.canvasWidth, Bubblicious.canvasHeight());
-    this.font = this.processing.loadFont('Monaco');
+    this.font = this.processing.loadFont('Monaco Bold');
     this.processing.loop();
   }
 }, Processing.prototype);
