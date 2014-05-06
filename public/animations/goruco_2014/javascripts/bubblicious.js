@@ -6,8 +6,8 @@ Bubblicious = function(lines) {
 
 _(function() {
   this.rect = [22,10];
-  this.canvasWidth = 1000;
-  this.padding = 2;
+  this.canvasWidth = 1100;
+  this.padding = [3,12.23];
   this.spacing = 2.1; 
 
   this.boundingBox = function() {
@@ -20,7 +20,7 @@ _(function() {
   this.bubblePDiameter = function() {
     if (!this._bubblePDiameter) {
       this._bubblePDiameter = Math.floor(
-        this.canvasWidth / (this.maxDimensions()[0] + this.padding)
+        this.canvasWidth / (this.maxDimensions()[0] + this.padding[0])
       )
     }
     return this._bubblePDiameter
@@ -29,7 +29,7 @@ _(function() {
   this.canvasHeight = function() {
     if (!this._canvasHeight) {
       this._canvasHeight = 
-        this.bubblePDiameter() * (this.maxDimensions()[1] + this.padding)
+        this.bubblePDiameter() * (this.maxDimensions()[1] + this.padding[1])
     }
     return this._canvasHeight
   };
@@ -41,8 +41,8 @@ _(function() {
   this.maxDimensions = function() {
     if (!this._maxDimensions) {
       this._maxDimensions = [
-        this.rect[0] + ((this.rect[0]-1) * this.spacing) + this.padding,
-        this.rect[1] + ((this.rect[1]-1) * this.spacing) + this.padding
+        this.rect[0] + ((this.rect[0]-1) * this.spacing) + this.padding[0],
+        this.rect[1] + ((this.rect[1]-1) * this.spacing) + this.padding[1]
       ]
     }
     return this._maxDimensions
@@ -50,7 +50,7 @@ _(function() {
 
   this.minDimensions = function() {
     if (!this._minDimensions) {
-      this._minDimensions = [-this.padding, -this.padding];
+      this._minDimensions = [-this.padding[0], -this.padding[1]];
     }
     return this._minDimensions
   };

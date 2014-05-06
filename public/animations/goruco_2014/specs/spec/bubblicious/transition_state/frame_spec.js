@@ -7,7 +7,7 @@ describe('Bubblicious.TransitionState.Frame', function() {
   
   describe(".resolveAllCollisions", function() {
     it("handles a collision with a boundary once", function() {
-      Bubblicious.padding = 3;
+      Bubblicious.padding = [3,3];
       bubbleState = newBubbleState('a', -3.5, 0, {velocity: [-1,0], target: [0,0]});
       frame = new Bubblicious.TransitionState.Frame([bubbleState]);
       frame.resolveAllCollisions();
@@ -19,7 +19,7 @@ describe('Bubblicious.TransitionState.Frame', function() {
     it("handles a collision with a boundary twice", function() {
       Bubblicious.resetConstants();
       Bubblicious.rect = [1,1]
-      Bubblicious.padding = 3;
+      Bubblicious.padding = [3,3];
       bubbleState = newBubbleState('a', -10, 0, {velocity: [-1,0], target: [0,0]});
       frame = new Bubblicious.TransitionState.Frame([bubbleState]);
       frame.resolveAllCollisions();
@@ -31,7 +31,7 @@ describe('Bubblicious.TransitionState.Frame', function() {
     it("handles a collision with two axes of the boundary at once", function() {
       Bubblicious.resetConstants();
       Bubblicious.rect = [1,1]
-      Bubblicious.padding = 3;
+      Bubblicious.padding = [3,3];
       bubbleState = newBubbleState('a', -4, -5, {velocity: [-1,-1], target: [0,0]});
       frame = new Bubblicious.TransitionState.Frame([bubbleState]);
       frame.resolveAllCollisions();
@@ -43,7 +43,7 @@ describe('Bubblicious.TransitionState.Frame', function() {
     it("handles multiple diagonal collisions", function() {
       Bubblicious.resetConstants();
       Bubblicious.rect = [1,1]
-      Bubblicious.padding = 3;
+      Bubblicious.padding = [3,3];
       bubbleState = newBubbleState('a', -10, -11, {velocity: [-1,-1], target: [0,0]});
       frame = new Bubblicious.TransitionState.Frame([bubbleState]);
       frame.resolveAllCollisions();
@@ -54,14 +54,14 @@ describe('Bubblicious.TransitionState.Frame', function() {
 
     it("handles a collision with a boundary when the jitter is on", function() {
       Bubblicious.Collision.enableJitter = true;
-      Bubblicious.padding = 3;
+      Bubblicious.padding = [3,3];
       bubbleState = newBubbleState('a', -3.5, 0, {velocity: [-1,0], target: [0,0]});
       frame = new Bubblicious.TransitionState.Frame([bubbleState]);
       frame.resolveAllCollisions();
     });
 
     it("handles a collision with a boundary at an angle", function() {
-      Bubblicious.padding = 3;
+      Bubblicious.padding = [3,3];
       bubbleState = newBubbleState('a', -3.5, 0, {velocity: [-1,-1], target: [0,0]});
       frame = new Bubblicious.TransitionState.Frame([bubbleState]);
       frame.resolveAllCollisions();
@@ -73,7 +73,7 @@ describe('Bubblicious.TransitionState.Frame', function() {
     it("handles a collision so far out of the bounding box that it has to bounce a few times before coming into view", function() {
       Bubblicious.resetConstants();
       Bubblicious.rect = [7,7];
-      Bubblicious.padding = 3;
+      Bubblicious.padding = [3,3];
       Bubblicious.spacing = 2.1;
       bubbleState = newBubbleState('a', 100, 0, {velocity: [100, 0], target: [0,0]})
       frame = new Bubblicious.TransitionState.Frame([bubbleState]);

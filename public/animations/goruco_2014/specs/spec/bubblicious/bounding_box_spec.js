@@ -6,7 +6,7 @@ describe('Bubblicious.BoundingBox', function() {
       Bubblicious.rect = [3,2];
       Bubblicious.canvasWidth = 500;
       Bubblicious.canvasHeight = 400;
-      Bubblicious.padding = 3;
+      Bubblicious.padding = [3,3];
       boundingBox = new Bubblicious.BoundingBox();
       bubble = {location: {x: -2.9, y: 0}}
       expect(boundingBox.fullyContains(bubble)).toBeTruthy();
@@ -16,7 +16,7 @@ describe('Bubblicious.BoundingBox', function() {
       Bubblicious.rect = [3,2];
       Bubblicious.canvasWidth = 500;
       Bubblicious.canvasHeight = 400;
-      Bubblicious.padding = 3;
+      Bubblicious.padding = [3,3];
       boundingBox = new Bubblicious.BoundingBox();
       bubble = {location: {x: -3.5, y: 0}}
       expect(boundingBox.fullyContains(bubble)).toBeFalsy();

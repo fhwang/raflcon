@@ -41,7 +41,7 @@ Bubblicious.BoundingBox.Axis.prototype = {
   initialize: function(number) {
     this.number = number;
     this.bounds = [
-      0 - Bubblicious.padding, Bubblicious.maxDimensions()[number] - 1
+      0 - Bubblicious.padding[0], Bubblicious.maxDimensions()[number] - 1
     ];
   },
 

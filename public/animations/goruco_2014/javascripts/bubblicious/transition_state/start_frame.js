@@ -109,7 +109,7 @@ Bubblicious.TransitionState.StartFrame.prototype = {
   },
 
   randomOffscreenAxisPoint: function(axis) {
-    randAmount = Bubblicious.padding * Math.random() * 10; 
+    randAmount = Bubblicious.padding[axis] * Math.random() * 10; 
     if (Math.random() < 0.5) {
       return Bubblicious.minDimensions()[axis] - randAmount;
     } else {
