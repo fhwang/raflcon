@@ -1,10 +1,9 @@
 Bubblicious.TransitionState.Frame.Advancer = function(
-  bubbleState, interval, targetGravity, antiTargetGravity, cheatThreshold
+  bubbleState, interval, gravity, cheatThreshold
 ) {
   this.bubbleState = bubbleState
   this.interval = interval
-  this.targetGravity = targetGravity;
-  this.antiTargetGravity = antiTargetGravity
+  this.gravity = gravity;
   this.cheatThreshold = cheatThreshold
 }
 
@@ -12,16 +11,14 @@ Bubblicious.TransitionState.Frame.Advancer.prototype = {
   acceleration: function() {
     if (this.bubbleState.target) {
       return this.gravitationalAcceleration(
-        this.bubbleState.location, this.bubbleState.target, this.targetGravity
+        this.bubbleState.location, this.bubbleState.target
       )
-    } else if (this.bubbleState.antiTarget && this.antiTargetGravity) {
+    } else if (this.bubbleState.antiTarget) {
       if (this.bubbleState.antiTarget.eql(this.bubbleState.location)) {
         return this.randomAcceleration();
       } else {
         return this.gravitationalAcceleration(
-          this.bubbleState.antiTarget, 
-          this.bubbleState.location, 
-          this.antiTargetGravity
+          this.bubbleState.antiTarget, this.bubbleState.location
         );
       }
     }
@@ -41,9 +38,9 @@ Bubblicious.TransitionState.Frame.Advancer.prototype = {
     );
   },
 
-  gravitationalAcceleration: function(source, dest, gravity) {
+  gravitationalAcceleration: function(source, dest) {
     vector = source.vectorTo(dest);
-    magnitude = gravity / Math.pow(vector.modulus(), 2) * this.interval
+    magnitude = this.gravity / Math.pow(vector.modulus(), 2) * this.interval
     return vector.x(magnitude);
   },
 

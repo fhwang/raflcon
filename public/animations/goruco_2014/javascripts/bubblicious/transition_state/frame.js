@@ -8,20 +8,6 @@ Bubblicious.TransitionState.Frame = function(
 };
 
 Bubblicious.TransitionState.Frame.prototype = {
-  antiTargetGravity: function() {
-    if (typeof this._antiTargetGravity === 'undefined') {
-      lag = 1;
-      if (this.transitionTimeElapsed() > lag) {
-        this._antiTargetGravity = this.gravity(
-          this.transitionTimeElapsed() - lag
-        )
-      } else {
-        this._antiTargetGravity = 0
-      }
-    }
-    return this._antiTargetGravity;
-  },
-
   cheatThreshold: function() {
     if (!this._cheatThreshold) {
       var base = 0.05,
@@ -32,10 +18,10 @@ Bubblicious.TransitionState.Frame.prototype = {
     return this._cheatThreshold
   },
 
-  gravity: function(timeElapsed) {
+  gravity: function() {
     var base = 12500,
         scaleFactor = 2.5;
-    return base * (1 + (timeElapsed * scaleFactor))
+    return base * (1 + (this.transitionTimeElapsed() * scaleFactor))
   },
 
   leftSuccessfully: function(bubbleState) {
@@ -53,8 +39,7 @@ Bubblicious.TransitionState.Frame.prototype = {
       advancer = new Bubblicious.TransitionState.Frame.Advancer(
         bubbleState, 
         self.timeIncrement(), 
-        self.targetGravity(),
-        self.antiTargetGravity(),
+        self.gravity(),
         self.cheatThreshold()
       )
       return advancer.result()
@@ -63,13 +48,6 @@ Bubblicious.TransitionState.Frame.prototype = {
     this.bubbleStates = _(this.bubbleStates).reject(function(bubbleState) {
       return self.leftSuccessfully(bubbleState);
     });
-  },
-
-  targetGravity: function() {
-    if (!this._targetGravity) {
-      this._targetGravity = this.gravity(this.transitionTimeElapsed());
-    }
-    return this._targetGravity
   },
 
   transitionTimeElapsed: function() {
