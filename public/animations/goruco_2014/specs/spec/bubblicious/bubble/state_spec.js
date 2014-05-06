@@ -1,33 +1,31 @@
-describe('Bubblicious.Bubble.State', function() {
-  var bubble;
+describe('Bubblicious.Layout', function() {
+  var layout;
 
-  describe(".modifiedCopy", function() {
-    it("copies all relevant fields", function() {
-      bubble = new Bubblicious.Bubble('a')
-      bubbleState = bubble.state(
-        new Bubblicious.Location(0, 0),
-        {antiTarget: new Bubblicious.Location(1, 1)}
-      )
-      expect(bubbleState.antiTarget.coords()).toEqual([1,1]);
-      bubbleStatePrime = bubbleState.modifiedCopy({})
-      expect(bubbleStatePrime.antiTarget.coords()).toEqual([1,1]);
+  describe(".bubbleStates", function() {
+    var bubbleStates;
+
+    beforeEach(function() {
+      Bubblicious.rect = [10, 10]
+      lines = ["Jane Doe"]
+      layout = new Bubblicious.Layout(lines)
+      bubbleStates = layout.bubbleStates
     });
-  });
 
-  describe(".overlaps", function() {
-    it("should return true if the centers are less than one unit apart", function() {
-      bubble = new Bubblicious.Bubble('a')
-      bubbleState = bubble.state(new Bubblicious.Location(0, 0));
-      bubble2 = new Bubblicious.Bubble('b')
-      bubbleState2 = bubble2.state(new Bubblicious.Location(0.5, 0.5));
-      expect(bubbleState.overlaps(bubbleState2)).toBeTruthy()
-      expect(bubbleState2.overlaps(bubbleState)).toBeTruthy()
-      bubble3 = new Bubblicious.Bubble('c')
-      bubbleState3 = bubble3.state(new Bubblicious.Location(1, 1));
-      expect(bubbleState.overlaps(bubbleState3)).toBeFalsy();
-      expect(bubbleState3.overlaps(bubbleState)).toBeFalsy();
-      expect(bubbleState2.overlaps(bubbleState3)).toBeTruthy();
-      expect(bubbleState3.overlaps(bubbleState2)).toBeTruthy();
+    it("upcases all names", function() {
+      letters = ['J', 'A', 'N', 'E', 'D', 'O', 'E']
+      _(letters).each(function(letter) {
+        found = _(bubbleStates).any(function(bubbleState) {
+          return bubbleState.bubble.char === letter
+        });
+        expect(found).toBeTruthy()
+      });
+    });
+
+    it("doesn't create empty bubbles", function() {
+      emptyBubble = _(bubbleStates).any(function(bubbleState) {
+        return !bubbleState.bubble.char
+      });
+      expect(emptyBubble).toBeFalsy()
     });
   });
 });

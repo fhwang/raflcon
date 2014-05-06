@@ -4,10 +4,14 @@ Bubblicious.Layout = function(lines) {
     var self = this;
     for (y = 0; y < Bubblicious.rect[1]; y++) {
       var line = lines[(Bubblicious.rect[1] - 1 - y)];
-      for (x = 0; x < Bubblicious.rect[0]; x++) {
-        var char = line.charAt(x);
-        if (char !== ' ') {
-          self.addBubbleState(char, x, y);
+      if (line) {
+        maxLeftPadding = Bubblicious.rect[0] - line.length
+        leftPadding = Math.round(Math.random() * maxLeftPadding)
+        for (x = 0; x < Bubblicious.rect[0]; x++) {
+          var char = line.charAt(x).toUpperCase();
+          if (char && char !== ' ') {
+            self.addBubbleState(char, leftPadding + x, y);
+          }
         }
       }
     }
