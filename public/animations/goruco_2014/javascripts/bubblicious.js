@@ -69,6 +69,14 @@ Bubblicious.prototype = {
     return this.state.advanceBubbleStates();
   },
 
+  setGrowingState: function(bubbleStates) {
+    var self = this
+    this.state = new Bubblicious.GrowingState(this.state.bubbleStates)
+    this.state.promise.done(function() {
+      self.setSteadyState(self.state.bubbleStates);
+    });
+  },
+
   setSteadyState: function(bubbleStates) {
     this.state = new Bubblicious.SteadyState(bubbleStates)
   },
@@ -81,7 +89,7 @@ Bubblicious.prototype = {
       startBubbleStates, endBubbleStates
     );
     this.state.promise.done(function() {
-      self.setSteadyState(self.state.bubbleStates);
+      setTimeout(_(self.setGrowingState).bind(self), 200)
     });
   },
 
