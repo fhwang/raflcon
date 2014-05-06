@@ -35,10 +35,7 @@ Bubblicious.Location.prototype = {
   },
 
   py: function() {
-    return(
-      Bubblicious.canvasHeight() -
-      ((this.y + Bubblicious.padding[1] + 0.5) * Bubblicious.bubblePDiameter())
-    )
+    return (this.y + Bubblicious.padding[1] + 0.5) * Bubblicious.bubblePDiameter();
   },
 
   vectorTo: function(otherLoc) {

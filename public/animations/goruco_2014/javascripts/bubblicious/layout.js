@@ -5,14 +5,14 @@ Bubblicious.Layout = function(lines) {
     maxTopPadding = Bubblicious.rect[1] - lines.length
     topPadding = Math.round(Math.random() * maxTopPadding)
     for (y = 0; y < Bubblicious.rect[1]; y++) {
-      var line = lines[(Bubblicious.rect[1] - 1 - y)];
+      var line = lines[y]
       if (line) {
         maxLeftPadding = Bubblicious.rect[0] - line.length
         leftPadding = Math.round(Math.random() * maxLeftPadding)
         for (x = 0; x < Bubblicious.rect[0]; x++) {
           var char = line.charAt(x).toUpperCase();
           if (char && char !== ' ') {
-            self.addBubbleState(char, x + leftPadding, y - topPadding);
+            self.addBubbleState(char, x + leftPadding, y + topPadding);
           }
         }
       }
