@@ -2,7 +2,15 @@ Bubblicious.Layout = function(lines) {
   this.bubbleStates = [];
   if (lines) {
     var self = this;
-    maxTopPadding = Bubblicious.rect[1] - lines.length
+    if (lines.length > 1) {
+      linePadding = Math.floor(
+        (Bubblicious.rect[1] - lines.length) / (lines.length - 1)
+      )
+    } else {
+      linePadding = 0;
+    }
+    visualHeight = lines.length + (lines.length - 1) * linePadding
+    maxTopPadding = Bubblicious.rect[1] - visualHeight
     topPadding = Math.round(Math.random() * maxTopPadding)
     for (y = 0; y < Bubblicious.rect[1]; y++) {
       var line = lines[y]
@@ -12,7 +20,9 @@ Bubblicious.Layout = function(lines) {
         for (x = 0; x < Bubblicious.rect[0]; x++) {
           var char = line.charAt(x).toUpperCase();
           if (char && char !== ' ') {
-            self.addBubbleState(char, x + leftPadding, y + topPadding);
+            self.addBubbleState(
+              char, x + leftPadding, y + (y * linePadding) + topPadding
+            );
           }
         }
       }
