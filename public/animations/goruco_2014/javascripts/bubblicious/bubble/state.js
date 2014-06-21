@@ -35,15 +35,15 @@ Bubblicious.Bubble.State.prototype = {
   },
 
   charPx: function() {
-    return this.location.px() - (3.5 * this.size)
+    return this.location.px() - (2.8 * this.size)
   },
 
   charPy: function() {
-    return this.location.py() + (4.5 * this.size)
+    return this.location.py() + (3.4 * this.size)
   },
 
   fontSize: function() {
-    return 12 * this.size
+    return 8 * this.size
   },
 
   isFullyOffscreen: function() {

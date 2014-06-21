@@ -117,9 +117,12 @@ Raflcon.prototype = {
   },
 
   tryDrawingIframe: function() {
+    //debugger
     var self = this
-    var width = $(window).width() - $('#control_panel').outerWidth();
-    var height = $(window).height();
+    //var width = $(window).width() - $('#control_panel').outerWidth();
+    var width = $(window).width()
+    //var height = $(window).height();
+    var height = $(window).height() - $('#control_panel').outerHeight();
     if (width > 0 && height > 0) {
       $.get("/conference", function(data) {
         var html = self.templateResult(
