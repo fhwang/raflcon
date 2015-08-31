@@ -1,6 +1,8 @@
 engines:
   rubocop:
     enabled: true
+  eslnt:
+    enabled: true
 ratings:
   paths:
   - "**.rb"
