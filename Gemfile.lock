@@ -30,7 +30,8 @@ GEM
       multi_json (~> 1.0)
     acts_as_list (0.7.4)
       activerecord (>= 3.0)
-    addressable (2.4.0)
+    addressable (2.8.1)
+      public_suffix (>= 2.0.2, < 6.0)
     admin_assistant (2.3.2)
       dynamic_form
       will_paginate (~> 3.0)
@@ -75,6 +76,7 @@ GEM
     pkg-config (1.1.7)
     polyglot (0.3.5)
     power_assert (0.3.0)
+    public_suffix (5.0.0)
     rack (1.4.7)
     rack-cache (1.6.1)
       rack (>= 0.4)
